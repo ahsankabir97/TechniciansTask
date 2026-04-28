@@ -721,6 +721,23 @@ div[style*="overflow-x:auto"]:active { cursor: grabbing; }
         min-width: 900px;
     }
 }
+#addressFloatBox {
+    position: fixed; z-index: 99999;
+    background: linear-gradient(135deg, #0f1f3d, #1e3a6e);
+    border: 1px solid rgba(59,130,246,0.45);
+    border-radius: 12px; padding: 14px 18px;
+    box-shadow: 0 12px 35px rgba(15,31,61,0.45);
+    color: #fff; font-family: 'Outfit', sans-serif;
+    font-size: 0.80rem; max-width: 260px;
+    display: none; line-height: 1.6;
+    pointer-events: none;
+}
+#addressFloatBox .af-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.60rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 1px;
+    color: #7dd3fc; margin-bottom: 6px;
+}
     </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
@@ -971,6 +988,11 @@ div[style*="overflow-x:auto"]:active { cursor: grabbing; }
                                     <option>Siddheshwari</option><option>Tikatuli</option><option>Wari</option>
                                 </select>
                             </div>
+<div class="input-group">
+    <label><i class="fas fa-address-card"></i> Address / Cell No</label>
+    <input type="text" id="addressInput" placeholder="Address & mobile number...">
+</div>
+
                             <div class="input-group">
                                 <label><i class="fas fa-user"></i> Assign To (Technician)</label>
                                 <select id="personInput">
@@ -979,7 +1001,7 @@ div[style*="overflow-x:auto"]:active { cursor: grabbing; }
                                     <option>Nahid</option><option>Fahim</option>
                                 </select>
                             </div>
-                            <button class="btn-assign" id="assignBtn" onclick="addTask()">
+                 <button class="btn-assign" id="assignBtn" onclick="addTask()">
                                 <i class="fas fa-paper-plane"></i> Assign Task
                             </button>
                         </div>
@@ -1613,7 +1635,7 @@ ob.innerHTML = ongoing.length === 0
             ${actionCell}</td>
         <td style="color:var(--navy-light);font-weight:600;font-family:'Montserrat';"><i class="far fa-clock"></i> ${t.startTime}</td>
         <td><b style="font-family:'Montserrat';"><i class="fas fa-ticket-alt"></i> ${t.ticket}</b></td>
-        <td><span class="area-badge"><i class="fas fa-map-marker-alt"></i> ${t.area}</span></td>
+        <td><span class="area-badge" style="cursor:pointer;" onclick="showAddressPopup(event,'${(t.address||'').replace(/'/g,"\\'")}')"><i class="fas fa-map-marker-alt"></i> ${t.area}</span></td>
         <td><span class="badge bg-${t.person.toLowerCase()}"><i class="fas fa-user"></i> ${t.person}</span></td>
         <td><span class="badge bg-${assignedByLower}" style="background:linear-gradient(135deg,#1e3a6e 0%,#2563eb 100%);"><i class="fas fa-user-tie"></i> ${assignedBy}</span></td>
         <td class="status-working-cell"><span class="status-working"><i class="fas fa-spinner fa-pulse"></i> ${t.remarks}</span></td></tr>`;
@@ -1821,6 +1843,7 @@ const todayStr = new Date(now2.getTime() - now2.getTimezoneOffset() * 60000).toI
             date:       document.getElementById('dateInput').value,
             ticket:     tv,
             area:       document.getElementById('areaInput').value,
+	address: document.getElementById('addressInput').value.trim(),
             person:     assignedPerson,
             startTime:  new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}),
             remarks:    "Working",
@@ -1842,6 +1865,7 @@ const todayStr = new Date(now2.getTime() - now2.getTimezoneOffset() * 60000).toI
             ongoing.unshift(task);
             renderAll();
             ti.value=''; document.getElementById('areaInput').value='';
+document.getElementById('addressInput').value = '';
             if (currentUser.role === 'engineer') document.getElementById('personInput').value='';
             showPopup('success','Task Assigned',`${task.ticket} → ${task.person} (${task.area})`);
             setTimeout(() => ti.focus(), 300);
@@ -2122,6 +2146,21 @@ function downloadCompletedPDF() {
 
     showPopup('success', 'PDF Downloaded', `${filtered.length}টি task এর PDF তৈরি হয়েছে।`);
 }
+function showAddressPopup(event, addr) {
+    const box = document.getElementById('addressFloatBox');
+    box.innerHTML = `<div class="af-title"><i class="fas fa-address-card"></i> Address / Cell No</div>${addr || 'No info added'}`;
+    box.style.display = 'block';
+    box.style.left = (event.clientX + 12) + 'px';
+    box.style.top  = (event.clientY + 12) + 'px';
+    clearTimeout(window._afTimer);
+    window._afTimer = setTimeout(() => box.style.display = 'none', 4000);
+}
+document.addEventListener('click', (e) => {
+    if (!e.target.closest('.area-badge')) {
+        document.getElementById('addressFloatBox').style.display = 'none';
+    }
+});
 </script>
+<div id="addressFloatBox"></div>
 </body>
 </html>
