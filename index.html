@@ -1,0 +1,2127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technician Work Dashboard</title>
+    <link rel="shortcut icon" href="technician_favicon.ico" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Montserrat:wght@500;600;700;800&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --navy:        #0f1f3d;
+            --navy-mid:    #1a3158;
+            --navy-light:  #1e3a6e;
+            --steel:       #2e4a7a;
+            --sky:         #2563eb;
+            --sky-light:   #3b82f6;
+            --teal:        #0d9488;
+            --teal-light:  #14b8a6;
+            --amber:       #d97706;
+            --amber-light: #f59e0b;
+            --crimson:     #dc2626;
+            --rose:        #e11d48;
+            --slate-text:  #334155;
+            --muted:       #64748b;
+            --soft:        #94a3b8;
+            --grad-header:   linear-gradient(135deg, #0f1f3d 0%, #1e3a6e 60%, #1a3158 100%);
+            --grad-primary:  linear-gradient(135deg, #1e3a6e 0%, #2563eb 100%);
+            --grad-success:  linear-gradient(135deg, #0d9488 0%, #14b8a6 100%);
+            --grad-danger:   linear-gradient(135deg, #dc2626 0%, #e11d48 100%);
+            --grad-warning:  linear-gradient(135deg, #d97706 0%, #f59e0b 100%);
+            --grad-assign:   linear-gradient(135deg, #1e3a6e 0%, #2563eb 100%);
+            --glass-bg:        rgba(255,255,255,0.18);
+            --glass-bg-hover:  rgba(255,255,255,0.28);
+            --glass-border:    rgba(255,255,255,0.30);
+            --glass-shadow:    0 8px 32px rgba(15,31,61,0.12);
+            --glass-blur:      blur(20px);
+            --radius: 16px;
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            font-family: 'Outfit', sans-serif;
+            color: var(--slate-text);
+            min-height: 100vh;
+            font-size: 14px;
+            padding: 15px;
+            overflow-x: auto;
+            background:
+                radial-gradient(ellipse at 8%  18%,  rgba(37,99,235,0.12)  0%, transparent 48%),
+                radial-gradient(ellipse at 88% 12%,  rgba(15,31,61,0.14)   0%, transparent 44%),
+                radial-gradient(ellipse at 50% 92%,  rgba(13,148,136,0.10) 0%, transparent 48%),
+                radial-gradient(ellipse at 92% 72%,  rgba(30,58,110,0.10)  0%, transparent 38%),
+                linear-gradient(145deg, #e8edf7 0%, #eef2f9 45%, #e4eff8 100%);
+            background-attachment: fixed;
+        }
+.btn-delete-mode {
+    background: var(--grad-danger);
+    color: white; border: none;
+    padding: 5px 10px; border-radius: 6px;
+    cursor: pointer; font-family: 'Montserrat', sans-serif;
+    font-weight: 700; font-size: 0.58rem;
+    display: inline-flex; align-items: center; gap: 4px;
+    transition: all 0.2s ease; text-transform: uppercase;
+    letter-spacing: 0.5px; box-shadow: 0 4px 12px rgba(220,38,38,0.28);
+    border: 1px solid rgba(255,255,255,0.2);
+}
+.btn-delete-mode:hover { transform: translateY(-1px); box-shadow: 0 5px 14px rgba(220,38,38,0.40); }
+.btn-confirm-delete {
+    background: var(--grad-danger);
+    color: white; border: none;
+    padding: 5px 10px; border-radius: 6px;
+    cursor: pointer; font-family: 'Montserrat', sans-serif;
+    font-weight: 700; font-size: 0.58rem;
+    align-items: center; gap: 4px;
+    transition: all 0.2s ease; text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 12px rgba(220,38,38,0.28);
+    border: 1px solid rgba(255,255,255,0.2);
+    margin-left: 8px;
+    display: none !important;
+}
+.btn-confirm-delete:hover { 
+    transform: translateY(-1px); 
+    box-shadow: 0 5px 14px rgba(220,38,38,0.40); 
+}
+.btn-confirm-delete.visible { 
+    display: inline-flex !important; 
+}
+.delete-checkbox { width: 16px; height: 16px; cursor: pointer; accent-color: #dc2626; }
+        /* ── LOGIN SCREEN ── */
+        #loginScreen {
+            position: fixed; inset: 0; z-index: 9999;
+            display: flex; align-items: center; justify-content: center;
+            background:
+                radial-gradient(ellipse at 20% 20%, rgba(37,99,235,0.35) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(13,148,136,0.22) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(59,130,246,0.18) 0%, transparent 60%),
+                linear-gradient(145deg, #0a1628 0%, #0f2244 40%, #112960 70%, #1a3a7a 100%);
+        }
+        .login-box {
+            background: rgba(255,255,255,0.10);
+            backdrop-filter: blur(30px);
+            border: 1px solid rgba(255,255,255,0.18);
+            border-radius: 24px;
+            padding: 40px 36px;
+            width: 100%; max-width: 400px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.35);
+            text-align: center;
+        }
+        .login-logo { height: 70px; margin-bottom: 8px; }
+        .login-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.1rem; font-weight: 800;
+            color: #fff; text-transform: uppercase;
+            letter-spacing: 1.5px; margin-bottom: 4px;
+            background: linear-gradient(135deg, #fff 0%, #bfdbfe 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .login-sub { font-size: 0.75rem; color: rgba(255,255,255,0.55); margin-bottom: 28px; }
+
+        .login-field-group { margin-bottom: 14px; text-align: left; }
+        .login-field-label {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.62rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.8px;
+            color: rgba(255,255,255,0.50);
+            margin-bottom: 6px; display: block;
+        }
+        .login-input-wrap { position: relative; }
+        .login-input {
+            width: 100%; padding: 11px 40px 11px 14px;
+            background: rgba(255,255,255,0.08);
+            border: 1.5px solid rgba(255,255,255,0.18);
+            border-radius: 10px; color: #fff;
+            font-family: 'Outfit', sans-serif; font-size: 0.85rem;
+            outline: none; transition: all 0.2s ease;
+            box-sizing: border-box;
+        }
+        .login-input::placeholder { color: rgba(255,255,255,0.28); }
+        .login-input:focus { border-color: rgba(59,130,246,0.65); background: rgba(255,255,255,0.12); box-shadow: 0 0 0 3px rgba(37,99,235,0.18); }
+        .login-input-icon {
+            position: absolute; right: 13px; top: 50%; transform: translateY(-50%);
+            color: rgba(255,255,255,0.30); font-size: 0.82rem; cursor: pointer;
+        }
+        .login-input-icon:hover { color: rgba(255,255,255,0.65); }
+        .login-error {
+            background: rgba(220,38,38,0.18); border: 1px solid rgba(220,38,38,0.35);
+            border-radius: 8px; padding: 9px 12px;
+            font-size: 0.73rem; color: #fca5a5;
+            font-family: 'Outfit', sans-serif;
+            margin-bottom: 14px; text-align: left;
+            display: none; align-items: center; gap: 7px;
+        }
+        .login-btn {
+            width: 100%; padding: 13px;
+            background: linear-gradient(135deg, #1e3a6e 0%, #2563eb 100%);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 10px; color: #fff;
+            font-family: 'Montserrat', sans-serif; font-weight: 700;
+            font-size: 0.78rem; text-transform: uppercase; letter-spacing: 1px;
+            cursor: pointer; transition: all 0.25s ease;
+            box-shadow: 0 6px 20px rgba(37,99,235,0.28);
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            margin-top: 6px;
+        }
+        .login-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(37,99,235,0.42); }
+        .login-btn:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+
+        /* Change Password Modal */
+        #changePwModal {
+            position: fixed; inset: 0; z-index: 99999;
+            display: none; align-items: center; justify-content: center;
+            background: rgba(10,20,45,0.75); backdrop-filter: blur(8px);
+        }
+        #changePwModal.active { display: flex; }
+        .cpm-box {
+            background: linear-gradient(145deg, #0f1f3d, #1a3158);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 20px; padding: 32px 30px;
+            width: 100%; max-width: 380px;
+            box-shadow: 0 20px 55px rgba(0,0,0,0.40);
+        }
+        .cpm-title {
+            font-family: 'Montserrat', sans-serif; font-weight: 800;
+            font-size: 0.9rem; color: #fff; text-transform: uppercase;
+            letter-spacing: 1px; margin-bottom: 4px;
+            display: flex; align-items: center; gap: 9px;
+        }
+        .cpm-sub { font-size: 0.7rem; color: rgba(255,255,255,0.45); margin-bottom: 22px; font-family: 'Outfit', sans-serif; }
+        .cpm-footer { display: flex; gap: 10px; margin-top: 20px; }
+        .cpm-cancel {
+            flex: 1; padding: 11px; background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.14); border-radius: 9px;
+            color: rgba(255,255,255,0.65); font-family: 'Montserrat', sans-serif;
+            font-weight: 700; font-size: 0.82rem; text-transform: uppercase;
+            cursor: pointer; transition: all 0.2s;
+        }
+        .cpm-cancel:hover { background: rgba(255,255,255,0.12); }
+        .cpm-save {
+            flex: 1; padding: 11px;
+            background: linear-gradient(135deg, #0d9488, #14b8a6);
+            border: 1px solid rgba(255,255,255,0.15); border-radius: 9px;
+            color: #fff; font-family: 'Montserrat', sans-serif;
+            font-weight: 700; font-size: 0.72rem; text-transform: uppercase;
+            cursor: pointer; transition: all 0.2s;
+            box-shadow: 0 4px 14px rgba(13,148,136,0.28);
+        }
+        .cpm-save:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(13,148,136,0.40); }
+
+        /* Login page change password section */
+        .login-divider {
+            display: flex; align-items: center; gap: 10px;
+            margin: 18px 0 14px;
+        }
+        .login-divider::before, .login-divider::after {
+            content: ''; flex: 1; height: 1px;
+            background: rgba(255,255,255,0.12);
+        }
+        .login-divider span {
+            font-family: 'Montserrat', sans-serif; font-size: 0.58rem;
+            font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px;
+            color: rgba(255,255,255,0.30);
+        }
+        .login-changepw-btn {
+            width: 100%; padding: 11px;
+            background: rgba(255,255,255,0.05);
+            border: 1.5px solid rgba(255,255,255,0.12);
+            border-radius: 10px; color: rgba(255,255,255,0.55);
+            font-family: 'Montserrat', sans-serif; font-weight: 700;
+            font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.8px;
+            cursor: pointer; transition: all 0.25s ease;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .login-changepw-btn:hover {
+            background: rgba(13,148,136,0.15);
+            border-color: rgba(13,148,136,0.40);
+            color: #14b8a6;
+        }
+        #loginChangePwPanel {
+            display: none;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.10);
+            border-radius: 12px; padding: 16px; margin-top: 12px;
+        }
+        .panel-title {
+            font-family: 'Montserrat', sans-serif; font-size: 0.65rem;
+            font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px;
+            color: #14b8a6; margin-bottom: 12px;
+            display: flex; align-items: center; gap: 7px;
+        }
+        .login-changepw-save {
+            width: 100%; padding: 11px; margin-top: 10px;
+            background: linear-gradient(135deg, #0d9488, #14b8a6);
+            border: 1px solid rgba(255,255,255,0.15); border-radius: 9px;
+            color: #fff; font-family: 'Montserrat', sans-serif;
+            font-weight: 700; font-size: 0.72rem; text-transform: uppercase;
+            cursor: pointer; transition: all 0.2s;
+            box-shadow: 0 4px 14px rgba(13,148,136,0.28);
+            display: flex; align-items: center; justify-content: center; gap: 7px;
+        }
+        .login-changepw-save:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(13,148,136,0.40); }
+
+        /* ── MAIN APP ── */
+        .container {
+            max-width: 100%; margin: 0 auto;
+            padding-bottom: 40px;
+        }
+
+        /* ── HEADER ── */
+        header {
+            background: var(--grad-header);
+            padding: 15px 25px; border-radius: var(--radius);
+            color: white; display: flex;
+            justify-content: space-between; align-items: center;
+            box-shadow: 0 8px 28px rgba(15,31,61,0.35);
+            margin-bottom: 20px; position: relative; overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.10);
+        }
+        header::before { content:''; position:absolute; top:-40%; right:-15%; width:150px; height:150px; background:rgba(255,255,255,0.06); border-radius:50%; }
+        header::after  { content:''; position:absolute; bottom:-30%; left:-8%; width:120px; height:120px; background:rgba(255,255,255,0.04); border-radius:50%; }
+        .header-left { position:relative; z-index:2; display:flex; align-items:center; gap:15px; }
+        .company-logo { height:60px; width:70px; display:block; border-radius:10px; border:2px solid rgba(59,130,246,0.55); box-shadow: 0 0 14px rgba(37,99,235,0.40), 0 0 30px rgba(59,130,246,0.18), inset 0 0 8px rgba(255,255,255,0.08); padding:3px; background: rgba(37,99,235,0.10); }
+        .main-title {
+            font-family:'Montserrat',sans-serif; font-size:1.1rem; font-weight:800;
+            letter-spacing:1px; text-transform:uppercase; margin-bottom:3px;
+            background: linear-gradient(135deg,#ffffff 0%,#bfdbfe 100%);
+            -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+        }
+        .company-name { font-family:'Montserrat',sans-serif; font-size:1.05rem; font-weight:800; color:#7dd3fc; display:block; text-shadow: 0 2px 12px rgba(125,211,252,0.45), 0 1px 3px rgba(0,0,0,0.30); letter-spacing:0.5px; }
+        .header-right { text-align:right; position:relative; z-index:2; display:flex; align-items:center; gap:14px; }
+        .datetime-container { display:flex; flex-direction:column; align-items:flex-end; gap:4px; }
+        #liveDate { font-family:'Montserrat',sans-serif; font-size:0.78rem; font-weight:500; color:rgba(255,255,255,0.80); letter-spacing:0.3px; text-transform:uppercase; }
+        #liveClock { font-family:'Montserrat',sans-serif; font-weight:700; font-size:0.80rem; background:rgba(255,255,255,0.10); padding:6px 14px; border-radius:10px; backdrop-filter:blur(10px); letter-spacing:0.8px; color:#fff; border:1px solid rgba(255,255,255,0.15); box-shadow:0 3px 12px rgba(0,0,0,0.25); min-width:120px; text-align:center; }
+        .sync-status { font-size:0.85rem; margin-top:5px; display:flex; align-items:center; justify-content:flex-end; gap:6px; font-family:'Montserrat',sans-serif; font-weight:800; letter-spacing:2px; }
+        #syncText {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            font-size: 0.80rem;
+            letter-spacing: 2px;
+            background: linear-gradient(90deg, #4ade80 0%, #a3e635 25%, #34d399 50%, #4ade80 75%, #a3e635 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 2.5s linear infinite;
+            text-shadow: none;
+        }
+        @keyframes shimmer { 0%{ background-position: 0% center; } 100%{ background-position: 200% center; } }
+        /* Single border-only shimmering dot — no solid fill dot */
+        .sync-indicator {
+            display: none;
+        }
+        .live-dot {
+            width: 10px; height: 10px;
+            border-radius: 50%;
+            background: transparent;
+            border: 2px solid #4ade80;
+            box-shadow: 0 0 6px #4ade80, 0 0 12px rgba(74,222,128,0.45);
+            flex-shrink: 0;
+            animation: liveDotShimmer 2.5s ease-in-out infinite;
+        }
+        @keyframes liveDotShimmer {
+            0%   { border-color: #4ade80; box-shadow: 0 0 6px #4ade80, 0 0 12px rgba(74,222,128,0.45); }
+            33%  { border-color: #a3e635; box-shadow: 0 0 8px #a3e635, 0 0 16px rgba(163,230,53,0.45); }
+            66%  { border-color: #34d399; box-shadow: 0 0 6px #34d399, 0 0 12px rgba(52,211,153,0.45); }
+            100% { border-color: #4ade80; box-shadow: 0 0 6px #4ade80, 0 0 12px rgba(74,222,128,0.45); }
+        }
+        .sync-indicator.updating { background:#facc15; animation:pulse 1s infinite; }
+
+        .current-user-badge {
+            background: rgba(255,255,255,0.10);
+            border: 1px solid rgba(255,255,255,0.18);
+            border-radius: 10px; padding: 8px 14px;
+            display: flex; align-items: center; gap: 8px;
+            cursor: pointer; transition: all 0.2s;
+        }
+        .current-user-badge:hover { background: rgba(255,255,255,0.18); }
+        .current-user-badge .uname {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.72rem; font-weight: 700;
+            color: #fff; text-transform: uppercase;
+        }
+        .current-user-badge .urole {
+            font-size: 0.58rem; color: rgba(255,255,255,0.55);
+            text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .current-user-badge .role-dot {
+            width: 8px; height: 8px; border-radius: 50%;
+        }
+        .role-dot.eng  { background: var(--sky-light); box-shadow: 0 0 6px var(--sky-light); }
+        .role-dot.tech { background: var(--teal-light); box-shadow: 0 0 6px var(--teal-light); }
+
+        @keyframes pulse { 0%{transform:scale(1);opacity:1;} 50%{transform:scale(1.5);opacity:0.5;} 100%{transform:scale(1);opacity:1;} }
+
+        /* ── CARDS ── */
+        .card {
+            background: var(--glass-bg);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border-radius: var(--radius); padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: var(--glass-shadow), inset 0 1px 0 rgba(255,255,255,0.55);
+            position: relative; overflow: hidden;
+            border: 1px solid var(--glass-border);
+            transition: all 0.35s cubic-bezier(0.23,1,0.32,1);
+        }
+        .card::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg, transparent, rgba(255,255,255,0.75), transparent); pointer-events:none; }
+        .card:hover { transform:translateY(-3px); background:var(--glass-bg-hover); box-shadow:0 16px 40px rgba(15,31,61,0.16), inset 0 1px 0 rgba(255,255,255,0.65); }
+        .card-summary { border-top:3px solid var(--sky); }
+        .card-new     { border-top:3px solid var(--sky-light); }
+        .card-ongoing { border-top:3px solid var(--rose); }
+        .card-completed { border-top:3px solid var(--teal); }
+        .card-title { font-family:'Montserrat',sans-serif; font-weight:800; font-size:1.05rem; margin-bottom:15px; display:flex; align-items:center; gap:8px; text-transform:uppercase; letter-spacing:0.8px; border-bottom:1px solid rgba(148,163,184,0.25); padding-bottom:12px; text-shadow: 0 2px 10px rgba(15,31,61,0.18), 0 1px 4px rgba(0,0,0,0.12); filter: drop-shadow(0 2px 6px rgba(37,99,235,0.18)); }
+
+        .engineer-only-notice {
+            background: rgba(37,99,235,0.08);
+            border: 1px dashed rgba(37,99,235,0.30);
+            border-radius: 10px; padding: 10px 14px;
+            font-size: 0.73rem; color: var(--sky);
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600; display: flex; align-items: center; gap: 8px;
+            margin-bottom: 14px;
+        }
+
+        /* ── SHEET ── */
+        .sheet-wrapper {
+            width:100%; overflow:hidden; border-radius:10px;
+            border:1px solid rgba(148,163,184,0.25);
+            background:rgba(255,255,255,0.22); backdrop-filter:blur(8px);
+            position:relative; box-shadow:inset 0 2px 8px rgba(15,31,61,0.06);
+        }
+        .sheet-wrapper iframe { width:100%; height:320px; border:none; display:block; margin-top:5px; }
+        /* Mask the "WorkAssigned : WorkReport" tab bar at top */
+        .sheet-top-mask {
+            position:absolute; top:0; left:0; right:0; height:32px;
+            background: rgba(255,255,255,0.96); z-index:2; pointer-events:none;
+            border-radius:10px 10px 0 0;
+        }
+        /* Mask the "Published by Google Sheets..." footer at bottom */
+        .sheet-bottom-mask {
+            position:absolute; bottom:0; left:0; right:0; height:32px;
+            background: rgba(255,255,255,0.96); z-index:2; pointer-events:none;
+            border-radius:0 0 10px 10px;
+        }
+        @media (max-width: 768px) {
+            .sheet-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+            .sheet-wrapper iframe { width: 900px; height: 280px; min-width: 900px; }
+        }
+
+        /* ── FORM ── */
+        .form-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:15px; align-items:end; }
+        .input-group { display:flex; flex-direction:column; gap:8px; }
+        label { font-family:'Montserrat',sans-serif; font-size:0.68rem; font-weight:700; color:var(--navy-mid); text-transform:uppercase; letter-spacing:0.5px; }
+        input, select { padding:11px 14px; border:1.5px solid rgba(37,99,235,0.22); border-radius:8px; outline:none; font-family:'Outfit',sans-serif; font-size:0.8rem; background:rgba(255,255,255,0.55); backdrop-filter:blur(6px); color:var(--slate-text); transition:all 0.2s ease; }
+        input:focus, select:focus { border-color:var(--sky); background:rgba(255,255,255,0.80); box-shadow:0 0 0 3px rgba(37,99,235,0.12); }
+
+        /* ── BUTTONS ── */
+        .btn-assign { background:var(--grad-assign); color:white; border:none; padding:14px; border-radius:8px; font-family:'Montserrat',sans-serif; font-weight:700; font-size:0.74rem; cursor:pointer; text-transform:uppercase; letter-spacing:0.8px; transition:all 0.3s ease; box-shadow:0 6px 18px rgba(37,99,235,0.28); display:flex; align-items:center; justify-content:center; gap:8px; border:1px solid rgba(255,255,255,0.15); }
+        .btn-assign:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(37,99,235,0.40); }
+        .btn-assign:disabled { opacity:0.6; cursor:not-allowed; transform:none; }
+        .btn-done { background:var(--grad-success); color:white; border:none; padding:5px 10px; border-radius:6px; cursor:pointer; font-family:'Montserrat',sans-serif; font-weight:700; font-size:0.58rem; margin-top:5px; display:inline-flex; transition:all 0.2s ease; text-transform:uppercase; letter-spacing:0.5px; box-shadow:0 4px 12px rgba(13,148,136,0.28); align-items:center; gap:4px; border:1px solid rgba(255,255,255,0.2); }
+        .btn-done:hover { transform:translateY(-1px); box-shadow:0 5px 14px rgba(13,148,136,0.40); }
+        .btn-clear { background:var(--grad-danger); color:white; border:none; padding:10px 18px; border-radius:8px; cursor:pointer; font-family:'Montserrat',sans-serif; font-weight:700; font-size:0.72rem; transition:all 0.3s ease; text-transform:uppercase; letter-spacing:0.5px; box-shadow:0 4px 12px rgba(220,38,38,0.22); display:flex; align-items:center; gap:6px; border:1px solid rgba(255,255,255,0.15); }
+        .btn-clear:hover { transform:translateY(-2px); box-shadow:0 6px 18px rgba(220,38,38,0.32); }
+        .btn-logout { background:rgba(255,255,255,0.08); color:#fff; border:1px solid rgba(255,255,255,0.20); padding:7px 12px; border-radius:8px; cursor:pointer; font-family:'Montserrat',sans-serif; font-weight:600; font-size:0.65rem; text-transform:uppercase; transition:all 0.2s; display:flex; align-items:center; gap:6px; }
+        .btn-logout:hover { background:rgba(220,38,38,0.20); border-color:rgba(220,38,38,0.40); }
+
+        /* ── TABLES ── */
+        table { width:100%; border-collapse:separate; border-spacing:0; margin-top:12px; border-radius:12px; overflow:hidden; background:rgba(255,255,255,0.12); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border:1px solid rgba(148,163,184,0.28); box-shadow:0 4px 18px rgba(15,31,61,0.08); }
+        th { text-align:center; padding:10px 10px; background:rgba(15,31,61,0.08); backdrop-filter:blur(8px); font-family:'Montserrat',sans-serif; font-size:0.72rem; color:var(--navy-mid); text-transform:uppercase; letter-spacing:0.6px; border-bottom:1px solid rgba(37,99,235,0.15); font-weight:800; position:relative; }
+        th:not(:last-child)::after { content:''; position:absolute; right:0; top:20%; height:60%; width:1px; background:rgba(37,99,235,0.12); }
+        td { padding:10px 10px; border-bottom:1px solid rgba(148,163,184,0.15); font-size:0.72rem; font-family:'Outfit',sans-serif; background:rgba(255,255,255,0.20); transition:all 0.2s ease; color:var(--slate-text); text-align:center; }
+        tr:hover td { background:rgba(255,255,255,0.40); transform:translateX(2px); }
+        tr:last-child td { border-bottom:none; }
+        tr:nth-child(even) td { background:rgba(226,232,240,0.18); }
+        tr:nth-child(even):hover td { background:rgba(255,255,255,0.40); }
+
+        .search-box { padding:10px 12px; border:1.5px solid rgba(13,148,136,0.30); border-radius:8px; font-size:0.74rem; font-family:'Outfit',sans-serif; background:rgba(255,255,255,0.50); backdrop-filter:blur(6px); color:var(--slate-text); box-shadow:0 2px 8px rgba(13,148,136,0.08); }
+        .search-box:focus { outline:none; border-color:var(--teal); background:rgba(255,255,255,0.78); }
+
+        /* ── BADGES ── */
+        .badge { padding:4px 9px; border-radius:20px; font-weight:700; color:white; font-size:0.58rem; font-family:'Montserrat',sans-serif; display:inline-flex; align-items:center; gap:4px; width:fit-content; text-transform:uppercase; letter-spacing:0.3px; box-shadow:0 2px 8px rgba(0,0,0,0.18); border:1px solid rgba(255,255,255,0.20); }
+        .area-badge { padding:4px 9px; border-radius:20px; font-weight:700; color:white; font-size:0.58rem; font-family:'Montserrat',sans-serif; display:inline-flex; align-items:center; gap:4px; width:fit-content; letter-spacing:0.3px; box-shadow:0 2px 10px rgba(15,31,61,0.22); border:1px solid rgba(255,255,255,0.20); background:linear-gradient(135deg,#1e3a6e 0%,#2563eb 100%); }
+        .bg-sumon    { background:linear-gradient(135deg,#0d9488 0%,#0891b2 100%); }
+        .bg-alamin   { background:linear-gradient(135deg,#0891b2 0%,#6366f1 100%); }
+        .bg-nahid    { background:linear-gradient(135deg,#7c3aed 0%,#a21caf 100%); }
+        .bg-fahim    { background:linear-gradient(135deg,#1d4ed8 0%,#1e3a8a 100%); }
+        .bg-admin    { background:linear-gradient(135deg,#0f1f3d 0%,#1e3a6e 100%); }
+        .bg-tamim    { background:linear-gradient(135deg,#7c3aed 0%,#4338ca 100%); }
+        .bg-rupchan  { background:linear-gradient(135deg,#0d9488 0%,#065f46 100%); }
+        .bg-amit     { background:linear-gradient(135deg,#ea580c 0%,#dc2626 100%); }
+        .bg-bashudeb { background:linear-gradient(135deg,#0891b2 0%,#1d4ed8 100%); }
+
+        .status-working-cell { vertical-align: middle; text-align: center; }
+        .status-working { color:#be123c; font-weight:700; animation:blink 1.5s infinite; font-family:'Montserrat',sans-serif; font-size:0.62rem; display:inline-flex; align-items:center; gap:5px; padding:3px 8px; background:rgba(225,29,72,0.08); border-radius:6px; border:1px solid rgba(225,29,72,0.18); backdrop-filter:blur(4px); }
+        @keyframes blink { 50%{ opacity:0.35; } }
+
+        /* ── POPUP ── */
+        .popup-message { position:fixed; top:20px; right:20px; z-index:10000; animation:slideInRight 0.5s ease forwards; max-width:300px; }
+        .popup-content { background:rgba(255,255,255,0.72); backdrop-filter:blur(22px); -webkit-backdrop-filter:blur(22px); border-radius:12px; padding:16px 20px; box-shadow:0 12px 35px rgba(15,31,61,0.14), inset 0 1px 0 rgba(255,255,255,0.80); border:1px solid rgba(255,255,255,0.50); position:relative; overflow:hidden; }
+        .popup-content::before { content:''; position:absolute; top:0; left:0; right:0; height:4px; background:var(--grad-primary); }
+        .popup-content.warning::before { background:var(--grad-warning); }
+        .popup-content.success::before { background:var(--grad-success); }
+        .popup-content.info::before    { background:linear-gradient(90deg,#2563eb,#0ea5e9); }
+        .popup-title { font-family:'Montserrat',sans-serif; font-weight:700; font-size:0.84rem; color:var(--navy); margin-bottom:4px; text-transform:uppercase; letter-spacing:0.5px; display:flex; align-items:center; gap:8px; }
+        .popup-text { font-family:'Outfit',sans-serif; font-size:0.79rem; color:var(--muted); line-height:1.4; margin-left:28px; }
+        .popup-close { position:absolute; top:10px; right:10px; background:none; border:none; color:var(--soft); font-size:1.1rem; cursor:pointer; width:24px; height:24px; border-radius:50%; display:flex; align-items:center; justify-content:center; transition:all 0.2s ease; }
+        .popup-close:hover { background:rgba(0,0,0,0.05); color:var(--muted); }
+
+        @keyframes slideInRight { from{transform:translateX(100%);opacity:0;} to{transform:translateX(0);opacity:1;} }
+        @keyframes fadeOut { from{opacity:1;transform:translateX(0);} to{opacity:0;transform:translateX(100%);visibility:hidden;} }
+
+        .copyright-text { font-family:'Poppins',sans-serif; font-size:0.63rem; color:var(--sky); font-weight:600; letter-spacing:0.3px; text-align:left; margin-top:9px; }
+
+        .tech-view-info {
+            background: rgba(13,148,136,0.08);
+            border: 1px dashed rgba(13,148,136,0.30);
+            border-radius: 10px; padding: 10px 14px;
+            font-size: 0.73rem; color: var(--teal);
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600; display: flex; align-items: center; gap: 8px;
+            margin-bottom: 14px;
+        }
+
+        /* ── SIDEBAR LAYOUT ── */
+        .app-layout {
+            display: flex;
+            gap: 0;
+            align-items: flex-start;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        /* ── SIDEBAR NAV ── */
+        .sidebar-nav {
+            width: 210px;
+            flex-shrink: 0;
+            background: linear-gradient(180deg, #0f1f3d 0%, #1a3158 60%, #1e3a6e 100%);
+            border-radius: var(--radius);
+            padding: 16px 10px;
+            box-shadow: 0 8px 32px rgba(15,31,61,0.30);
+            border: 1px solid rgba(255,255,255,0.10);
+            position: sticky;
+            top: 15px;
+            margin-right: 14px;
+            overflow: hidden;
+            align-self: flex-start;
+        }
+        .sidebar-nav::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #2563eb, #14b8a6, #2563eb);
+        }
+
+        .sidebar-label {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.55rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: rgba(255,255,255,0.35);
+            padding: 0 10px;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding: 12px 14px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            margin-bottom: 6px;
+            border: 1px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 3px;
+            border-radius: 0 3px 3px 0;
+            background: transparent;
+            transition: all 0.25s ease;
+        }
+        .nav-item:hover {
+            background: rgba(255,255,255,0.08);
+            border-color: rgba(255,255,255,0.12);
+        }
+        .nav-item.active {
+            background: rgba(37,99,235,0.22);
+            border-color: rgba(37,99,235,0.40);
+        }
+        .nav-item.active::before {
+            background: var(--sky-light);
+        }
+
+        .nav-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.82rem;
+            flex-shrink: 0;
+            transition: all 0.25s ease;
+        }
+        .nav-item.active .nav-icon,
+        .nav-item:hover .nav-icon {
+            transform: scale(1.08);
+        }
+        .nav-icon-assign  { background: linear-gradient(135deg, #1e3a6e, #2563eb); color: #93c5fd; box-shadow: 0 3px 10px rgba(37,99,235,0.30); }
+        .nav-icon-summary { background: linear-gradient(135deg, #164e63, #0284c7); color: #7dd3fc; box-shadow: 0 3px 10px rgba(2,132,199,0.30); }
+        .nav-icon-ongoing { background: linear-gradient(135deg, #9f1239, #e11d48); color: #fda4af; box-shadow: 0 3px 10px rgba(225,29,72,0.30); }
+        .nav-icon-done    { background: linear-gradient(135deg, #0d9488, #14b8a6); color: #99f6e4; box-shadow: 0 3px 10px rgba(13,148,136,0.30); }
+
+        .nav-text {
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+        }
+        .nav-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.68rem;
+            font-weight: 700;
+            color: rgba(255,255,255,0.85);
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            transition: color 0.2s;
+        }
+        .nav-item.active .nav-title { color: #93c5fd; }
+        .nav-sub {
+            font-size: 0.58rem;
+            color: rgba(255,255,255,0.35);
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .nav-badge {
+            margin-left: auto;
+            background: rgba(225,29,72,0.25);
+            border: 1px solid rgba(225,29,72,0.40);
+            color: #fda4af;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.55rem;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 10px;
+            min-width: 20px;
+            text-align: center;
+        }
+        .nav-badge.done-badge {
+            background: rgba(13,148,136,0.22);
+            border-color: rgba(13,148,136,0.40);
+            color: #5eead4;
+        }
+
+        .sidebar-divider {
+            height: 1px;
+            background: rgba(255,255,255,0.08);
+            margin: 12px 6px;
+        }
+
+        /* ── MAIN CONTENT AREA ── */
+        .main-content {
+            flex: 1;
+            min-width: 0;
+            overflow: hidden;
+        }
+
+        /* ── SECTION VISIBILITY ── */
+        .dashboard-section { display: none; }
+        .dashboard-section.active { display: block; }
+
+        /* ── SECTION HEADER BADGE ── */
+        .section-breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 14px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.62rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--muted);
+        }
+        .section-breadcrumb i { color: var(--sky); }
+        .section-breadcrumb span { color: var(--navy-mid); }
+
+        @media (max-width:768px) {
+            body { padding:10px; }
+            .app-layout { flex-direction: column; gap: 0; }
+            .sidebar-nav {
+                width: 100%;
+                position: static;
+                margin-right: 0;
+                margin-bottom: 14px;
+                padding: 12px 8px;
+                display: flex;
+                flex-wrap: wrap;
+                gap: 6px;
+                border-radius: 12px;
+            }
+            .sidebar-label { display: none; }
+            .sidebar-divider { display: none; }
+            .nav-item {
+                flex: 1;
+                min-width: 120px;
+                padding: 9px 10px;
+                margin-bottom: 0;
+                justify-content: center;
+            }
+            .nav-sub { display: none; }
+            .nav-text { align-items: center; }
+            .nav-badge { display: none; }
+            .container { max-width:100%; overflow-x: hidden; }
+            header { flex-direction:row; flex-wrap:wrap; gap:8px; padding:8px 12px; justify-content:space-between; align-items:center; }
+            .header-left { flex-direction:row; align-items:center; text-align:left; gap:8px; flex:1; }
+            .company-logo { height:45px; width:auto; padding:2px; }
+            .main-title { font-size:0.85rem; margin-bottom:0; line-height:1.2; }
+            .company-name { font-size:0.75rem; text-shadow: none; }
+            .header-right { text-align:right; flex-shrink:0; }
+            .datetime-container { align-items:flex-end; gap:2px; }
+            #liveDate { display:none; }
+            #liveClock { font-size:0.65rem; padding:4px 8px; min-width:auto; }
+            .sync-status { display:none; }
+            .form-grid { grid-template-columns:1fr; }
+            .card { padding:16px; }
+            .popup-message { top:10px; right:10px; left:10px; max-width:none; }
+            .current-user-badge .uname { display:none; }
+        }
+/* Mobile table scroll */
+div[style*="overflow-x:auto"]:active { cursor: grabbing; }
+
+@media (max-width: 768px) {
+    #ongoingTable, #completedTable {
+        font-size: 0.68rem;
+    }
+    #ongoingTable th, #ongoingTable td,
+    #completedTable th, #completedTable td {
+        padding: 8px 10px;
+        white-space: nowrap;
+    }
+}
+@media (max-width: 768px) {
+    body {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    .container {
+        min-width: 900px;
+        overflow-x: visible;
+    }
+    .app-layout {
+        min-width: 900px;
+    }
+}
+    </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div id="loginScreen">
+    <div class="login-box">
+        <img src="https://z-cdn-media.chatglm.cn/files/acb00912-a376-4782-b313-80248fd0f8ed.png?auth_key=1870834439-20e10467e7154c949132c6f76f1a421e-0-71eb8030909b232371f257313e5acc97"
+             alt="Link3 Logo" class="login-logo">
+        <div class="login-title">Work Dashboard</div>
+        <div class="login-sub">Link3 Technologies Ltd &nbsp;·&nbsp; Enter your credentials to continue</div>
+
+        <div id="loginError" class="login-error">
+            <i class="fas fa-exclamation-circle"></i>
+            <span id="loginErrorMsg">Invalid username or password.</span>
+        </div>
+
+        <div class="login-field-group">
+            <label class="login-field-label"><i class="fas fa-user"></i> &nbsp;Username</label>
+            <div class="login-input-wrap">
+                <input type="text" id="loginUsername" class="login-input" placeholder="Enter your username" autocomplete="off">
+                <i class="fas fa-user login-input-icon"></i>
+            </div>
+        </div>
+
+        <div class="login-field-group">
+            <label class="login-field-label"><i class="fas fa-lock"></i> &nbsp;Password</label>
+            <div class="login-input-wrap">
+                <input type="password" id="loginPassword" class="login-input" placeholder="Enter your password" autocomplete="off" onkeydown="if(event.key==='Enter')doLogin()">
+                <i class="fas fa-eye login-input-icon" id="togglePwIcon" onclick="togglePwVisibility()"></i>
+            </div>
+        </div>
+
+        <button class="login-btn" id="loginBtn" onclick="doLogin()">
+            <i class="fas fa-sign-in-alt"></i> Login
+        </button>
+
+        <!-- Change Password Section in Login Page -->
+        <div class="login-divider"><span>or</span></div>
+        <button class="login-changepw-btn" onclick="toggleLoginChangePw()">
+            <i class="fas fa-key"></i> Change My Password
+        </button>
+
+        <div id="loginChangePwPanel">
+            <div class="panel-title"><i class="fas fa-lock"></i> Change Password</div>
+
+            <div id="lcpError" class="login-error" style="margin-bottom:10px;">
+                <i class="fas fa-exclamation-circle"></i>
+                <span id="lcpErrorMsg"></span>
+            </div>
+            <div id="lcpSuccess" style="display:none; background:rgba(13,148,136,0.18); border:1px solid rgba(13,148,136,0.35); border-radius:8px; padding:9px 12px; font-size:0.73rem; color:#5eead4; font-family:'Outfit',sans-serif; margin-bottom:10px; align-items:center; gap:7px;">
+                <i class="fas fa-check-circle"></i> <span id="lcpSuccessMsg"></span>
+            </div>
+
+            <div class="login-field-group" style="margin-bottom:10px;">
+                <label class="login-field-label"><i class="fas fa-user"></i> &nbsp;Username</label>
+                <div class="login-input-wrap">
+                    <input type="text" id="lcpUsername" class="login-input" placeholder="Your username" autocomplete="off">
+                    <i class="fas fa-user login-input-icon"></i>
+                </div>
+            </div>
+            <div class="login-field-group" style="margin-bottom:10px;">
+                <label class="login-field-label"><i class="fas fa-lock"></i> &nbsp;Current Password</label>
+                <div class="login-input-wrap">
+                    <input type="password" id="lcpCurrent" class="login-input" placeholder="Current password">
+                    <i class="fas fa-eye login-input-icon" onclick="toggleField('lcpCurrent',this)"></i>
+                </div>
+            </div>
+            <div class="login-field-group" style="margin-bottom:10px;">
+                <label class="login-field-label"><i class="fas fa-lock"></i> &nbsp;New Password</label>
+                <div class="login-input-wrap">
+                    <input type="password" id="lcpNew" class="login-input" placeholder="New password (min 4 chars)">
+                    <i class="fas fa-eye login-input-icon" onclick="toggleField('lcpNew',this)"></i>
+                </div>
+            </div>
+            <div class="login-field-group" style="margin-bottom:0;">
+                <label class="login-field-label"><i class="fas fa-lock"></i> &nbsp;Confirm New Password</label>
+                <div class="login-input-wrap">
+                    <input type="password" id="lcpConfirm" class="login-input" placeholder="Repeat new password">
+                    <i class="fas fa-eye login-input-icon" onclick="toggleField('lcpConfirm',this)"></i>
+                </div>
+            </div>
+            <button class="login-changepw-save" onclick="saveLoginChangePw()">
+                <i class="fas fa-save"></i> Save New Password
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- CHANGE PASSWORD MODAL -->
+<div id="changePwModal">
+    <div class="cpm-box">
+        <div class="cpm-title"><i class="fas fa-key" style="color:#14b8a6;"></i> Change Password</div>
+        <div class="cpm-sub">Update your login password</div>
+
+        <div id="cpmError" class="login-error" style="margin-bottom:12px;">
+            <i class="fas fa-exclamation-circle"></i>
+            <span id="cpmErrorMsg"></span>
+        </div>
+
+        <div class="login-field-group">
+            <label class="login-field-label"><i class="fas fa-lock"></i> &nbsp;Current Password</label>
+            <div class="login-input-wrap">
+                <input type="password" id="cpmCurrent" class="login-input" placeholder="Current password">
+                <i class="fas fa-eye login-input-icon" onclick="toggleField('cpmCurrent',this)"></i>
+            </div>
+        </div>
+        <div class="login-field-group">
+            <label class="login-field-label"><i class="fas fa-lock"></i> &nbsp;New Password</label>
+            <div class="login-input-wrap">
+                <input type="password" id="cpmNew" class="login-input" placeholder="New password (min 4 chars)">
+                <i class="fas fa-eye login-input-icon" onclick="toggleField('cpmNew',this)"></i>
+            </div>
+        </div>
+        <div class="login-field-group">
+            <label class="login-field-label"><i class="fas fa-lock"></i> &nbsp;Confirm New Password</label>
+            <div class="login-input-wrap">
+                <input type="password" id="cpmConfirm" class="login-input" placeholder="Repeat new password">
+                <i class="fas fa-eye login-input-icon" onclick="toggleField('cpmConfirm',this)"></i>
+            </div>
+        </div>
+
+        <div class="cpm-footer">
+            <button class="cpm-cancel" onclick="closeChangePw()">Cancel</button>
+            <button class="cpm-save" onclick="saveNewPassword()"><i class="fas fa-save"></i> Save Password</button>
+        </div>
+    </div>
+</div>
+
+<!-- ════════════════════════════════
+     MAIN APP
+════════════════════════════════ -->
+<div id="mainApp" style="display:none;">
+<div class="container">
+
+    <header>
+        <div class="header-left">
+            <img src="https://z-cdn-media.chatglm.cn/files/acb00912-a376-4782-b313-80248fd0f8ed.png?auth_key=1870834439-20e10467e7154c949132c6f76f1a421e-0-71eb8030909b232371f257313e5acc97"
+                 alt="Link3 Logo" class="company-logo">
+            <div>
+                <div class="main-title">Technician Task Dashboard</div>
+                <span class="company-name">Link3 Technologies Ltd</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="current-user-badge" id="userBadge" title="Click to logout">
+                <div class="role-dot" id="roleDot"></div>
+                <div>
+                    <div class="uname" id="headerUserName"></div>
+                    <div class="urole" id="headerUserRole"></div>
+                </div>
+                <i class="fas fa-sign-out-alt" style="font-size:0.75rem;color:rgba(255,255,255,0.55);"></i>
+            </div>
+            <div class="datetime-container">
+                <span id="liveDate"><i class="far fa-calendar-alt"></i> </span>
+                <span id="liveClock"><i class="far fa-clock"></i> </span>
+                <div class="sync-status">
+                    <div id="syncIndicator" class="sync-indicator"></div>
+                    <span id="syncText">Live Sync</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ── SIDEBAR + CONTENT LAYOUT ── -->
+    <div class="app-layout">
+
+        <!-- LEFT SIDEBAR NAV -->
+        <nav class="sidebar-nav">
+            <span class="sidebar-label">Navigation</span>
+
+            <div class="nav-item active" id="nav-assign" onclick="showSection('assign')">
+                <div class="nav-icon nav-icon-assign"><i class="fas fa-plus-circle"></i></div>
+                <div class="nav-text">
+                    <span class="nav-title">New Task</span>
+                    <span class="nav-sub">Assign</span>
+                </div>
+            </div>
+
+            <div class="nav-item" id="nav-summary" onclick="showSection('summary')">
+                <div class="nav-icon nav-icon-summary"><i class="fas fa-chart-bar"></i></div>
+                <div class="nav-text">
+                    <span class="nav-title">Live Summary</span>
+                    <span class="nav-sub">Task Stats</span>
+                </div>
+            </div>
+
+            <div class="sidebar-divider"></div>
+
+            <div class="nav-item" id="nav-ongoing" onclick="showSection('ongoing')">
+                <div class="nav-icon nav-icon-ongoing"><i class="fas fa-spinner"></i></div>
+                <div class="nav-text">
+                    <span class="nav-title">Ongoing Tasks</span>
+                    <span class="nav-sub">In Progress</span>
+                </div>
+                <span class="nav-badge" id="ongoingNavBadge">0</span>
+            </div>
+
+            <div class="nav-item" id="nav-completed" onclick="showSection('completed')">
+                <div class="nav-icon nav-icon-done"><i class="fas fa-check-circle"></i></div>
+                <div class="nav-text">
+                    <span class="nav-title">Completed Tasks</span>
+                </div>
+                <span class="nav-badge done-badge" id="completedNavBadge">0</span>
+            </div>
+        </nav>
+
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+
+            <!-- SECTION: New Task Assign -->
+            <div class="dashboard-section active" id="section-assign">
+                <div class="card card-new" id="assignCard">
+                    <div class="card-title" style="color:var(--sky-light);"><i class="fas fa-plus-circle"></i> CREATE NEW ASSIGNMENT</div>
+                    <div class="engineer-only-notice" id="engineerOnlyNotice" style="display:none;">
+                        <i class="fas fa-lock"></i> Only Engineers can assign tickets. You are logged in as a Technician.
+                    </div>
+                    <div id="assignForm">
+                        <div class="form-grid">
+                            <div class="input-group">
+                                <label><i class="far fa-calendar-alt"></i> Date</label>
+                                <input type="date" id="dateInput">
+                            </div>
+                            <div class="input-group">
+                                <label><i class="fas fa-ticket-alt"></i> Ticket ID</label>
+                                <input type="text" id="ticketInput" placeholder="L3-..., TKI..., CR-..., SVR-...">
+                            </div>
+                            <div class="input-group">
+                                <label><i class="fas fa-map-marker-alt"></i> Area</label>
+                                <select id="areaInput">
+                                    <option value="">Select Area</option>
+                                    <option>Aganagar</option><option>Babubazar</option><option>Bangshal</option>
+                                    <option>BailyRoad</option><option>Chawkbazar</option><option>Dhalpur</option>
+                                    <option>Donia</option><option>Demra</option><option>Eskaton</option>
+                                    <option>Ganderia</option><option>Gulistan</option><option>Imamganj</option>
+                                    <option>Islampur</option><option>Jatrabari</option><option>Joypara</option>
+                                    <option>Jurain</option><option>Kakrail</option><option>Kamlapur</option>
+                                    <option>Keraniganj</option><option>Lalbagh</option><option>Matuail</option>
+                                    <option>Malibag</option><option>Mitford</option><option>Moghbazar</option>
+                                    <option>Motijheel</option><option>Moulovibazar</option><option>Nawabpur</option>
+                                    <option>Nayabazar</option><option value="Purana Paltan">Purana Paltan</option>
+                                    <option value="Naya Paltan">Naya Paltan</option><option>Rajarbag</option>
+                                    <option>Ramna</option><option value="RK Mission Road">RK Mission</option>
+                                    <option>SadarGhat</option><option>SanirAkhra</option><option>Segunbagicha</option>
+                                    <option>Shahjahanpur</option><option>Shantinagar</option><option>Shyampur</option>
+                                    <option>Siddheshwari</option><option>Tikatuli</option><option>Wari</option>
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <label><i class="fas fa-user"></i> Assign To (Technician)</label>
+                                <select id="personInput">
+                                    <option value="">Assign to...</option>
+                                    <option>Sumon</option><option>Alamin</option>
+                                    <option>Nahid</option><option>Fahim</option>
+                                </select>
+                            </div>
+                            <button class="btn-assign" id="assignBtn" onclick="addTask()">
+                                <i class="fas fa-paper-plane"></i> Assign Task
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION: Task Live Summary -->
+           <!-- SECTION: Task Live Summary -->
+<!-- SECTION: Task Live Summary -->
+<div class="dashboard-section" id="section-summary">
+    <div class="card card-summary">
+        <div class="card-title" style="color:var(--sky);"><i class="fas fa-chart-bar"></i> TASK LIVE SUMMARY</div>
+
+        <!-- Daily Stats -->
+        <div style="background:rgba(13,148,136,0.18); border:2px solid rgba(13,148,136,0.45); border-radius:14px; padding:16px; box-shadow:0 4px 18px rgba(13,148,136,0.12);">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px;">
+        <div style="font-family:'Montserrat',sans-serif;font-size:0.8rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--navy-mid);text-shadow:0 2px 8px rgba(37,99,235,0.18),0 1px 3px rgba(0,0,0,0.12);filter:drop-shadow(0 2px 6px rgba(37,99,235,0.15));">
+    <i class="fas fa-calendar-day"></i> Daily Task Report
+</div>
+                <input type="date" id="summaryDateSelector" class="search-box" onchange="renderSummary()">
+            </div>
+            <div style="overflow-x:auto;">
+                <table id="dailyTable" style="min-width:500px;">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th><span class="badge bg-sumon">Sumon</span></th>
+                            <th><span class="badge bg-alamin">Alamin</span></th>
+                            <th><span class="badge bg-fahim">Fahim</span></th>
+                            <th><span class="badge bg-nahid">Nahid</span></th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody id="dailyTableBody">
+                        <tr><td colspan="6" align="center" style="padding:20px;color:#64748b;"><i class="fas fa-spinner fa-spin"></i> Loading...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+<!-- Monthly Stats -->
+        <!-- Monthly Stats -->
+        <div style="margin-top:24px; background:rgba(37,99,235,0.14); border:1.5px solid rgba(37,99,235,0.40); border-radius:14px; padding:18px; box-shadow:0 3px 14px rgba(37,99,235,0.08);">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px;">
+                <div style="font-family:'Montserrat',sans-serif;font-size:0.8rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--navy-mid);text-shadow:0 2px 8px rgba(37,99,235,0.18),0 1px 3px rgba(0,0,0,0.12);filter:drop-shadow(0 2px 6px rgba(37,99,235,0.15));">
+    <i class="fas fa-calendar-alt"></i> Monthly Task Count
+</div>
+                <div id="monthDropdownContainer"></div>
+            </div>
+            <div style="overflow-x:auto;">
+                <table id="monthlyTable" style="min-width:500px;">
+                    <thead>
+                        <tr id="monthlyHeader">
+                            <th>Month</th>
+                            <th><span class="badge bg-sumon">Sumon</span></th>
+                            <th><span class="badge bg-alamin">Alamin</span></th>
+                            <th><span class="badge bg-fahim">Fahim</span></th>
+                            <th><span class="badge bg-nahid">Nahid</span></th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody id="monthlyTableBody">
+                        <tr><td colspan="6" align="center" style="padding:20px;color:#64748b;"><i class="fas fa-spinner fa-spin"></i> Loading...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="copyright-text">Prepared By: AHSANUL KABIR</div>
+    </div>
+</div>
+
+            <!-- SECTION: Ongoing Tasks -->
+            <div class="dashboard-section" id="section-ongoing">
+                <div class="card card-ongoing">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+    <div class="card-title" style="color:var(--rose); margin:0; padding:0; border:none;">
+        <i class="fas fa-spinner fa-pulse"></i> ONGOING TASKS (WORKING)
+    </div>
+    <div style="display:flex; align-items:center;">
+        <button class="btn-delete-mode" id="toggleDeleteBtn" onclick="toggleDeleteMode()">
+            <i class="fas fa-trash-alt"></i> Delete
+        </button>
+        <button class="btn-confirm-delete" id="confirmDeleteBtn" onclick="deleteSelectedOngoing()">
+            <i class="fas fa-check"></i> Delete Selected
+        </button>
+    </div>
+</div>
+                    <div id="techViewInfoOngoing" class="tech-view-info" style="display:none;">
+                        <i class="fas fa-eye"></i> Showing all technicians' ongoing tasks. You can mark any task as done.
+                    </div>
+                    <div style="overflow-x:auto; -webkit-overflow-scrolling:touch; cursor:grab;">
+    <table id="ongoingTable" style="min-width:650px;">
+                            <thead>
+                                <tr><th>Date & Action</th><th>Start</th><th>Ticket ID</th><th>Area</th><th>Technician</th><th>Assigned By</th><th>Status</th></tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION: Completed Tasks -->
+            <div class="dashboard-section" id="section-completed">
+                <div class="card card-completed">
+                   <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+    <div class="card-title" style="color:var(--teal); margin:0; padding:0; border:none;"><i class="fas fa-check-circle"></i> COMPLETED TASKS</div>
+    <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+        <input type="date" id="searchDateFrom" class="search-box" onchange="renderAll()" placeholder="From">
+<span style="font-family:'Montserrat',sans-serif;font-size:0.68rem;font-weight:700;color:var(--navy-mid);">TO</span>
+<input type="date" id="searchDateTo" class="search-box" onchange="renderAll()" placeholder="To">
+        <select id="filterTech" class="search-box" onchange="renderAll()">
+            <option value="">All Technicians</option>
+            <option>Sumon</option>
+            <option>Alamin</option>
+            <option>Nahid</option>
+            <option>Fahim</option>
+        </select>
+        <button class="btn-delete-mode" id="toggleDeleteCompletedBtn" onclick="toggleDeleteModeCompleted()">
+            <i class="fas fa-trash-alt"></i> Delete
+<button class="btn-done" id="downloadPdfBtn" onclick="downloadCompletedPDF()" style="padding:7px 14px;font-size:0.65rem;display:none;">
+    <i class="fas fa-file-pdf"></i> Download PDF
+        </button>
+       <button class="btn-confirm-delete" id="confirmDeleteCompletedBtn" onclick="deleteSelectedCompleted()">
+            <i class="fas fa-check"></i> Delete Selected
+        </button>
+    </div>
+</div>
+<div id="completedTaskCount" style="
+    margin-bottom:10px;
+    font-family:'Montserrat',sans-serif;
+    font-size:0.78rem;
+    font-weight:700;
+    color:var(--amber);
+    background:rgba(217,119,6,0.10);
+    border:1px solid rgba(217,119,6,0.25);
+    border-radius:8px;
+    padding:7px 14px;
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+">
+    <i class="fas fa-list-check"></i> Total Tasks: <span id="completedTaskCountNum" style="font-size:1.1rem;font-weight:900;color:var(--amber);">0</span>
+</div>
+                    <div style="overflow-x:auto; -webkit-overflow-scrolling:touch; cursor:grab;">
+    <table id="completedTable" style="min-width:750px;">
+                            <thead>
+                                <tr><th>Date</th><th>Start</th><th>End</th><th>Ticket</th><th>Area</th><th>Technician</th><th>Assigned By</th><th>Status</th></tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div><!-- end .main-content -->
+    </div><!-- end .app-layout -->
+
+</div>
+</div>
+
+<div id="popupContainer"></div>
+
+<script>
+    // ═══════════════════════════════════════════════════════
+    // FIREBASE CONFIG
+    // ═══════════════════════════════════════════════════════
+    const FB_URL = "https://link3-dashboard-default-rtdb.firebaseio.com/";
+    const G_URL  = "https://script.google.com/macros/s/AKfycby09K_Bv39dn8GHdgjljUc1rk-JTmgHlHC4EejmQQcHFJDq-h9BOCWuMDycjGWKMVsx/exec";
+
+    // Firebase REST helpers
+    async function fbGet(path) {
+        const r = await fetch(`${FB_URL}/${path}.json`);
+        return r.ok ? r.json() : null;
+    }
+    async function fbSet(path, data) {
+        await fetch(`${FB_URL}/${path}.json`, {
+            method: 'PUT', headers: {'Content-Type':'application/json'},
+            body: JSON.stringify(data)
+        });
+    }
+  async function fbDelete(path, taskId) {
+    // Firebase থেকে আগে ticket নম্বর বের করো
+    const taskData = ongoing.find(t => t.id === taskId) 
+                  || completed.find(t => t.id === taskId);
+    
+    await fetch(`${FB_URL}/${path}.json`, { method: 'DELETE' });
+    
+    if (taskData && taskData.ticket) {
+        try {
+            await fetch(G_URL + '?action=delete&ticket=' + encodeURIComponent(taskData.ticket), {
+                method: 'GET', mode: 'no-cors'
+            });
+        } catch(e) {}
+    }
+}
+
+    // ══════════════════════════════════════════════
+    // USER ACCOUNTS — প্রত্যেক user এর নিজস্ব password
+    // ══════════════════════════════════════════════
+    const USER_ACCOUNTS = [
+        { username: 'admin',    name: 'Administrator', role: 'engineer',   defaultPw: '78773597in' },
+        { username: 'tamim',    name: 'Tamim',         role: 'engineer',   defaultPw: 'tamim1234'  },
+        { username: 'rupchan',  name: 'Rupchan',       role: 'engineer',   defaultPw: 'rupchan1234'},
+        { username: 'amit',     name: 'Amit',          role: 'engineer',   defaultPw: 'amit1234'   },
+        { username: 'bashudeb', name: 'Bashudeb',      role: 'engineer',   defaultPw: 'bashudeb1234'},
+        { username: 'sumon',    name: 'Sumon',         role: 'technician', defaultPw: 'sumon1234'  },
+        { username: 'alamin',   name: 'Alamin',        role: 'technician', defaultPw: 'alamin1234' },
+        { username: 'fahim',    name: 'Fahim',         role: 'technician', defaultPw: 'fahim1234'  },
+        { username: 'nahid',    name: 'Nahid',         role: 'technician', defaultPw: 'nahid1234'  },
+    ];
+
+    // ══════════════════════════════════════════════
+    // SESSION PERSISTENCE — refresh করলে logout হবে না
+    // ══════════════════════════════════════════════
+    const SESSION_KEY = 'dash_session_v1';
+
+    function saveSession(user) {
+        sessionStorage.setItem(SESSION_KEY, JSON.stringify(user));
+    }
+    function loadSession() {
+        try {
+            const s = sessionStorage.getItem(SESSION_KEY);
+            return s ? JSON.parse(s) : null;
+        } catch(e) { return null; }
+    }
+    function clearSession() {
+        sessionStorage.removeItem(SESSION_KEY);
+    }
+
+    // ══════════════════════════════════════════════
+    // PASSWORD MANAGEMENT
+    // ══════════════════════════════════════════════
+    const PW_STORAGE_KEY = 'dash_passwords_v2';
+
+    function getDefaultPasswords() {
+        const def = {};
+        USER_ACCOUNTS.forEach(u => def[u.username] = u.defaultPw);
+        return def;
+    }
+
+    function getPasswords() {
+        try {
+            const stored = localStorage.getItem(PW_STORAGE_KEY);
+            if (stored) {
+                const parsed = JSON.parse(stored);
+                // Make sure all users have a password (add missing ones with defaults)
+                const defaults = getDefaultPasswords();
+                let changed = false;
+                USER_ACCOUNTS.forEach(u => {
+                    if (!parsed[u.username]) {
+                        parsed[u.username] = defaults[u.username];
+                        changed = true;
+                    }
+                });
+                if (changed) localStorage.setItem(PW_STORAGE_KEY, JSON.stringify(parsed));
+                return parsed;
+            }
+        } catch(e) {}
+        // First time — use defaults
+        const defaults = getDefaultPasswords();
+        localStorage.setItem(PW_STORAGE_KEY, JSON.stringify(defaults));
+        return defaults;
+    }
+
+    function savePasswords(obj) {
+        localStorage.setItem(PW_STORAGE_KEY, JSON.stringify(obj));
+        // Also sync to Firebase (best-effort)
+        try { fbSet('passwords', obj); } catch(e) {}
+    }
+
+    // Also try to load passwords from Firebase and merge
+    async function syncPasswordsFromFirebase() {
+        try {
+            const remote = await fbGet('passwords');
+            if (remote && typeof remote === 'object') {
+                const local = getPasswords();
+                // Remote wins for any key that exists remotely
+                const merged = { ...local, ...remote };
+                // But make sure all users have at least their default
+                USER_ACCOUNTS.forEach(u => {
+                    if (!merged[u.username]) merged[u.username] = u.defaultPw;
+                });
+                localStorage.setItem(PW_STORAGE_KEY, JSON.stringify(merged));
+            }
+        } catch(e) {}
+    }
+
+    let currentUser = null;
+    let ongoing   = [];
+    let completed = [];
+    let isSyncing = false;
+    let fbPollInterval = null;
+
+    // ── PASSWORD TOGGLE ──
+    function togglePwVisibility() {
+        const inp  = document.getElementById('loginPassword');
+        const icon = document.getElementById('togglePwIcon');
+        if (inp.type === 'password') { inp.type = 'text'; icon.classList.replace('fa-eye','fa-eye-slash'); }
+        else { inp.type = 'password'; icon.classList.replace('fa-eye-slash','fa-eye'); }
+    }
+    function toggleField(id, iconEl) {
+        const inp = document.getElementById(id);
+        if (inp.type === 'password') { inp.type = 'text'; iconEl.classList.replace('fa-eye','fa-eye-slash'); }
+        else { inp.type = 'password'; iconEl.classList.replace('fa-eye-slash','fa-eye'); }
+    }
+
+    // ── LOGIN PAGE CHANGE PASSWORD ──
+    function toggleLoginChangePw() {
+        const panel = document.getElementById('loginChangePwPanel');
+        const isOpen = panel.style.display === 'block';
+        panel.style.display = isOpen ? 'none' : 'block';
+        if (!isOpen) {
+            document.getElementById('lcpUsername').value = '';
+            document.getElementById('lcpCurrent').value = '';
+            document.getElementById('lcpNew').value = '';
+            document.getElementById('lcpConfirm').value = '';
+            document.getElementById('lcpError').style.display = 'none';
+            document.getElementById('lcpSuccess').style.display = 'none';
+            setTimeout(() => document.getElementById('lcpUsername').focus(), 100);
+        }
+    }
+
+    function saveLoginChangePw() {
+        const uname   = document.getElementById('lcpUsername').value.trim().toLowerCase();
+        const cur     = document.getElementById('lcpCurrent').value;
+        const nw      = document.getElementById('lcpNew').value;
+        const conf    = document.getElementById('lcpConfirm').value;
+        const errBox  = document.getElementById('lcpError');
+        const errMsg  = document.getElementById('lcpErrorMsg');
+        const sucBox  = document.getElementById('lcpSuccess');
+        const sucMsg  = document.getElementById('lcpSuccessMsg');
+
+        errBox.style.display = 'none';
+        sucBox.style.display = 'none';
+
+        if (!uname || !cur || !nw || !conf) {
+            errMsg.textContent = 'All fields are required.';
+            errBox.style.display = 'flex'; return;
+        }
+        const account = USER_ACCOUNTS.find(u => u.username === uname);
+        if (!account) {
+            errMsg.textContent = 'Username not found.';
+            errBox.style.display = 'flex'; return;
+        }
+        const passwords = getPasswords();
+        const expectedPw = passwords[uname] || account.defaultPw;
+        if (expectedPw !== cur) {
+            errMsg.textContent = 'Current password is incorrect.';
+            errBox.style.display = 'flex'; return;
+        }
+        if (nw.length < 4) {
+            errMsg.textContent = 'New password must be at least 4 characters.';
+            errBox.style.display = 'flex'; return;
+        }
+        if (nw !== conf) {
+            errMsg.textContent = 'New passwords do not match.';
+            errBox.style.display = 'flex'; return;
+        }
+        if (nw === cur) {
+            errMsg.textContent = 'New password must be different from current.';
+            errBox.style.display = 'flex'; return;
+        }
+
+        passwords[uname] = nw;
+        savePasswords(passwords);
+        document.getElementById('lcpCurrent').value = '';
+        document.getElementById('lcpNew').value = '';
+        document.getElementById('lcpConfirm').value = '';
+        sucMsg.textContent = `Password changed successfully for ${account.name}!`;
+        sucBox.style.display = 'flex';
+        setTimeout(() => {
+            document.getElementById('loginChangePwPanel').style.display = 'none';
+            sucBox.style.display = 'none';
+        }, 3000);
+    }
+
+    // ── DO LOGIN ──
+    async function doLogin() {
+        const uname = document.getElementById('loginUsername').value.trim().toLowerCase();
+        const pw    = document.getElementById('loginPassword').value;
+        const errBox = document.getElementById('loginError');
+        const errMsg = document.getElementById('loginErrorMsg');
+        const btn    = document.getElementById('loginBtn');
+
+        errBox.style.display = 'none';
+
+        if (!uname || !pw) {
+            errMsg.textContent = 'Username and password are required.';
+            errBox.style.display = 'flex'; return;
+        }
+
+        const account = USER_ACCOUNTS.find(u => u.username === uname);
+        if (!account) {
+            errMsg.textContent = 'User not found. Check your username.';
+            errBox.style.display = 'flex'; return;
+        }
+
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verifying...';
+        btn.disabled = true;
+
+        // Sync passwords from Firebase first (best-effort, fast timeout)
+        await Promise.race([
+            syncPasswordsFromFirebase(),
+            new Promise(r => setTimeout(r, 2000))
+        ]);
+
+        const passwords = getPasswords();
+        const expectedPw = passwords[uname] || account.defaultPw;
+
+        if (expectedPw !== pw) {
+            errMsg.textContent = 'Incorrect password. Please try again.';
+            errBox.style.display = 'flex';
+            btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
+            btn.disabled = false;
+            return;
+        }
+
+        btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
+        btn.disabled = false;
+        document.getElementById('loginPassword').value = '';
+
+        const userObj = { name: account.name, role: account.role, username: account.username };
+        saveSession(userObj);
+        loginAs(userObj);
+    }
+
+    function loginAs(userObj) {
+        currentUser = userObj;
+        document.getElementById('loginScreen').style.display = 'none';
+        document.getElementById('mainApp').style.display = 'block';
+
+        document.getElementById('headerUserName').textContent = currentUser.name;
+        document.getElementById('headerUserRole').textContent = currentUser.role === 'engineer' ? 'Engineer' : 'Technician';
+        const dot = document.getElementById('roleDot');
+        dot.className = 'role-dot ' + (currentUser.role === 'engineer' ? 'eng' : 'tech');
+
+       if (currentUser.role === 'engineer') {
+    document.getElementById('engineerOnlyNotice').style.display = 'none';
+    document.getElementById('assignForm').style.display = 'block';
+    document.getElementById('techViewInfoOngoing').style.display = 'none';
+    } else {
+    document.getElementById('engineerOnlyNotice').style.display = 'none';
+    document.getElementById('assignForm').style.display = 'block';
+    document.getElementById('techViewInfoOngoing').style.display = 'flex';
+    const sel = document.getElementById('personInput');
+    sel.value = currentUser.name;
+}
+
+// ✅ এই দুই লাইন if-else এর পরে, কিন্তু loginAs() এর ভেতরে বসাবেন
+const isAdmin = currentUser.username === 'admin';
+const isEngineerOrAdmin = isAdmin || currentUser.role === 'engineer';
+document.getElementById('toggleDeleteBtn').style.display = isAdmin ? 'inline-flex' : 'none';
+document.getElementById('confirmDeleteBtn').style.display = 'none';
+document.getElementById('toggleDeleteCompletedBtn').style.display = isAdmin ? 'inline-flex' : 'none';
+document.getElementById('confirmDeleteCompletedBtn').style.display = 'none';
+document.getElementById('downloadPdfBtn').style.display = isEngineerOrAdmin ? 'inline-flex' : 'none';
+
+        startFirebaseSync();
+    }
+
+    function logout() {
+        currentUser = null;
+        clearSession();
+        if (fbPollInterval) { clearInterval(fbPollInterval); fbPollInterval = null; }
+        document.getElementById('mainApp').style.display = 'none';
+        document.getElementById('loginScreen').style.display = 'flex';
+        document.getElementById('loginUsername').value = '';
+        document.getElementById('loginPassword').value = '';
+        document.getElementById('loginError').style.display = 'none';
+    }
+
+    document.getElementById('userBadge').addEventListener('click', () => {
+        if (confirm(`Logout from ${currentUser?.name}?`)) logout();
+    });
+
+    // ── CHANGE PASSWORD ──
+    function openChangePw() {
+        document.getElementById('cpmCurrent').value = '';
+        document.getElementById('cpmNew').value = '';
+        document.getElementById('cpmConfirm').value = '';
+        document.getElementById('cpmError').style.display = 'none';
+        document.getElementById('changePwModal').classList.add('active');
+        setTimeout(() => document.getElementById('cpmCurrent').focus(), 100);
+    }
+    function closeChangePw() {
+        document.getElementById('changePwModal').classList.remove('active');
+    }
+    function saveNewPassword() {
+        const cur     = document.getElementById('cpmCurrent').value;
+        const nw      = document.getElementById('cpmNew').value;
+        const conf    = document.getElementById('cpmConfirm').value;
+        const errBox  = document.getElementById('cpmError');
+        const errMsg  = document.getElementById('cpmErrorMsg');
+
+        const passwords = getPasswords();
+        const username  = currentUser.username;
+        const account   = USER_ACCOUNTS.find(u => u.username === username);
+        const expectedPw = passwords[username] || account.defaultPw;
+
+        errBox.style.display = 'none';
+
+        if (!cur || !nw || !conf) {
+            errMsg.textContent = 'All fields are required.';
+            errBox.style.display = 'flex'; return;
+        }
+        if (expectedPw !== cur) {
+            errMsg.textContent = 'Current password is incorrect.';
+            errBox.style.display = 'flex'; return;
+        }
+        if (nw.length < 4) {
+            errMsg.textContent = 'New password must be at least 4 characters.';
+            errBox.style.display = 'flex'; return;
+        }
+        if (nw !== conf) {
+            errMsg.textContent = 'New passwords do not match.';
+            errBox.style.display = 'flex'; return;
+        }
+        if (nw === cur) {
+            errMsg.textContent = 'New password must be different from current.';
+            errBox.style.display = 'flex'; return;
+        }
+
+        passwords[username] = nw;
+        savePasswords(passwords);
+        closeChangePw();
+        showPopup('success', 'Password Changed', `Password updated successfully for ${currentUser.name}.`);
+    }
+
+    // ── HELPERS ──
+    function validateTicketID(t) {
+    return /^(L3|TKI|CR|SVR)/i.test(t);
+}
+
+    function formatDateDisplay(d) {
+        if (!d) return "";
+        const p = d.split('-');
+        return p.length === 3 ? `${p[2]}-${p[1]}-${p[0]}` : d;
+    }
+
+    function showPopup(type, title, msg) {
+        const c  = document.getElementById('popupContainer');
+        const id = 'popup-' + Date.now();
+        const icons = {
+            success: '<i class="fas fa-check-circle" style="color:#0d9488"></i>',
+            warning: '<i class="fas fa-exclamation-triangle" style="color:#d97706"></i>',
+            info:    '<i class="fas fa-info-circle" style="color:#2563eb"></i>'
+        };
+        const el = document.createElement('div');
+        el.id = id; el.className = 'popup-message';
+        el.innerHTML = `<div class="popup-content ${type}">
+            <button class="popup-close" onclick="closePopup('${id}')">&times;</button>
+            <div class="popup-title">${icons[type]||''} ${title}</div>
+            <div class="popup-text">${msg}</div></div>`;
+        c.appendChild(el);
+        setTimeout(() => closePopup(id), 4000);
+    }
+
+    function closePopup(id) {
+        const el = document.getElementById(id);
+        if (el) { el.style.animation='fadeOut 0.4s ease forwards'; setTimeout(()=>el.parentNode&&el.parentNode.removeChild(el),400); }
+    }
+
+    // ── FIREBASE SYNC ──
+    async function startFirebaseSync() {
+        await pullFromFirebase();
+        if (fbPollInterval) clearInterval(fbPollInterval);
+        fbPollInterval = setInterval(pullFromFirebase, 5000);
+    }
+
+    async function pullFromFirebase() {
+        if (isSyncing) return;
+        isSyncing = true;
+        const ind = document.getElementById('syncIndicator');
+        const txt = document.getElementById('syncText');
+        ind.classList.add('updating');
+        try {
+            const data = await fbGet('tasks');
+            if (data && typeof data === 'object' && !data.error) {
+                const allTasks = Object.values(data);
+                ongoing   = allTasks.filter(t => t && t.status === 'ongoing').sort((a,b) => b.id - a.id);
+                completed = allTasks.filter(t => t && t.status === 'completed').sort((a,b) => b.id - a.id);
+                txt.innerText = "🟢 Live Sync"; txt.style.color = "#059669";
+            } else if (!data) {
+                ongoing = []; completed = [];
+                txt.innerText = "🟢 Live"; txt.style.color = "#059669";
+            }
+            renderAll();
+        } catch(e) {
+            txt.innerText = "⚠ Offline"; txt.style.color = "#d97706";
+        } finally {
+            isSyncing = false;
+            ind.classList.remove('updating');
+        }
+    }
+
+    async function pushTaskToFirebase(task) {
+        await fbSet(`tasks/${task.id}`, task);
+        try { await fetch(G_URL, {method:'POST', mode:'no-cors', body:JSON.stringify(task)}); } catch(e) {}
+    }
+
+    // ── RENDER ──
+    function renderAll() {
+        if (!currentUser) return;
+        updateNavBadges();
+
+        const sv = document.getElementById('searchDateFrom')?.value || '';
+const svTo = document.getElementById('searchDateTo')?.value || '';
+       const ob = document.querySelector('#ongoingTable tbody');
+const isAdmin    = currentUser.username === 'admin';
+const isEngineer = currentUser.role === 'engineer';
+const inDeleteMode = window._deleteMode || false;
+
+ob.innerHTML = ongoing.length === 0
+    ? '<tr><td colspan="8" align="center" style="padding:25px;color:#64748b;font-size:0.8rem;"><i class="fas fa-inbox"></i> No Active Tasks Found</td></tr>'
+    : ongoing.map(t => {
+        const isMyTask = t.person.toLowerCase() === currentUser.name.toLowerCase();
+        const canDone  = isAdmin || isMyTask;
+        const actionCell = canDone
+            ? `<button class="btn-done" onclick="markDone(${t.id})"><i class="fas fa-check"></i> MARK DONE</button>`
+            : '';
+        const assignedBy = t.assignedBy || '—';
+        const assignedByLower = assignedBy.toLowerCase();
+        const checkboxCell = inDeleteMode
+            ? `<td><input type="checkbox" class="delete-checkbox ongoing-del-cb" value="${t.id}"></td>`
+            : '';
+        return `<tr>
+        ${checkboxCell}
+        <td><strong><i class="far fa-calendar-alt"></i> ${formatDateDisplay(t.date)}</strong>
+            ${actionCell}</td>
+        <td style="color:var(--navy-light);font-weight:600;font-family:'Montserrat';"><i class="far fa-clock"></i> ${t.startTime}</td>
+        <td><b style="font-family:'Montserrat';"><i class="fas fa-ticket-alt"></i> ${t.ticket}</b></td>
+        <td><span class="area-badge"><i class="fas fa-map-marker-alt"></i> ${t.area}</span></td>
+        <td><span class="badge bg-${t.person.toLowerCase()}"><i class="fas fa-user"></i> ${t.person}</span></td>
+        <td><span class="badge bg-${assignedByLower}" style="background:linear-gradient(135deg,#1e3a6e 0%,#2563eb 100%);"><i class="fas fa-user-tie"></i> ${assignedBy}</span></td>
+        <td class="status-working-cell"><span class="status-working"><i class="fas fa-spinner fa-pulse"></i> ${t.remarks}</span></td></tr>`;
+    }).join('');
+
+        const st = document.getElementById('filterTech').value;
+const filtered = completed.filter(t => {
+    const dateMatch = (sv && svTo) ? (t.date >= sv && t.date <= svTo)
+                    : sv ? t.date >= sv
+                    : svTo ? t.date <= svTo
+                    : true;
+    const techMatch = st ? t.person === st : true;
+    return dateMatch && techMatch;
+});
+	const countEl = document.getElementById('completedTaskCountNum');
+        if (countEl) countEl.textContent = filtered.length;        
+	const cb = document.querySelector('#completedTable tbody');
+        cb.innerHTML = filtered.length === 0
+            ? '<tr><td colspan="8" align="center" style="padding:25px;color:#64748b;font-size:0.8rem;"><i class="fas fa-inbox"></i> No Completed Tasks Found</td></tr>'
+           : filtered.map(t => {
+    const assignedBy = t.assignedBy || '—';
+    const inDeleteModeCompleted = window._deleteModeCompleted || false;
+    const checkboxCell = inDeleteModeCompleted
+        ? `<td><input type="checkbox" class="delete-checkbox completed-del-cb" value="${t.id}"></td>`
+        : '';
+    return `<tr>
+    ${checkboxCell}
+    <td>${formatDateDisplay(t.date)}</td>
+    <td>${t.startTime}</td>
+    <td>${t.doneTime}</td>
+    <td>${t.ticket}</td>
+    <td>${t.area}</td>
+    <td>${t.person}</td>
+    <td>${assignedBy}</td>
+    <td>Done</td></tr>`;
+}).join('');
+renderSummary();
+    }
+function renderSummary() {
+    const allTasks = [...completed];
+    const techs = ['Sumon','Alamin','Fahim','Nahid'];
+const techColors = {
+    'Sumon':  '#0d9488',   // teal — badge bg-sumon
+    'Alamin': '#d97706',   // orange — badge bg-alamin
+    'Fahim':  '#1d4ed8',   // blue — badge bg-fahim
+    'Nahid':  '#7c3aed',   // purple — badge bg-nahid
+};
+    const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+    // ── MONTH DROPDOWN SETUP ──
+    const monthSet = new Set();
+    allTasks.forEach(t => {
+        if (!t.date) return;
+        const d = new Date(t.date);
+        monthSet.add(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`);
+    });
+    // Always include current month
+    const now = new Date();
+    const currentMonthKey = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+    monthSet.add(currentMonthKey);
+
+    const monthKeys = [...monthSet].sort().reverse();
+
+    let monthDropdown = document.getElementById('monthSelector');
+    const prevMonth = monthDropdown ? monthDropdown.value : currentMonthKey;
+
+    // Rebuild dropdown if needed
+    const monthDropdownContainer = document.getElementById('monthDropdownContainer');
+    if (monthDropdownContainer) {
+        monthDropdownContainer.innerHTML = `
+            <select id="monthSelector" class="search-box" onchange="renderSummary()" style="font-family:'Montserrat',sans-serif;font-weight:600;font-size:0.72rem;">
+                ${monthKeys.map(k => {
+                    const [yr, mo] = k.split('-');
+                    const label = `${monthNames[parseInt(mo)-1]} ${yr}`;
+                    return `<option value="${k}" ${k === prevMonth ? 'selected' : ''}>${label}</option>`;
+                }).join('')}
+            </select>`;
+    }
+
+    const selectedMonth = document.getElementById('monthSelector')?.value || currentMonthKey;
+
+    // ── MONTHLY COUNT ──
+    const monthlyCount = {};
+    techs.forEach(t => monthlyCount[t] = 0);
+    allTasks.forEach(t => {
+        if (!t.date || !techs.includes(t.person)) return;
+        const d = new Date(t.date);
+        const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+        if (key === selectedMonth) monthlyCount[t.person]++;
+    });
+
+    // Ranking
+    const monthRanked = techs
+        .map(name => ({ name, count: monthlyCount[name] }))
+        .sort((a,b) => b.count - a.count);
+    const rankSuffix = ['1st','2nd','3rd','4th'];
+    const monthRankMap = {};
+    monthRanked.forEach((r,i) => monthRankMap[r.name] = rankSuffix[i]);
+
+    const monthlyBody = document.getElementById('monthlyTableBody');
+    if (monthlyBody) {
+        const [yr, mo] = selectedMonth.split('-');
+        const monthLabel = `${monthNames[parseInt(mo)-1]} ${yr}`;
+        const monthTotal = techs.reduce((s,t) => s + monthlyCount[t], 0);
+        monthlyBody.innerHTML = `<tr>
+            <td><strong style="font-family:'Montserrat',sans-serif;font-size:0.85rem;font-weight:900;color:var(--navy-mid);">${monthLabel}</strong></td>
+            ${techs.map(name => `
+            <td>
+                <span style="font-weight:900;font-family:'Montserrat',sans-serif;font-size:1.3rem;color:${techColors[name]};">${monthlyCount[name]}</span>
+                <span style="font-size:0.68rem;font-family:'Montserrat',sans-serif;font-weight:800;color:${techColors[name]};margin-left:5px;opacity:0.75;">(${monthRankMap[name]})</span>
+            </td>`).join('')}
+            <td><strong style="font-family:'Montserrat',sans-serif;font-size:1.15rem;font-weight:900;color:var(--navy-mid);">${monthTotal}</strong></td>
+        </tr>`;
+    }
+
+    // ── DATE SELECTOR SETUP ──
+    const todayStr = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().split('T')[0];
+    let dateSelector = document.getElementById('summaryDateSelector');
+if (dateSelector) {
+    if (!dateSelector.value) {
+        dateSelector.value = todayStr;
+    }
+}
+    const selectedDate = dateSelector ? dateSelector.value || todayStr : todayStr;
+
+    // ── DAILY COUNT ──
+    const dailyCount = {};
+    techs.forEach(t => dailyCount[t] = 0);
+    allTasks.forEach(t => {
+        if (!t.date || !techs.includes(t.person)) return;
+        if (t.date === selectedDate) dailyCount[t.person]++;
+    });
+
+    // Ranking
+    const dailyRanked = techs
+        .map(name => ({ name, count: dailyCount[name] }))
+        .sort((a,b) => b.count - a.count);
+    const dailyRankMap = {};
+    dailyRanked.forEach((r,i) => dailyRankMap[r.name] = rankSuffix[i]);
+
+    const dailyBody = document.getElementById('dailyTableBody');
+    if (dailyBody) {
+        const dailyTotal = techs.reduce((s,t) => s + dailyCount[t], 0);
+        dailyBody.innerHTML = `<tr>
+            <td><strong style="font-family:'Montserrat',sans-serif;font-size:0.85rem;font-weight:900;color:var(--navy-mid);">${formatDateDisplay(selectedDate)}</strong></td>
+            ${techs.map(name => {
+                const techOngoing = ongoing.filter(t => t.person === name).map(t => t.area);
+                const areaText = techOngoing.length > 0 ? techOngoing.join(', ') : '';
+                const isFree = ongoing.filter(t => t.person === name).length === 0;
+                return `
+                <td>
+                    <span style="font-weight:900;font-family:'Montserrat',sans-serif;font-size:1.15rem;color:${techColors[name]};">${dailyCount[name]}</span>
+                    <span style="font-size:0.68rem;font-family:'Montserrat',sans-serif;font-weight:800;color:${techColors[name]};margin-left:5px;opacity:0.75;">(${dailyRankMap[name]})</span>
+                    ${isFree ? `<br><span style="display:inline-block;margin-top:4px;padding:2px 8px;background:#16a34a;color:#fff;border-radius:20px;font-size:0.58rem;font-family:'Montserrat',sans-serif;font-weight:700;letter-spacing:0.5px;">✓ FREE</span>` : ''}
+                    ${areaText ? `<br><span style="display:inline-block;margin-top:4px;padding:2px 8px;background:#ea580c;color:#fff;border-radius:20px;font-size:0.65rem;font-family:'Montserrat',sans-serif;font-weight:700;letter-spacing:0.3px;">${areaText}</span>` : ''}
+                </td>`;
+            }).join('')}
+            <td><strong style="font-family:'Montserrat',sans-serif;font-size:1.15rem;font-weight:900;color:var(--navy-mid);">${dailyTotal}</strong></td>
+        </tr>`;
+    }
+}
+    // ── SIDEBAR NAVIGATION ──
+   function showSection(name) {
+    document.querySelectorAll('.dashboard-section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+
+    const section = document.getElementById('section-' + name);
+    const navItem = document.getElementById('nav-' + name);
+    if (section) section.classList.add('active');
+    if (navItem) navItem.classList.add('active');
+
+    // Summary section এ ঢুকলে date always today reset হবে
+    if (name === 'summary') {
+        const now2 = new Date();
+const todayStr = new Date(now2.getTime() - now2.getTimezoneOffset() * 60000).toISOString().split('T')[0];
+        const dateSelector = document.getElementById('summaryDateSelector');
+        if (dateSelector) dateSelector.value = todayStr;
+        renderSummary();
+    }
+}
+
+    // Update sidebar badges
+    function updateNavBadges() {
+        const ob = document.getElementById('ongoingNavBadge');
+        const cb = document.getElementById('completedNavBadge');
+        if (ob) ob.textContent = ongoing.length;
+        if (cb) cb.textContent = completed.length;
+    }
+
+    // ── ADD TASK ──
+    async function addTask() {
+        if (!currentUser) return;
+
+        const btn = document.getElementById('assignBtn');
+        const ti  = document.getElementById('ticketInput');
+        const tv  = ti.value.trim();
+
+        if (!tv) { showPopup('warning','Missing Input','Please enter a Ticket ID.'); ti.focus(); return; }
+        if (!validateTicketID(tv)) { showPopup('warning','Invalid Format','Formats: L3-22Feb26-030306, TKI011225AA67000218, CR-23Feb26-0176371, SVR-26Jan26-0082979'); ti.focus(); return; }
+
+        let assignedPerson = document.getElementById('personInput').value;
+        if (!assignedPerson && currentUser.role === 'technician') assignedPerson = currentUser.name;
+
+        const task = {
+            date:       document.getElementById('dateInput').value,
+            ticket:     tv,
+            area:       document.getElementById('areaInput').value,
+            person:     assignedPerson,
+            startTime:  new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}),
+            remarks:    "Working",
+            id:         Date.now(),
+            assignedBy: (currentUser.username === 'admin') ? 'Ahsanul' : currentUser.name,
+            status:     'ongoing'
+        };
+
+        if (!task.area || !task.person) { showPopup('warning','Incomplete Info','Please select both Area and Staff.'); return; }
+
+        const allExisting = [...ongoing, ...completed];
+        if (allExisting.some(t => t.ticket === task.ticket)) {
+            showPopup('warning','Duplicate Ticket',`Ticket ID "${task.ticket}" already exists!`); ti.focus(); return;
+        }
+
+        btn.innerHTML='<i class="fas fa-sync fa-spin"></i> Syncing...'; btn.disabled=true;
+        try {
+            await pushTaskToFirebase(task);
+            ongoing.unshift(task);
+            renderAll();
+            ti.value=''; document.getElementById('areaInput').value='';
+            if (currentUser.role === 'engineer') document.getElementById('personInput').value='';
+            showPopup('success','Task Assigned',`${task.ticket} → ${task.person} (${task.area})`);
+            setTimeout(() => ti.focus(), 300);
+        } catch(e) {
+            showPopup('warning','Sync Error','Failed to save! Check connection.');
+        } finally {
+            btn.innerHTML='<i class="fas fa-paper-plane"></i> Assign Task'; btn.disabled=false;
+        }
+    }
+
+    // ── MARK DONE ──
+async function markDone(id) {
+    const task = ongoing.find(t => t.id === id);
+    if (!task) return;
+
+    const isAdmin    = currentUser.username === 'admin';
+    const isAssigned = task.person.toLowerCase() === currentUser.name.toLowerCase();
+
+    if (!isAdmin && !isAssigned) {
+        showPopup('warning', 'Access Denied', `Only ${task.person} or Admin can mark this task as done.`);
+        return;
+    }
+
+    const doneTime = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+    const updated  = { ...task, doneTime, remarks: "Done", status: 'completed', doneBy: currentUser.name };
+
+    try {
+        // Firebase + Google Sheets দুটোতেই পাঠাবে
+        await pushTaskToFirebase(updated);
+        ongoing   = ongoing.filter(t => t.id !== id);
+        completed = [updated, ...completed];
+        renderAll();
+        showPopup('success','Task Completed',`${task.ticket} ✓ Done at ${doneTime}`);
+    } catch(e) {
+        showPopup('warning','Sync Error','Error saving! Check connection.');
+    }
+}
+// ── DELETE MODE TOGGLE ──
+function toggleDeleteMode() {
+    if (currentUser?.username !== 'admin') {
+        showPopup('warning', 'Access Denied', 'Only Admin can delete ongoing tasks.');
+        return;
+    }
+    window._deleteMode = !window._deleteMode;
+    const btn = document.getElementById('toggleDeleteBtn');
+    const confirmBtn = document.getElementById('confirmDeleteBtn');
+    if (window._deleteMode) {
+        btn.innerHTML = '<i class="fas fa-times"></i> Cancel';
+        btn.style.background = 'rgba(255,255,255,0.15)';
+        confirmBtn.classList.add('visible');         // ← ঠিক করা
+    } else {
+        btn.innerHTML = '<i class="fas fa-trash-alt"></i> Delete';
+        btn.style.background = '';
+        confirmBtn.classList.remove('visible');      // ← ঠিক করা
+    }
+    renderAll();
+}
+
+// ── DELETE SELECTED ONGOING TASKS ──
+async function deleteSelectedOngoing() {
+    if (currentUser?.username !== 'admin') {
+        showPopup('warning', 'Access Denied', 'Only Admin can delete ongoing tasks.');
+        return;
+    }
+    const checkboxes = document.querySelectorAll('.ongoing-del-cb:checked');
+    if (checkboxes.length === 0) {
+        showPopup('warning', 'None Selected', 'কোনো task select করা হয়নি।');
+        return;
+    }
+    if (!confirm(`${checkboxes.length}টি task delete করবেন?`)) return;
+
+    const ids = Array.from(checkboxes).map(cb => parseInt(cb.value));
+    try {
+        await Promise.all(ids.map(id => fbDelete(`tasks/${id}`, id)));
+        ongoing = ongoing.filter(t => !ids.includes(t.id));
+        window._deleteMode = false;
+        const btn = document.getElementById('toggleDeleteBtn');
+        const confirmBtn = document.getElementById('confirmDeleteBtn');
+        btn.innerHTML = '<i class="fas fa-trash-alt"></i> Delete';
+        btn.style.background = '';
+        confirmBtn.classList.remove('visible');
+        renderAll();
+        showPopup('success', 'Deleted', `${ids.length}টি task সফলভাবে delete হয়েছে।`);
+    } catch(e) {
+        showPopup('warning', 'Error', 'Delete করতে সমস্যা হয়েছে।');
+    }
+}
+function toggleDeleteModeCompleted() {
+    if (currentUser?.username !== 'admin') {
+        showPopup('warning', 'Access Denied', 'Only Admin can delete completed tasks.');
+        return;
+    }
+    window._deleteModeCompleted = !window._deleteModeCompleted;
+    const btn = document.getElementById('toggleDeleteCompletedBtn');
+    const confirmBtn = document.getElementById('confirmDeleteCompletedBtn');
+    if (window._deleteModeCompleted) {
+        btn.innerHTML = '<i class="fas fa-times"></i> Cancel';
+        btn.style.background = 'rgba(255,255,255,0.15)';
+        confirmBtn.classList.add('visible');
+    } else {
+        btn.innerHTML = '<i class="fas fa-trash-alt"></i> Delete';
+        btn.style.background = '';
+        confirmBtn.classList.remove('visible');
+    }
+    renderAll();
+}
+
+async function deleteSelectedCompleted() {
+    if (currentUser?.username !== 'admin') {
+        showPopup('warning', 'Access Denied', 'Only Admin can delete completed tasks.');
+        return;
+    }
+    const checkboxes = document.querySelectorAll('.completed-del-cb:checked');
+    if (checkboxes.length === 0) {
+        showPopup('warning', 'None Selected', 'কোনো task select করা হয়নি।');
+        return;
+    }
+    if (!confirm(`${checkboxes.length}টি completed task delete করবেন?`)) return;
+
+    const ids = Array.from(checkboxes).map(cb => parseInt(cb.value));
+    try {
+        await Promise.all(ids.map(id => fbDelete(`tasks/${id}`)));
+        completed = completed.filter(t => !ids.includes(t.id));
+        window._deleteModeCompleted = false;
+        const btn = document.getElementById('toggleDeleteCompletedBtn');
+        const confirmBtn = document.getElementById('confirmDeleteCompletedBtn');
+        btn.innerHTML = '<i class="fas fa-trash-alt"></i> Delete';
+        btn.style.background = '';
+        confirmBtn.classList.remove('visible');
+        renderAll();
+        showPopup('success', 'Deleted', `${ids.length}টি completed task সফলভাবে delete হয়েছে।`);
+    } catch(e) {
+        showPopup('warning', 'Error', 'Delete করতে সমস্যা হয়েছে।');
+    }
+}
+  
+
+    // ══════════════════════════════════════════════
+    // PAGE INIT — session check on load
+    // ══════════════════════════════════════════════
+    document.addEventListener('DOMContentLoaded', () => {
+        // Set today's date
+        document.getElementById('dateInput').value = new Date().toISOString().split('T')[0];
+
+        // Clock updater
+        setInterval(() => {
+            const n = new Date();
+            document.getElementById('liveClock').innerHTML = `<i class="far fa-clock"></i> ${n.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit'})}`;
+            document.getElementById('liveDate').innerHTML  = `<i class="far fa-calendar-alt"></i> ${n.toLocaleDateString(undefined,{weekday:'short',month:'short',day:'numeric',year:'numeric'})}`;
+        }, 1000);
+
+        // ── AUTO-RESTORE SESSION ON REFRESH ──
+        const savedSession = loadSession();
+        if (savedSession) {
+            // Validate the session user still exists
+            const account = USER_ACCOUNTS.find(u => u.username === savedSession.username);
+            if (account) {
+                loginAs(savedSession);
+                return; // Skip login screen
+            } else {
+                clearSession();
+            }
+        }
+
+        // No valid session — show login screen
+        document.getElementById('loginScreen').style.display = 'flex';
+    });
+function downloadCompletedPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+
+    // Filter logic — same as renderAll()
+    const sv    = document.getElementById('searchDateFrom')?.value || '';
+    const svTo  = document.getElementById('searchDateTo')?.value || '';
+    const st    = document.getElementById('filterTech').value;
+
+    const filtered = completed.filter(t => {
+        const dateMatch = (sv && svTo) ? (t.date >= sv && t.date <= svTo)
+                        : sv ? t.date >= sv
+                        : svTo ? t.date <= svTo
+                        : true;
+        const techMatch = st ? t.person === st : true;
+        return dateMatch && techMatch;
+    });
+
+    if (filtered.length === 0) {
+        showPopup('warning', 'No Data', 'কোনো completed task পাওয়া যায়নি।');
+        return;
+    }
+
+    // Header
+    doc.setFillColor(15, 31, 61);
+    doc.rect(0, 0, 297, 22, 'F');
+    doc.setTextColor(255, 255, 255);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(13);
+    doc.text('Link3 Technologies Ltd — Completed Task Report', 148.5, 10, { align: 'center' });
+    doc.setFontSize(8);
+    doc.setFont('helvetica', 'normal');
+
+    // Filter info line
+    let filterInfo = '';
+    if (sv && svTo)   filterInfo = `Date: ${formatDateDisplay(sv)} to ${formatDateDisplay(svTo)}`;
+    else if (sv)      filterInfo = `From: ${formatDateDisplay(sv)}`;
+    else if (svTo)    filterInfo = `To: ${formatDateDisplay(svTo)}`;
+    else              filterInfo = 'All Dates';
+    if (st) filterInfo += `  |  Technician: ${st}`;
+    else    filterInfo += '  |  All Technicians';
+    filterInfo += `  |  Total: ${filtered.length} tasks`;
+
+    doc.setTextColor(180, 200, 255);
+    doc.text(filterInfo, 148.5, 17, { align: 'center' });
+
+    // Table data
+    const rows = filtered.map((t, i) => [
+        i + 1,
+        formatDateDisplay(t.date),
+        t.startTime || '—',
+        t.doneTime  || '—',
+        t.ticket    || '—',
+        t.area      || '—',
+        t.person    || '—',
+        t.assignedBy|| '—',
+        'Done'
+    ]);
+
+    doc.autoTable({
+        startY: 26,
+        head: [['#', 'Date', 'Start', 'End', 'Ticket ID', 'Area', 'Technician', 'Assigned By', 'Status']],
+        body: rows,
+        theme: 'grid',
+        styles: {
+            fontSize: 8,
+            cellPadding: 3,
+            valign: 'middle',
+            halign: 'center',
+            textColor: [30, 40, 60],
+            lineColor: [200, 210, 230],
+            lineWidth: 0.3,
+        },
+        headStyles: {
+            fillColor: [30, 58, 110],
+            textColor: [255, 255, 255],
+            fontStyle: 'bold',
+            fontSize: 8.5,
+        },
+        alternateRowStyles: {
+            fillColor: [237, 244, 255],
+        },
+        columnStyles: {
+            0: { cellWidth: 10 },
+            1: { cellWidth: 28 },
+            2: { cellWidth: 20 },
+            3: { cellWidth: 20 },
+            4: { cellWidth: 55 },
+            5: { cellWidth: 28 },
+            6: { cellWidth: 25 },
+            7: { cellWidth: 28 },
+            8: { cellWidth: 20 },
+        },
+        margin: { left: 10, right: 10 },
+        didDrawPage: (data) => {
+            // Footer
+            const pageCount = doc.internal.getNumberOfPages();
+            doc.setFontSize(7);
+            doc.setTextColor(120, 130, 150);
+            doc.text(
+                `Page ${data.pageNumber} of ${pageCount}  |  Generated: ${new Date().toLocaleString()}  |  Prepared by: AHSANUL KABIR`,
+                148.5, doc.internal.pageSize.height - 5, { align: 'center' }
+            );
+        }
+    });
+
+    // File name
+    const today = new Date().toISOString().split('T')[0];
+    const techPart = st ? `_${st}` : '_All';
+    doc.save(`Completed_Tasks${techPart}_${today}.pdf`);
+
+    showPopup('success', 'PDF Downloaded', `${filtered.length}টি task এর PDF তৈরি হয়েছে।`);
+}
+</script>
+</body>
+</html>
