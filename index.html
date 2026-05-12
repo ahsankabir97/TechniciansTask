@@ -602,7 +602,9 @@
     color: #fff; font-family: 'Outfit', sans-serif;
     font-size: 0.80rem; max-width: 240px;
     display: none; line-height: 1.6;
-    pointer-events: none;
+    pointer-events: auto;
+    user-select: text;
+    -webkit-user-select: text;
 }
 #addressFloatBox .af-title {
     font-family: 'Montserrat', sans-serif;
@@ -1680,11 +1682,13 @@ loadAtmEntries();
         box.style.left = x + 'px';
         box.style.top  = y + 'px';
         clearTimeout(window._afTimer);
-        window._afTimer = setTimeout(() => box.style.display = 'none', 4000);
+        window._afTimer = setTimeout(() => box.style.display = 'none', 12000);
     }
 
     document.addEventListener('click', (e) => {
-        if (!e.target.closest('.area-badge')) document.getElementById('addressFloatBox').style.display = 'none';
+        if (!e.target.closest('.area-badge') && !e.target.closest('#addressFloatBox')) {
+            document.getElementById('addressFloatBox').style.display = 'none';
+        }
     });
 // ── ATM CONTACT ──
     let atmEntries = [];
