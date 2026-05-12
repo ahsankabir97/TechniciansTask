@@ -810,6 +810,8 @@
                                 <option>SadarGhat</option><option>SanirAkhra</option><option>Segunbagicha</option>
                                 <option>Shahjahanpur</option><option>Shantinagar</option><option>Shyampur</option>
                                 <option>Siddheshwari</option><option>Tikatuli</option><option>Wari</option>
+				<option>Gopibag</option><option>Maniknagar</option><option>Nimtola</option>
+				<option>Fakirapool</option><option>AlauddinRoad</option>
                             </select>
                         </div>
                         <div class="input-group">
@@ -969,7 +971,46 @@
                 </div>
             </div>
         </div>
+<!-- SECTION: ATM Contact -->
+<div class="dashboard-section" id="section-atm">
+    <div class="card" style="border-top:3px solid #f59e0b;">
+        <div class="card-title" style="color:#f59e0b;"><i class="fas fa-credit-card"></i> ATM CONTACT</div>
 
+        <!-- Input form -->
+        <div style="display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
+            <div class="input-group" style="flex:1;min-width:200px;">
+                <label><i class="fas fa-university"></i> Bank ATM Name</label>
+                <input type="text" id="atmBankName" placeholder="e.g. Dutch Bangla ATM - Motijheel">
+            </div>
+            <div class="input-group" style="flex:1;min-width:180px;">
+                <label><i class="fas fa-phone"></i> Cell Number</label>
+                <input type="text" id="atmCellNumber" placeholder="e.g. 01XXXXXXXXX">
+            </div>
+            <div style="display:flex;align-items:flex-end;">
+                <button class="btn-assign" onclick="addAtmEntry()" style="white-space:nowrap;min-width:130px;">
+                    <i class="fas fa-check-circle"></i> Entry Done
+                </button>
+            </div>
+        </div>
+
+        <!-- Search -->
+        <div style="margin-bottom:12px;text-align:right;">
+            <input type="text" id="atmSearch" class="search-box" placeholder="Search ATM name or number..." oninput="renderAtmTable()" style="max-width:280px;">
+        </div>
+
+        <!-- Table -->
+        <div class="table-scroll-wrap">
+            <table id="atmTable">
+                <thead>
+                    <tr><th>Bank ATM Name</th><th>Cell Number</th><th>Entry Date</th></tr>
+                </thead>
+                <tbody id="atmTableBody">
+                    <tr><td colspan="3" align="center" style="padding:20px;color:#64748b;"><i class="fas fa-spinner fa-spin"></i> Loading...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
     </div><!-- end .main-content -->
 </div><!-- end .container -->
 
@@ -992,6 +1033,11 @@
         <span class="tab-badge done-badge" id="completedNavBadge" style="display:none;">0</span>
         <div class="tab-icon tab-icon-done"><i class="fas fa-check-circle"></i></div>
         <span class="tab-label">Done</span>
+    </button>
+
+<button class="tab-item" id="tab-atm" onclick="showSection('atm')">
+        <div class="tab-icon" style="color:#fbbf24;"><i class="fas fa-credit-card"></i></div>
+        <span class="tab-label">ATM</span>
     </button>
 </nav>
 
@@ -1040,10 +1086,10 @@
         { username: 'nahid',    name: 'Nahid',         role: 'technician', defaultPw: 'nahid1234'  },
     ];
 
-    const SESSION_KEY = 'dash_session_v1';
-    function saveSession(user) { sessionStorage.setItem(SESSION_KEY, JSON.stringify(user)); }
-    function loadSession() { try { const s = sessionStorage.getItem(SESSION_KEY); return s ? JSON.parse(s) : null; } catch(e) { return null; } }
-    function clearSession() { sessionStorage.removeItem(SESSION_KEY); }
+    const SESSION_KEY = 'dash_session_v3';
+    function saveSession(user) { localStorage.setItem(SESSION_KEY, JSON.stringify(user)); }
+    function loadSession() { try { const s = localStorage.getItem(SESSION_KEY); return s ? JSON.parse(s) : null; } catch(e) { return null; } }
+    function clearSession() { localStorage.removeItem(SESSION_KEY); }
 
     const PW_STORAGE_KEY = 'dash_passwords_v2';
     function getDefaultPasswords() { const def = {}; USER_ACCOUNTS.forEach(u => def[u.username] = u.defaultPw); return def; }
@@ -1191,6 +1237,7 @@
         document.getElementById('downloadPdfBtn').style.display = isEngineerOrAdmin ? 'inline-flex' : 'none';
 
         startFirebaseSync();
+loadAtmEntries();
     }
 
     function logout() {
@@ -1639,7 +1686,54 @@
     document.addEventListener('click', (e) => {
         if (!e.target.closest('.area-badge')) document.getElementById('addressFloatBox').style.display = 'none';
     });
+// ── ATM CONTACT ──
+    let atmEntries = [];
 
+    async function loadAtmEntries() {
+        try {
+            const data = await fbGet('atm_contacts');
+            if (data && typeof data === 'object') {
+                atmEntries = Object.values(data).sort((a,b) => b.id - a.id);
+            } else { atmEntries = []; }
+        } catch(e) { atmEntries = []; }
+        renderAtmTable();
+    }
+
+    async function addAtmEntry() {
+        const bankName = document.getElementById('atmBankName').value.trim();
+        const cellNum  = document.getElementById('atmCellNumber').value.trim();
+        if (!bankName || !cellNum) { showPopup('warning','Missing Info','Please fill Bank ATM Name and Cell Number.'); return; }
+        const entry = {
+            id: Date.now(),
+            bankName,
+            cellNumber: cellNum,
+            entryDate: new Date().toISOString().split('T')[0]
+        };
+        try {
+            await fbSet(`atm_contacts/${entry.id}`, entry);
+            atmEntries.unshift(entry);
+            document.getElementById('atmBankName').value = '';
+            document.getElementById('atmCellNumber').value = '';
+            renderAtmTable();
+            showPopup('success','Entry Saved', `${bankName} added.`);
+        } catch(e) { showPopup('warning','Error','Could not save entry.'); }
+    }
+
+    function renderAtmTable() {
+        const q = (document.getElementById('atmSearch')?.value || '').toLowerCase();
+        const filtered = atmEntries.filter(e =>
+            e.bankName.toLowerCase().includes(q) || e.cellNumber.toLowerCase().includes(q)
+        );
+        const tbody = document.getElementById('atmTableBody');
+        if (!tbody) return;
+        tbody.innerHTML = filtered.length === 0
+            ? '<tr><td colspan="3" align="center" style="padding:20px;color:#64748b;"><i class="fas fa-inbox"></i> No Entries Found</td></tr>'
+            : filtered.map(e => `<tr>
+                <td><strong style="font-family:\'Montserrat\',sans-serif;">${e.bankName}</strong></td>
+                <td style="font-family:\'Montserrat\',sans-serif;color:var(--teal);font-weight:700;">${e.cellNumber}</td>
+                <td>${formatDateDisplay(e.entryDate)}</td>
+              </tr>`).join('');
+    }
     // ── PAGE INIT ──
     document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('dateInput').value = new Date().toISOString().split('T')[0];
