@@ -480,8 +480,8 @@
             position: fixed;
             bottom: 0; left: 0; right: 0;
             z-index: 1000;
-            background: linear-gradient(180deg, #0f1f3d 0%, #1a3158 100%);
-            border-top: 1px solid rgba(255,255,255,0.12);
+            background: linear-gradient(135deg, #0369a1 0%, #0c4a6e 30%, #1e3a8a 60%, #1d4ed8 100%);
+            border-top: 1px solid rgba(56,189,248,0.35);
             display: flex;
             box-shadow: 0 -4px 24px rgba(15,31,61,0.40);
             padding-bottom: env(safe-area-inset-bottom, 0px);
@@ -532,7 +532,83 @@
         .tab-item.active .tab-icon-summary { background: rgba(2,132,199,0.30); }
         .tab-item.active .tab-icon-ongoing { background: rgba(225,29,72,0.25); }
         .tab-item.active .tab-icon-done    { background: rgba(13,148,136,0.25); }
-
+.tab-item {
+            transition: all 0.25s cubic-bezier(0.23,1,0.32,1);
+        }
+        .tab-item::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 50%; transform: translateX(-50%);
+            width: 0; height: 3px;
+            border-radius: 0 0 6px 6px;
+            background: linear-gradient(90deg, #38bdf8, #818cf8, #38bdf8);
+            background-size: 200% auto;
+            transition: width 0.35s cubic-bezier(0.23,1,0.32,1),
+                        opacity 0.3s ease;
+            opacity: 0;
+        }
+        .tab-item:hover::after {
+            width: 70%;
+            opacity: 1;
+            animation: tabShimmer 1.8s linear infinite;
+        }
+        .tab-item.active::after {
+            width: 0;
+            opacity: 0;
+        }
+        @keyframes tabShimmer {
+            0%   { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+        .tab-item:hover .tab-icon {
+            transform: translateY(-4px) scale(1.15);
+            background: rgba(255,255,255,0.12) !important;
+            border-radius: 10px;
+            box-shadow: 0 4px 14px rgba(56,189,248,0.25);
+            transition: all 0.3s cubic-bezier(0.23,1,0.32,1);
+        }
+        .tab-item.active:hover .tab-icon {
+            transform: translateY(-2px) scale(1.05);
+        }
+        .tab-item:hover .tab-label {
+            color: rgba(255,255,255,0.85);
+            letter-spacing: 0.8px;
+            transition: all 0.3s ease;
+        }
+        .tab-item.active:hover .tab-label {
+            color: rgba(255,255,255,0.95);
+        }
+        .tab-item:not(.active):hover {
+            background: rgba(255,255,255,0.04);
+        }
+	.tab-item::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 50%; transform: translateX(-50%);
+            width: 0; height: 3px;
+            background: var(--sky-light);
+            border-radius: 0 0 4px 4px;
+            transition: width 0.3s cubic-bezier(0.23,1,0.32,1);
+        }
+        .tab-item:hover::after {
+            width: 60%;
+        }
+        .tab-item.active::after {
+            width: 0;
+        }
+        .tab-item:hover .tab-icon {
+            transform: translateY(-3px);
+            background: rgba(255,255,255,0.10);
+        }
+        .tab-item.active:hover .tab-icon {
+            transform: translateY(-2px);
+        }
+        .tab-item:hover .tab-label {
+            color: rgba(255,255,255,0.70);
+        }
+        .tab-item.active:hover .tab-label {
+            color: rgba(255,255,255,0.90);
+        }
         .tab-label {
             font-family: 'Montserrat', sans-serif;
             font-size: 0.50rem;
@@ -995,8 +1071,16 @@
             </div>
         </div>
 
-        <!-- Search -->
-        <div style="margin-bottom:12px;text-align:right;">
+        <!-- Search & Delete -->
+        <div style="margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+            <div style="display:flex;gap:6px;align-items:center;">
+                <button class="btn-delete-mode" id="toggleDeleteAtmBtn" onclick="toggleDeleteModeAtm()" style="display:none;">
+                    <i class="fas fa-trash-alt"></i> Delete
+                </button>
+                <button class="btn-confirm-delete" id="confirmDeleteAtmBtn" onclick="deleteSelectedAtm()">
+                    <i class="fas fa-check"></i> Confirm
+                </button>
+            </div>
             <input type="text" id="atmSearch" class="search-box" placeholder="Search ATM name or number..." oninput="renderAtmTable()" style="max-width:280px;">
         </div>
 
@@ -1004,7 +1088,7 @@
         <div class="table-scroll-wrap">
             <table id="atmTable">
                 <thead>
-                    <tr><th>Bank ATM Name</th><th>Cell Number</th><th>Entry Date</th></tr>
+                    <tr id="atmTableHeader"><th>Bank ATM Name</th><th>Cell Number</th><th>Entry Date & By</th></tr>
                 </thead>
                 <tbody id="atmTableBody">
                     <tr><td colspan="3" align="center" style="padding:20px;color:#64748b;"><i class="fas fa-spinner fa-spin"></i> Loading...</td></tr>
@@ -1237,7 +1321,8 @@
         document.getElementById('toggleDeleteCompletedBtn').style.display = isAdmin ? 'inline-flex' : 'none';
         document.getElementById('confirmDeleteCompletedBtn').style.display = 'none';
         document.getElementById('downloadPdfBtn').style.display = isEngineerOrAdmin ? 'inline-flex' : 'none';
-
+const atmDelBtn = document.getElementById('toggleDeleteAtmBtn');
+        if (atmDelBtn) atmDelBtn.style.display = isAdmin ? 'inline-flex' : 'none';
         startFirebaseSync();
 loadAtmEntries();
     }
@@ -1711,7 +1796,8 @@ loadAtmEntries();
             id: Date.now(),
             bankName,
             cellNumber: cellNum,
-            entryDate: new Date().toISOString().split('T')[0]
+            entryDate: new Date().toISOString().split('T')[0],
+            entryBy: currentUser.name
         };
         try {
             await fbSet(`atm_contacts/${entry.id}`, entry);
@@ -1722,7 +1808,38 @@ loadAtmEntries();
             showPopup('success','Entry Saved', `${bankName} added.`);
         } catch(e) { showPopup('warning','Error','Could not save entry.'); }
     }
+function toggleDeleteModeAtm() {
+        if (currentUser?.username !== 'admin') { showPopup('warning','Access Denied','Only Admin can delete.'); return; }
+        window._deleteModeAtm = !window._deleteModeAtm;
+        const btn = document.getElementById('toggleDeleteAtmBtn');
+        const confirmBtn = document.getElementById('confirmDeleteAtmBtn');
+        if (window._deleteModeAtm) {
+            btn.innerHTML = '<i class="fas fa-times"></i> Cancel'; btn.style.background='rgba(255,255,255,0.15)';
+            confirmBtn.classList.add('visible');
+        } else {
+            btn.innerHTML = '<i class="fas fa-trash-alt"></i> Delete'; btn.style.background='';
+            confirmBtn.classList.remove('visible');
+        }
+        renderAtmTable();
+    }
 
+    async function deleteSelectedAtm() {
+        if (currentUser?.username !== 'admin') { showPopup('warning','Access Denied','Only Admin can delete.'); return; }
+        const checkboxes = document.querySelectorAll('.atm-del-cb:checked');
+        if (checkboxes.length === 0) { showPopup('warning','None Selected','No entry selected.'); return; }
+        if (!confirm(`Delete ${checkboxes.length} entry(s)?`)) return;
+        const ids = Array.from(checkboxes).map(cb => cb.value);
+        try {
+            await Promise.all(ids.map(id => fetch(`${FB_URL}/atm_contacts/${id}.json`, { method: 'DELETE' })));
+            atmEntries = atmEntries.filter(e => !ids.includes(String(e.id)));
+            window._deleteModeAtm = false;
+            document.getElementById('toggleDeleteAtmBtn').innerHTML = '<i class="fas fa-trash-alt"></i> Delete';
+            document.getElementById('toggleDeleteAtmBtn').style.background = '';
+            document.getElementById('confirmDeleteAtmBtn').classList.remove('visible');
+            renderAtmTable();
+            showPopup('success','Deleted',`${ids.length} entry(s) deleted.`);
+        } catch(e) { showPopup('warning','Error','Delete failed.'); }
+    }
     function renderAtmTable() {
         const q = (document.getElementById('atmSearch')?.value || '').toLowerCase();
         const filtered = atmEntries.filter(e =>
@@ -1730,13 +1847,18 @@ loadAtmEntries();
         );
         const tbody = document.getElementById('atmTableBody');
         if (!tbody) return;
+        const inDelAtm = window._deleteModeAtm || false;
+        const colspan = inDelAtm ? '4' : '3';
         tbody.innerHTML = filtered.length === 0
-            ? '<tr><td colspan="3" align="center" style="padding:20px;color:#64748b;"><i class="fas fa-inbox"></i> No Entries Found</td></tr>'
-            : filtered.map(e => `<tr>
-                <td><strong style="font-family:\'Montserrat\',sans-serif;">${e.bankName}</strong></td>
-                <td style="font-family:\'Montserrat\',sans-serif;color:var(--teal);font-weight:700;">${e.cellNumber}</td>
-                <td>${formatDateDisplay(e.entryDate)}</td>
-              </tr>`).join('');
+            ? `<tr><td colspan="${colspan}" align="center" style="padding:20px;color:#64748b;"><i class="fas fa-inbox"></i> No Entries Found</td></tr>`
+            : filtered.map(e => {
+                const cb = inDelAtm ? `<td><input type="checkbox" class="delete-checkbox atm-del-cb" value="${e.id}"></td>` : '';
+                return `<tr>${cb}
+                <td><strong style="font-family:'Montserrat',sans-serif;">${e.bankName}</strong></td>
+                <td style="font-family:'Montserrat',sans-serif;color:var(--teal);font-weight:700;">${e.cellNumber}</td>
+                <td><strong style="font-family:'Montserrat',sans-serif;font-size:0.68rem;">${formatDateDisplay(e.entryDate)}</strong> &amp; <span style="color:var(--sky);font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.68rem;">${e.entryBy||'—'}</span></td>
+              </tr>`;
+            }).join('');
     }
     // ── PAGE INIT ──
     document.addEventListener('DOMContentLoaded', () => {
