@@ -1315,8 +1315,9 @@
         }
 
         const isAdmin = currentUser.username === 'admin';
-        const isEngineerOrAdmin = isAdmin || currentUser.role === 'engineer';
-        document.getElementById('toggleDeleteBtn').style.display = isAdmin ? 'inline-flex' : 'none';
+const canDelOngoing = ['admin','rupchan','amit','tamim'].includes(currentUser.username);
+const isEngineerOrAdmin = isAdmin || currentUser.role === 'engineer';
+document.getElementById('toggleDeleteBtn').style.display = canDelOngoing ? 'inline-flex' : 'none';
         document.getElementById('confirmDeleteBtn').style.display = 'none';
         document.getElementById('toggleDeleteCompletedBtn').style.display = isAdmin ? 'inline-flex' : 'none';
         document.getElementById('confirmDeleteCompletedBtn').style.display = 'none';
@@ -1645,7 +1646,7 @@ loadAtmEntries();
     }
 
     function toggleDeleteMode() {
-        if (currentUser?.username !== 'admin') { showPopup('warning','Access Denied','Only Admin can delete.'); return; }
+    if (!['admin','rupchan','amit','tamim'].includes(currentUser?.username)) { showPopup('warning','Access Denied','Only authorized users can delete.'); return; }
         window._deleteMode = !window._deleteMode;
         const btn = document.getElementById('toggleDeleteBtn');
         const confirmBtn = document.getElementById('confirmDeleteBtn');
@@ -1660,8 +1661,8 @@ loadAtmEntries();
     }
 
     async function deleteSelectedOngoing() {
-        if (currentUser?.username !== 'admin') { showPopup('warning','Access Denied','Only Admin can delete.'); return; }
-        const checkboxes = document.querySelectorAll('.ongoing-del-cb:checked');
+    if (!['admin','rupchan','amit','tamim'].includes(currentUser?.username)) { showPopup('warning','Access Denied','Only authorized users can delete.'); return; }
+    const checkboxes = document.querySelectorAll('.ongoing-del-cb:checked');
         if (checkboxes.length === 0) { showPopup('warning','None Selected','No task selected.'); return; }
         if (!confirm(`Delete ${checkboxes.length} task(s)?`)) return;
         const ids = Array.from(checkboxes).map(cb => parseInt(cb.value));
