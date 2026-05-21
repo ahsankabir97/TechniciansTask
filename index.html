@@ -403,6 +403,18 @@
         .btn-assign:disabled { opacity:0.6; cursor:not-allowed; transform:none; }
         .btn-done { background:var(--grad-success); color:white; border:none; padding:5px 10px; border-radius:6px; cursor:pointer; font-family:'Montserrat',sans-serif; font-weight:700; font-size:0.58rem; margin-top:5px; display:inline-flex; transition:all 0.2s ease; text-transform:uppercase; letter-spacing:0.5px; box-shadow:0 4px 12px rgba(13,148,136,0.28); align-items:center; gap:4px; border:1px solid rgba(255,255,255,0.2); }
         .btn-done:hover { transform:translateY(-1px); box-shadow:0 5px 14px rgba(13,148,136,0.40); }
+.btn-edit {
+    background: linear-gradient(135deg, #d97706, #f59e0b);
+    color: white; border: none;
+    padding: 5px 10px; border-radius: 6px;
+    cursor: pointer; font-family: 'Montserrat', sans-serif;
+    font-weight: 700; font-size: 0.58rem;
+    display: inline-flex; align-items: center; gap: 4px;
+    transition: all 0.2s ease; text-transform: uppercase;
+    letter-spacing: 0.5px; box-shadow: 0 4px 12px rgba(217,119,6,0.28);
+    border: 1px solid rgba(255,255,255,0.2);
+}
+.btn-edit:hover { transform: translateY(-1px); box-shadow: 0 5px 14px rgba(217,119,6,0.45); }
         .btn-clear { background:var(--grad-danger); color:white; border:none; padding:10px 16px; border-radius:8px; cursor:pointer; font-family:'Montserrat',sans-serif; font-weight:700; font-size:0.72rem; transition:all 0.3s ease; text-transform:uppercase; letter-spacing:0.5px; box-shadow:0 4px 12px rgba(220,38,38,0.22); display:flex; align-items:center; gap:6px; border:1px solid rgba(255,255,255,0.15); }
         .btn-clear:hover { transform:translateY(-2px); box-shadow:0 6px 18px rgba(220,38,38,0.32); }
         .btn-logout { background:rgba(255,255,255,0.08); color:#fff; border:1px solid rgba(255,255,255,0.20); padding:7px 10px; border-radius:8px; cursor:pointer; font-family:'Montserrat',sans-serif; font-weight:600; font-size:0.65rem; text-transform:uppercase; transition:all 0.2s; display:flex; align-items:center; gap:6px; }
@@ -777,7 +789,74 @@
         </div>
     </div>
 </div>
+<!-- EDIT TASK MODAL -->
+<div id="editTaskModal" style="position:fixed;inset:0;z-index:99999;display:none;align-items:center;justify-content:center;padding:15px;background:rgba(10,20,45,0.75);backdrop-filter:blur(8px);">
+    <div style="background:linear-gradient(145deg,#0f1f3d,#1a3158);border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:28px 24px;width:100%;max-width:420px;box-shadow:0 20px 55px rgba(0,0,0,0.40);">
+        <div style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:0.9rem;color:#fff;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;display:flex;align-items:center;gap:9px;">
+            <i class="fas fa-pen" style="color:#f59e0b;"></i> Edit Task
+        </div>
+        <div style="font-size:0.7rem;color:rgba(255,255,255,0.45);margin-bottom:22px;font-family:'Outfit',sans-serif;">Ongoing task details update করুন</div>
 
+        <div class="login-field-group">
+            <label class="login-field-label"><i class="fas fa-ticket-alt"></i> Ticket ID</label>
+            <div class="login-input-wrap">
+                <input type="text" id="editTicket" class="login-input" placeholder="Ticket ID">
+                <i class="fas fa-ticket-alt login-input-icon"></i>
+            </div>
+        </div>
+        <div class="login-field-group">
+            <label class="login-field-label"><i class="fas fa-map-marker-alt"></i> Area</label>
+            <div class="login-input-wrap">
+                <select id="editArea" class="login-input">
+                    <option value="">Select Area</option>
+                    <option>Aganagar</option><option>Babubazar</option><option>Bangshal</option>
+                    <option>BailyRoad</option><option>Chawkbazar</option><option>Dhalpur</option>
+                    <option>Donia</option><option>Demra</option><option>Eskaton</option>
+                    <option>Ganderia</option><option>Gulistan</option><option>Imamganj</option>
+                    <option>Islampur</option><option>Jatrabari</option><option>Joypara</option>
+                    <option>Jurain</option><option>Kakrail</option><option>Kamlapur</option>
+                    <option>Keraniganj</option><option>Lalbagh</option><option>Matuail</option>
+                    <option>Malibag</option><option>Mitford</option><option>Moghbazar</option>
+                    <option>Motijheel</option><option>Moulovibazar</option><option>Nawabpur</option>
+                    <option>Nayabazar</option><option value="Purana Paltan">Purana Paltan</option>
+                    <option value="Naya Paltan">Naya Paltan</option><option>Rajarbag</option>
+                    <option>Ramna</option><option value="RK Mission Road">RK Mission</option>
+                    <option>SadarGhat</option><option>SanirAkhra</option><option>Segunbagicha</option>
+                    <option>Shahjahanpur</option><option>Shantinagar</option><option>Shyampur</option>
+                    <option>Siddheshwari</option><option>Tikatuli</option><option>Wari</option>
+                    <option>Gopibag</option><option>Maniknagar</option><option>Nimtola</option>
+                    <option>Fakirapool</option><option>AlauddinRoad</option>
+                </select>
+            </div>
+        </div>
+        <div class="login-field-group">
+            <label class="login-field-label"><i class="fas fa-address-card"></i> Address / Cell No</label>
+            <div class="login-input-wrap">
+                <input type="text" id="editAddress" class="login-input" placeholder="Address & mobile number">
+                <i class="fas fa-map-marker-alt login-input-icon"></i>
+            </div>
+        </div>
+        <div class="login-field-group">
+            <label class="login-field-label"><i class="fas fa-user"></i> Technician</label>
+            <div class="login-input-wrap">
+                <select id="editPerson" class="login-input" style="background:#0f2244;color:#fff;border:1.5px solid rgba(255,255,255,0.18);">
+    <option value="" style="background:#0f2244;color:rgba(255,255,255,0.45);">Select Technician</option>
+    <option style="background:#0f2244;color:#7dd3fc;">Sumon</option>
+    <option style="background:#0f2244;color:#7dd3fc;">Alamin</option>
+    <option style="background:#0f2244;color:#7dd3fc;">Nahid</option>
+    <option style="background:#0f2244;color:#7dd3fc;">Fahim</option>
+</select>
+            </div>
+        </div>
+
+        <div style="display:flex;gap:10px;margin-top:20px;">
+            <button onclick="closeEditModal()" style="flex:1;padding:11px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.14);border-radius:9px;color:rgba(255,255,255,0.65);font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.82rem;text-transform:uppercase;cursor:pointer;">Cancel</button>
+            <button onclick="saveEditTask()" style="flex:1;padding:11px;background:linear-gradient(135deg,#d97706,#f59e0b);border:1px solid rgba(255,255,255,0.15);border-radius:9px;color:#fff;font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.72rem;text-transform:uppercase;cursor:pointer;box-shadow:0 4px 14px rgba(217,119,6,0.28);">
+                <i class="fas fa-save"></i> Save Changes
+            </button>
+        </div>
+    </div>
+</div>
 <!-- CHANGE PASSWORD MODAL -->
 <div id="changePwModal">
     <div class="cpm-box">
@@ -995,7 +1074,7 @@
                 <div class="table-scroll-wrap">
                     <table id="ongoingTable" style="min-width:560px;">
                         <thead>
-                            <tr><th>Date & Action</th><th>Start</th><th>Ticket ID</th><th>Area</th><th>Tech</th><th>By</th><th>Status</th></tr>
+                            <tr><th>Date & Action</th><th>Start</th><th>Ticket ID</th><th>Area</th><th>Tech</th><th>By</th><th>Status</th><th>Edit</th></tr>
                         </thead>
                         <tbody></tbody>
                     </table>
@@ -1449,7 +1528,8 @@ loadAtmEntries();
                 <td><span class="area-badge" style="cursor:pointer;" onclick="showAddressPopup(event,'${(t.address||'').replace(/'/g,"\\'")}')"><i class="fas fa-map-marker-alt"></i> ${t.area}</span></td>
                 <td><span class="badge bg-${t.person.toLowerCase()}">${t.person}</span></td>
                 <td><span class="badge" style="background:linear-gradient(135deg,#1e3a6e,#2563eb);">${assignedBy}</span></td>
-                <td class="status-working-cell"><span class="status-working"><i class="fas fa-spinner fa-pulse"></i> Working</span></td></tr>`;
+                <td class="status-working-cell"><span class="status-working"><i class="fas fa-spinner fa-pulse"></i> Working</span></td>
+<td><button class="btn-edit" onclick="openEditModal(${t.id})"><i class="fas fa-pen"></i> Edit</button></td></tr>`;
             }).join('');
 
         const st = document.getElementById('filterTech').value;
@@ -1624,7 +1704,55 @@ loadAtmEntries();
             btn.innerHTML='<i class="fas fa-paper-plane"></i> Assign Task'; btn.disabled=false;
         }
     }
+let _editingTaskId = null;
 
+function openEditModal(id) {
+    const task = ongoing.find(t => t.id === id);
+    if (!task) return;
+    const isAdmin    = currentUser.username === 'admin';
+    const isAssigned = task.person.toLowerCase() === currentUser.name.toLowerCase();
+    const canEdit    = isAdmin || isAssigned || currentUser.role === 'engineer';
+    if (!canEdit) { showPopup('warning','Access Denied','Only assigned technician or engineer can edit.'); return; }
+
+    _editingTaskId = id;
+    document.getElementById('editTicket').value  = task.ticket  || '';
+    document.getElementById('editArea').value    = task.area    || '';
+    document.getElementById('editAddress').value = task.address || '';
+    document.getElementById('editPerson').value  = task.person  || '';
+    document.getElementById('editTaskModal').style.display = 'flex';
+}
+
+function closeEditModal() {
+    document.getElementById('editTaskModal').style.display = 'none';
+    _editingTaskId = null;
+}
+
+async function saveEditTask() {
+    const task = ongoing.find(t => t.id === _editingTaskId);
+    if (!task) return;
+
+    const newTicket  = document.getElementById('editTicket').value.trim();
+    const newArea    = document.getElementById('editArea').value;
+    const newAddress = document.getElementById('editAddress').value.trim();
+    const newPerson  = document.getElementById('editPerson').value;
+
+    if (!newTicket || !newArea || !newPerson) {
+        showPopup('warning','Incomplete','Ticket, Area ও Technician অবশ্যই দিতে হবে।');
+        return;
+    }
+
+    const updated = { ...task, ticket: newTicket, area: newArea, address: newAddress, person: newPerson };
+    try {
+        await pushTaskToFirebase(updated);
+        const idx = ongoing.findIndex(t => t.id === _editingTaskId);
+        if (idx !== -1) ongoing[idx] = updated;
+        closeEditModal();
+        renderAll();
+        showPopup('success','Updated',`Task ${newTicket} সফলভাবে update হয়েছে।`);
+    } catch(e) {
+        showPopup('warning','Error','Save করা যায়নি।');
+    }
+}
     async function markDone(id) {
         const task = ongoing.find(t => t.id === id);
         if (!task) return;
