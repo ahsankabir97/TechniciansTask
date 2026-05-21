@@ -1121,7 +1121,7 @@
                 <div class="table-scroll-wrap">
                     <table id="completedTable" style="min-width:600px;">
                         <thead>
-                            <tr><th>Date</th><th>Start</th><th>End</th><th>Ticket</th><th>Area</th><th>Tech</th><th>By</th><th>Status</th></tr>
+                            <tr><th>Date</th><th>Start</th><th>End</th><th>Ticket</th><th>Area</th><th>Tech</th><th>By</th><th>Status</th><th>Edit</th></tr>
                         </thead>
                         <tbody></tbody>
                     </table>
@@ -1552,7 +1552,8 @@ loadAtmEntries();
                 const safeAddr = (t.address || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'");
                 return `<tr>${inDC}<td>${formatDateDisplay(t.date)}</td><td>${t.startTime}</td><td>${t.doneTime}</td><td>${t.ticket}</td>
                 <td><span class="area-badge" style="cursor:pointer;" onclick="showAddressPopup(event,'${safeAddr}')"><i class="fas fa-map-marker-alt"></i> ${t.area}</span></td>
-                <td>${t.person}</td><td>${t.assignedBy||'—'}</td><td>Done</td></tr>`;
+                <td>${t.person}</td><td>${t.assignedBy||'—'}</td><td>Done</td>
+                <td>${currentUser.username === 'admin' ? `<button class="btn-edit" onclick="openEditModalCompleted(${t.id})"><i class="fas fa-pen"></i> Edit</button>` : '—'}</td></tr>`;
             }).join('');
 
         renderSummary();
@@ -1705,6 +1706,7 @@ loadAtmEntries();
         }
     }
 let _editingTaskId = null;
+let _editingCompleted = false;
 
 function openEditModal(id) {
     const task = ongoing.find(t => t.id === id);
@@ -1725,6 +1727,7 @@ function openEditModal(id) {
 function closeEditModal() {
     document.getElementById('editTaskModal').style.display = 'none';
     _editingTaskId = null;
+    _editingCompleted = false;
 }
 
 async function saveEditTask() {
@@ -1756,6 +1759,79 @@ async function saveEditTask() {
     } catch(e) {
         // Firebase fail হলে local change undo করো
         if (idx !== -1) ongoing[idx] = task;
+        renderAll();
+        showPopup('warning','Sync Error','Firebase এ save হয়নি, changes revert করা হয়েছে।');
+    }
+}
+function openEditModalCompleted(id) {
+    const task = completed.find(t => t.id === id);
+    if (!task) return;
+    _editingTaskId = id;
+    _editingCompleted = true;
+    document.getElementById('editTicket').value  = task.ticket  || '';
+    document.getElementById('editArea').value    = task.area    || '';
+    document.getElementById('editAddress').value = task.address || '';
+    document.getElementById('editPerson').value  = task.person  || '';
+    document.getElementById('editTaskModal').style.display = 'flex';
+}
+
+async function saveEditTask() {
+    if (_editingCompleted) {
+        await saveEditCompleted();
+        return;
+    }
+    const task = ongoing.find(t => t.id === _editingTaskId);
+    if (!task) return;
+
+    const newTicket  = document.getElementById('editTicket').value.trim();
+    const newArea    = document.getElementById('editArea').value;
+    const newAddress = document.getElementById('editAddress').value.trim();
+    const newPerson  = document.getElementById('editPerson').value;
+
+    if (!newTicket || !newArea || !newPerson) {
+        showPopup('warning','Incomplete','Ticket, Area ও Technician অবশ্যই দিতে হবে।');
+        return;
+    }
+
+    const updated = { ...task, ticket: newTicket, area: newArea, address: newAddress, person: newPerson };
+    const idx = ongoing.findIndex(t => t.id === _editingTaskId);
+    if (idx !== -1) ongoing[idx] = updated;
+    closeEditModal();
+    renderAll();
+    showPopup('success','Updated',`Task ${newTicket} সফলভাবে update হয়েছে।`);
+    try {
+        await pushTaskToFirebase(updated);
+    } catch(e) {
+        if (idx !== -1) ongoing[idx] = task;
+        renderAll();
+        showPopup('warning','Sync Error','Firebase এ save হয়নি, changes revert করা হয়েছে।');
+    }
+}
+
+async function saveEditCompleted() {
+    const task = completed.find(t => t.id === _editingTaskId);
+    if (!task) return;
+
+    const newTicket  = document.getElementById('editTicket').value.trim();
+    const newArea    = document.getElementById('editArea').value;
+    const newAddress = document.getElementById('editAddress').value.trim();
+    const newPerson  = document.getElementById('editPerson').value;
+
+    if (!newTicket || !newArea || !newPerson) {
+        showPopup('warning','Incomplete','Ticket, Area ও Technician অবশ্যই দিতে হবে।');
+        return;
+    }
+
+    const updated = { ...task, ticket: newTicket, area: newArea, address: newAddress, person: newPerson };
+    const idx = completed.findIndex(t => t.id === _editingTaskId);
+    if (idx !== -1) completed[idx] = updated;
+    closeEditModal();
+    renderAll();
+    showPopup('success','Updated',`Task ${newTicket} সফলভাবে update হয়েছে।`);
+    try {
+        await pushTaskToFirebase(updated);
+    } catch(e) {
+        if (idx !== -1) completed[idx] = task;
         renderAll();
         showPopup('warning','Sync Error','Firebase এ save হয়নি, changes revert করা হয়েছে।');
     }
