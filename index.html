@@ -1529,7 +1529,7 @@ loadAtmEntries();
                 <td><span class="badge bg-${t.person.toLowerCase()}">${t.person}</span></td>
                 <td><span class="badge" style="background:linear-gradient(135deg,#1e3a6e,#2563eb);">${assignedBy}</span></td>
                 <td class="status-working-cell"><span class="status-working"><i class="fas fa-spinner fa-pulse"></i> Working</span></td>
-<td><button class="btn-edit" onclick="openEditModal(${t.id})"><i class="fas fa-pen"></i> Edit</button></td></tr>`;
+<td>${['admin','amit','rupchan','tamim'].includes(currentUser.username) ? `<button class="btn-edit" onclick="openEditModal(${t.id})"><i class="fas fa-pen"></i> Edit</button>` : '—'}</td></tr>`;
             }).join('');
 
         const st = document.getElementById('filterTech').value;
@@ -1742,15 +1742,22 @@ async function saveEditTask() {
     }
 
     const updated = { ...task, ticket: newTicket, area: newArea, address: newAddress, person: newPerson };
+
+    // ── আগেই local state update করো এবং modal বন্ধ করো ──
+    const idx = ongoing.findIndex(t => t.id === _editingTaskId);
+    if (idx !== -1) ongoing[idx] = updated;
+    closeEditModal();
+    renderAll();
+    showPopup('success','Updated',`Task ${newTicket} সফলভাবে update হয়েছে।`);
+
+    // ── Background এ Firebase এ save হবে ──
     try {
         await pushTaskToFirebase(updated);
-        const idx = ongoing.findIndex(t => t.id === _editingTaskId);
-        if (idx !== -1) ongoing[idx] = updated;
-        closeEditModal();
-        renderAll();
-        showPopup('success','Updated',`Task ${newTicket} সফলভাবে update হয়েছে।`);
     } catch(e) {
-        showPopup('warning','Error','Save করা যায়নি।');
+        // Firebase fail হলে local change undo করো
+        if (idx !== -1) ongoing[idx] = task;
+        renderAll();
+        showPopup('warning','Sync Error','Firebase এ save হয়নি, changes revert করা হয়েছে।');
     }
 }
     async function markDone(id) {
