@@ -711,7 +711,190 @@ button {
     text-transform: uppercase; letter-spacing: 1px;
     color: #7dd3fc; margin-bottom: 6px;
 }
-    </style>
+/* ── MOBILE CARD ROWS ── */
+@media (max-width: 640px) {
+
+  /* Ongoing table → card rows */
+  #ongoingTable thead { display: none; }
+  #ongoingTable tbody tr {
+    display: block;
+    background: rgba(255,255,255,0.55);
+    border-radius: 12px;
+    border: 1px solid rgba(148,163,184,0.28);
+    margin-bottom: 10px;
+    padding: 10px 12px;
+    box-shadow: 0 2px 8px rgba(15,31,61,0.07);
+  }
+  #ongoingTable tbody tr:hover { background: rgba(255,255,255,0.75); }
+  #ongoingTable tbody td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(148,163,184,0.12);
+    font-size: 0.72rem;
+    text-align: left;
+  }
+  #ongoingTable tbody td:last-child { border-bottom: none; }
+  #ongoingTable tbody td::after { display: none !important; }
+  #ongoingTable tbody td[data-label]::before {
+    content: attr(data-label);
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.58rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--muted);
+    flex-shrink: 0;
+    margin-right: 8px;
+    min-width: 60px;
+  }
+
+  /* Completed table → card rows */
+  #completedTable thead { display: none; }
+  #completedTable tbody tr {
+    display: block;
+    background: rgba(255,255,255,0.55);
+    border-radius: 12px;
+    border: 1px solid rgba(148,163,184,0.28);
+    margin-bottom: 10px;
+    padding: 10px 12px;
+    box-shadow: 0 2px 8px rgba(15,31,61,0.07);
+  }
+  #completedTable tbody tr:hover { background: rgba(255,255,255,0.75); }
+  #completedTable tbody td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(148,163,184,0.12);
+    font-size: 0.72rem;
+    text-align: left;
+  }
+  #completedTable tbody td:last-child { border-bottom: none; }
+  #completedTable tbody td::after { display: none !important; }
+  #completedTable tbody td[data-label]::before {
+    content: attr(data-label);
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.58rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--muted);
+    flex-shrink: 0;
+    margin-right: 8px;
+    min-width: 60px;
+  }
+
+  /* Daily summary table → card rows */
+  #dailyTable thead { display: none; }
+  #dailyTable tbody tr {
+    display: block;
+    background: rgba(255,255,255,0.55);
+    border-radius: 12px;
+    border: 1px solid rgba(148,163,184,0.28);
+    margin-bottom: 10px;
+    padding: 10px 12px;
+  }
+  #dailyTable tbody td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(148,163,184,0.12);
+    font-size: 0.75rem;
+    text-align: left;
+  }
+  #dailyTable tbody td:last-child { border-bottom: none; }
+  #dailyTable tbody td::after { display: none !important; }
+  #dailyTable tbody td[data-label]::before {
+    content: attr(data-label);
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.58rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--muted);
+    flex-shrink: 0;
+    margin-right: 8px;
+    min-width: 55px;
+  }
+
+  /* Monthly summary table → card rows */
+  #monthlyTable thead { display: none; }
+  #monthlyTable tbody tr {
+    display: block;
+    background: rgba(255,255,255,0.55);
+    border-radius: 12px;
+    border: 1px solid rgba(148,163,184,0.28);
+    margin-bottom: 10px;
+    padding: 10px 12px;
+  }
+  #monthlyTable tbody td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(148,163,184,0.12);
+    font-size: 0.75rem;
+    text-align: left;
+  }
+  #monthlyTable tbody td:last-child { border-bottom: none; }
+  #monthlyTable tbody td::after { display: none !important; }
+  #monthlyTable tbody td[data-label]::before {
+    content: attr(data-label);
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.58rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--muted);
+    flex-shrink: 0;
+    margin-right: 8px;
+    min-width: 55px;
+  }
+
+  /* ATM table → card rows */
+  #atmTable thead { display: none; }
+  #atmTable tbody tr {
+    display: block;
+    background: rgba(255,255,255,0.55);
+    border-radius: 12px;
+    border: 1px solid rgba(148,163,184,0.28);
+    margin-bottom: 10px;
+    padding: 10px 12px;
+  }
+  #atmTable tbody td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(148,163,184,0.12);
+    font-size: 0.72rem;
+    text-align: left;
+  }
+  #atmTable tbody td:last-child { border-bottom: none; }
+  #atmTable tbody td::after { display: none !important; }
+  #atmTable tbody td[data-label]::before {
+    content: attr(data-label);
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.58rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--muted);
+    flex-shrink: 0;
+    margin-right: 8px;
+    min-width: 60px;
+  }
+
+  /* Remove min-width on mobile so no scroll needed */
+  #ongoingTable, #completedTable, #dailyTable, #monthlyTable, #atmTable {
+    min-width: unset !important;
+  }
+  .table-scroll-wrap { overflow-x: unset; }
+}  
+  </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -1562,15 +1745,21 @@ loadAtmEntries();
 
         // ── CHANGED: Area column now shows clickable badge with address popup ──
         cb.innerHTML = filtered.length === 0
-            ? '<tr><td colspan="9" align="center" style="padding:20px;color:#64748b;font-size:0.8rem;"><i class="fas fa-inbox"></i> No Completed Tasks</td></tr>'
-            : filtered.map(t => {
-                const inDC = inDeleteModeCompleted ? `<td><input type="checkbox" class="delete-checkbox completed-del-cb" value="${t.id}"></td>` : '';
-                const safeAddr = (t.address || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'");
-                return `<tr>${inDC}<td>${formatDateDisplay(t.date)}</td><td>${t.startTime}</td><td>${t.doneTime}</td><td>${t.ticket}</td>
-                <td><span class="area-badge" style="cursor:pointer;" onclick="showAddressPopup(event,'${safeAddr}')"><i class="fas fa-map-marker-alt"></i> ${t.area}</span></td>
-                <td>${t.person}</td><td>${t.assignedBy||'—'}</td><td>Done</td>
-                <td>${currentUser.username === 'admin' ? `<button class="btn-edit" onclick="openEditModalCompleted(${t.id})"><i class="fas fa-pen"></i> Edit</button>` : '—'}</td></tr>`;
-            }).join('');
+    ? '<tr><td colspan="9" align="center" style="padding:20px;color:#64748b;font-size:0.8rem;"><i class="fas fa-inbox"></i> No Completed Tasks</td></tr>'
+    : filtered.map(t => {
+        const inDC = inDeleteModeCompleted ? `<td><input type="checkbox" class="delete-checkbox completed-del-cb" value="${t.id}"></td>` : '';
+        const safeAddr = (t.address || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+        return `<tr>${inDC}
+        <td data-label="Date">${formatDateDisplay(t.date)}</td>
+        <td data-label="Start">${t.startTime}</td>
+        <td data-label="End">${t.doneTime}</td>
+        <td data-label="Ticket">${t.ticket}</td>
+        <td data-label="Area"><span class="area-badge" style="cursor:pointer;" onclick="showAddressPopup(event,'${safeAddr}')"><i class="fas fa-map-marker-alt"></i> ${t.area}</span></td>
+        <td data-label="Tech">${t.person}</td>
+        <td data-label="By">${t.assignedBy||'—'}</td>
+        <td data-label="Status">Done</td>
+        <td data-label="Edit">${currentUser.username === 'admin' ? `<button class="btn-edit" onclick="openEditModalCompleted(${t.id})"><i class="fas fa-pen"></i> Edit</button>` : '—'}</td></tr>`;
+    }).join('');
 
         renderSummary();
     }
@@ -1618,10 +1807,13 @@ loadAtmEntries();
             const [yr,mo] = selectedMonth.split('-');
             const monthLabel = `${monthNames[parseInt(mo)-1]} ${yr}`;
             const monthTotal = techs.reduce((s,t)=>s+monthlyCount[t],0);
-            monthlyBody.innerHTML = `<tr><td><strong style="font-family:'Outfit',sans-serif;font-size:0.78rem;font-weight:900;color:var(--navy-mid);">${monthLabel}</strong></td>
-                ${techs.map(name=>`<td><span style="font-weight:900;font-family:'Outfit',sans-serif;font-size:1.2rem;color:${techColors[name]};">${monthlyCount[name]}</span>
-                <span style="font-size:0.60rem;font-family:'Outfit',sans-serif;font-weight:800;color:${techColors[name]};margin-left:4px;opacity:0.75;">(${monthRankMap[name]})</span></td>`).join('')}
-                <td><strong style="font-family:'Outfit',sans-serif;font-size:1rem;font-weight:900;color:var(--navy-mid);">${monthTotal}</strong></td></tr>`;
+            monthlyBody.innerHTML = `<tr>
+    <td data-label="Month"><strong style="font-family:'Outfit',sans-serif;font-size:0.78rem;font-weight:900;color:var(--navy-mid);">${monthLabel}</strong></td>
+    ${techs.map(name=>`<td data-label="${name}">
+        <span style="font-weight:900;font-family:'Outfit',sans-serif;font-size:1.2rem;color:${techColors[name]};">${monthlyCount[name]}</span>
+        <span style="font-size:0.60rem;font-family:'Outfit',sans-serif;font-weight:800;color:${techColors[name]};margin-left:4px;opacity:0.75;">(${monthRankMap[name]})</span>
+    </td>`).join('')}
+    <td data-label="Total"><strong style="font-family:'Outfit',sans-serif;font-size:1rem;font-weight:900;color:var(--navy-mid);">${monthTotal}</strong></td></tr>`;
         }
 
         const todayStr = new Date(now.getTime() - now.getTimezoneOffset()*60000).toISOString().split('T')[0];
@@ -1637,18 +1829,19 @@ loadAtmEntries();
         const dailyBody = document.getElementById('dailyTableBody');
         if (dailyBody) {
             const dailyTotal = techs.reduce((s,t)=>s+dailyCount[t],0);
-            dailyBody.innerHTML = `<tr><td><strong style="font-family:'Outfit',sans-serif;font-size:0.78rem;font-weight:900;color:var(--navy-mid);">${formatDateDisplay(selectedDate)}</strong></td>
-                ${techs.map(name => {
-                    const techOngoing = ongoing.filter(t=>t.person===name).map(t=>t.area);
-                    const isFree = techOngoing.length === 0;
-                    return `<td>
-                        <span style="font-weight:900;font-family:'Outfit',sans-serif;font-size:1.1rem;color:${techColors[name]};">${dailyCount[name]}</span>
-                        <span style="font-size:0.60rem;font-family:'Outfit',sans-serif;font-weight:800;color:${techColors[name]};margin-left:4px;opacity:0.75;">(${dailyRankMap[name]})</span>
-                        ${isFree?`<br><span style="display:inline-block;margin-top:4px;padding:3px 8px;background:linear-gradient(135deg,#16a34a,#15803d);color:#fff;border-radius:5px;font-size:0.55rem;font-family:'Outfit',sans-serif;font-weight:800;letter-spacing:0.5px;">✓ FREE</span>`:''}
-                        ${techOngoing.length>0?`<br><span style="display:inline-block;margin-top:4px;padding:3px 8px;background:linear-gradient(135deg,#ea580c,#c2410c);color:#fff;border-radius:5px;font-size:0.58rem;font-family:'Outfit',sans-serif;font-weight:800;">${techOngoing.join(', ')}</span>`:''}
-                    </td>`;
-                }).join('')}
-                <td><strong style="font-family:'Outfit',sans-serif;font-size:1rem;font-weight:900;color:var(--navy-mid);">${dailyTotal}</strong></td></tr>`;
+            dailyBody.innerHTML = `<tr>
+    <td data-label="Date"><strong style="font-family:'Outfit',sans-serif;font-size:0.78rem;font-weight:900;color:var(--navy-mid);">${formatDateDisplay(selectedDate)}</strong></td>
+    ${techs.map(name => {
+        const techOngoing = ongoing.filter(t=>t.person===name).map(t=>t.area);
+        const isFree = techOngoing.length === 0;
+        return `<td data-label="${name}">
+            <span style="font-weight:900;font-family:'Outfit',sans-serif;font-size:1.1rem;color:${techColors[name]};">${dailyCount[name]}</span>
+            <span style="font-size:0.60rem;font-family:'Outfit',sans-serif;font-weight:800;color:${techColors[name]};margin-left:4px;opacity:0.75;">(${dailyRankMap[name]})</span>
+            ${isFree?`<span style="display:inline-block;margin-left:6px;padding:2px 7px;background:linear-gradient(135deg,#16a34a,#15803d);color:#fff;border-radius:5px;font-size:0.55rem;font-family:'Outfit',sans-serif;font-weight:800;">✓ FREE</span>`:''}
+            ${techOngoing.length>0?`<span style="display:inline-block;margin-left:6px;padding:2px 7px;background:linear-gradient(135deg,#ea580c,#c2410c);color:#fff;border-radius:5px;font-size:0.58rem;font-family:'Outfit',sans-serif;font-weight:800;">${techOngoing.join(', ')}</span>`:''}
+        </td>`;
+    }).join('')}
+    <td data-label="Total"><strong style="font-family:'Outfit',sans-serif;font-size:1rem;font-weight:900;color:var(--navy-mid);">${dailyTotal}</strong></td></tr>`;
         }
     }
 
@@ -2121,15 +2314,15 @@ function toggleDeleteModeAtm() {
         const inDelAtm = window._deleteModeAtm || false;
         const colspan = inDelAtm ? '4' : '3';
         tbody.innerHTML = filtered.length === 0
-            ? `<tr><td colspan="${colspan}" align="center" style="padding:20px;color:#64748b;"><i class="fas fa-inbox"></i> No Entries Found</td></tr>`
-            : filtered.map(e => {
-                const cb = inDelAtm ? `<td><input type="checkbox" class="delete-checkbox atm-del-cb" value="${e.id}"></td>` : '';
-                return `<tr>${cb}
-                <td><strong style="font-family:'Outfit',sans-serif;">${e.bankName}</strong></td>
-                <td style="font-family:'Outfit',sans-serif;color:var(--teal);font-weight:700;">${e.cellNumber}</td>
-                <td><strong style="font-family:'Outfit',sans-serif;font-size:0.68rem;">${formatDateDisplay(e.entryDate)}</strong> &amp; <span style="color:var(--sky);font-family:'Outfit',sans-serif;font-weight:700;font-size:0.68rem;">${e.entryBy||'—'}</span></td>
-              </tr>`;
-            }).join('');
+    ? `<tr><td colspan="${colspan}" align="center" style="padding:20px;color:#64748b;"><i class="fas fa-inbox"></i> No Entries Found</td></tr>`
+    : filtered.map(e => {
+        const cb = inDelAtm ? `<td><input type="checkbox" class="delete-checkbox atm-del-cb" value="${e.id}"></td>` : '';
+        return `<tr>${cb}
+        <td data-label="ATM Name"><strong style="font-family:'Outfit',sans-serif;">${e.bankName}</strong></td>
+        <td data-label="Cell No" style="font-family:'Outfit',sans-serif;color:var(--teal);font-weight:700;">${e.cellNumber}</td>
+        <td data-label="Entry"><strong style="font-family:'Outfit',sans-serif;font-size:0.68rem;">${formatDateDisplay(e.entryDate)}</strong> &amp; <span style="color:var(--sky);font-family:'Outfit',sans-serif;font-weight:700;font-size:0.68rem;">${e.entryBy||'—'}</span></td>
+      </tr>`;
+    }).join('');
     }
     // ── PAGE INIT ──
     document.addEventListener('DOMContentLoaded', () => {
