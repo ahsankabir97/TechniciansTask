@@ -1098,29 +1098,25 @@ button {
 
     <header>
         <div class="header-left">
-            <img src="https://z-cdn-media.chatglm.cn/files/acb00912-a376-4782-b313-80248fd0f8ed.png?auth_key=1870834439-20e10467e7154c949132c6f76f1a421e-0-71eb8030909b232371f257313e5acc97"
-                 alt="Link3 Logo" class="company-logo">
-            <div style="min-width:0;">
-                <div class="main-title">Technician Task Dashboard</div>
-                <span class="company-name">Link3 Technologies Ltd.</span>
-            </div>
-        </div>
-        <div class="header-right">
-            <div class="datetime-container">
-                <div class="current-user-badge" id="userBadge" title="Click to logout">
-                    <div class="role-dot" id="roleDot"></div>
-                    <div>
-                        <div class="uname" id="headerUserName"></div>
-                        <div class="urole" id="headerUserRole"></div>
-                    </div>
-                    <i class="fas fa-sign-out-alt" style="font-size:0.70rem;color:rgba(255,255,255,0.55);"></i>
-                </div>
-                <div class="sync-status">
-                    <div class="live-dot"></div>
-                    <span id="syncText">Live</span>
-                </div>
-            </div>
-        </div>
+    <img src="https://z-cdn-media.chatglm.cn/files/acb00912-a376-4782-b313-80248fd0f8ed.png?auth_key=1870834439-20e10467e7154c949132c6f76f1a421e-0-71eb8030909b232371f257313e5acc97"
+         alt="Link3 Logo" class="company-logo">
+    <div style="min-width:0;">
+        <div class="main-title" style="font-size:0.80rem;">Technician Dashboard</div>
+        <span class="company-name" style="font-size:0.80rem;">Link3 Technologies Ltd.</span>
+    </div>
+</div>
+<div class="header-right" style="flex-direction:column;align-items:flex-end;gap:4px;">
+    <div style="display:flex;align-items:center;gap:5px;">
+        <div class="role-dot" id="roleDot"></div>
+        <span class="uname" id="headerUserName" style="font-family:'Outfit',sans-serif;font-size:0.62rem;font-weight:800;color:#fff;text-transform:uppercase;"></span>
+        <i class="fas fa-sign-out-alt" id="userBadge" title="Click to logout" style="font-size:0.70rem;color:rgba(255,255,255,0.65);cursor:pointer;padding:4px;"></i>
+    </div>
+    
+    <div class="sync-status">
+        <div class="live-dot"></div>
+        <span id="syncText">Live</span>
+    </div>
+</div>
     </header>
 
     <!-- MAIN CONTENT -->
@@ -1440,7 +1436,7 @@ button {
 
     // ── USER ACCOUNTS ──
     const USER_ACCOUNTS = [
-        { username: 'admin',    name: 'Administrator', role: 'engineer',   defaultPw: '78773597in' },
+        { username: 'admin',    name: 'Admin', role: 'engineer',   defaultPw: '78773597in' },
         { username: 'tamim',    name: 'Tamim',         role: 'engineer',   defaultPw: 'tamim1234'  },
         { username: 'rupchan',  name: 'Rupchan',       role: 'engineer',   defaultPw: 'rupchan1234'},
         { username: 'amit',     name: 'Amit',          role: 'engineer',   defaultPw: 'amit1234'   },
@@ -1578,7 +1574,7 @@ button {
         document.getElementById('mainApp').style.display = 'block';
 
         document.getElementById('headerUserName').textContent = currentUser.name;
-        document.getElementById('headerUserRole').textContent = currentUser.role === 'engineer' ? 'Engineer' : 'Technician';
+        
         const dot = document.getElementById('roleDot');
         dot.className = 'role-dot ' + (currentUser.role === 'engineer' ? 'eng' : 'tech');
 
