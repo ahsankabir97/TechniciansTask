@@ -1598,8 +1598,9 @@ document.getElementById('toggleDeleteBtn').style.display = canDelOngoing ? 'inli
         document.getElementById('confirmDeleteCompletedBtn').style.display = 'none';
         document.getElementById('downloadPdfBtn').style.display = isEngineerOrAdmin ? 'inline-flex' : 'none';
 document.getElementById('downloadExcelBtn').style.display = isAdmin ? 'inline-flex' : 'none';
+const canDelAtm = ['admin','tamim','rupchan','amit'].includes(currentUser.username);
 const atmDelBtn = document.getElementById('toggleDeleteAtmBtn');
-        if (atmDelBtn) atmDelBtn.style.display = isAdmin ? 'inline-flex' : 'none';
+if (atmDelBtn) atmDelBtn.style.display = canDelAtm ? 'inline-flex' : 'none';
         startFirebaseSync();
 loadAtmEntries();
     }
@@ -2103,7 +2104,8 @@ async function saveEditCompleted() {
     }
 
     function toggleDeleteModeCompleted() {
-        if (currentUser?.username !== 'admin') { showPopup('warning','Access Denied','Only Admin can delete.'); return; }
+        if (!['admin','tamim','rupchan','amit'].includes(currentUser?.username)) { showPopup('warning','Access Denied','Only authorized users can delete.'); return; }
+
         window._deleteModeCompleted = !window._deleteModeCompleted;
         const btn = document.getElementById('toggleDeleteCompletedBtn');
         const confirmBtn = document.getElementById('confirmDeleteCompletedBtn');
@@ -2118,7 +2120,7 @@ async function saveEditCompleted() {
     }
 
     async function deleteSelectedCompleted() {
-        if (currentUser?.username !== 'admin') { showPopup('warning','Access Denied','Only Admin can delete.'); return; }
+        if (!['admin','tamim','rupchan','amit'].includes(currentUser?.username)) { showPopup('warning','Access Denied','Only authorized users can delete.'); return; }
         const checkboxes = document.querySelectorAll('.completed-del-cb:checked');
         if (checkboxes.length === 0) { showPopup('warning','None Selected','No task selected.'); return; }
         if (!confirm(`Delete ${checkboxes.length} completed task(s)?`)) return;
@@ -2277,7 +2279,7 @@ function downloadCompletedExcel() {
         } catch(e) { showPopup('warning','Error','Could not save entry.'); }
     }
 function toggleDeleteModeAtm() {
-        if (currentUser?.username !== 'admin') { showPopup('warning','Access Denied','Only Admin can delete.'); return; }
+        if (!['admin','tamim','rupchan','amit'].includes(currentUser?.username)) { showPopup('warning','Access Denied','Only authorized users can delete.'); return; }
         window._deleteModeAtm = !window._deleteModeAtm;
         const btn = document.getElementById('toggleDeleteAtmBtn');
         const confirmBtn = document.getElementById('confirmDeleteAtmBtn');
@@ -2292,7 +2294,7 @@ function toggleDeleteModeAtm() {
     }
 
     async function deleteSelectedAtm() {
-        if (currentUser?.username !== 'admin') { showPopup('warning','Access Denied','Only Admin can delete.'); return; }
+        if (!['admin','tamim','rupchan','amit'].includes(currentUser?.username)) { showPopup('warning','Access Denied','Only authorized users can delete.'); return; }
         const checkboxes = document.querySelectorAll('.atm-del-cb:checked');
         if (checkboxes.length === 0) { showPopup('warning','None Selected','No entry selected.'); return; }
         if (!confirm(`Delete ${checkboxes.length} entry(s)?`)) return;
