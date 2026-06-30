@@ -2645,16 +2645,23 @@ function toggleDeleteModeAtm() {
 
     // ── PAGE INIT ──
     document.addEventListener('DOMContentLoaded', () => {
-        document.getElementById('dateInput').value = new Date().toISOString().split('T')[0];
+    document.getElementById('dateInput').value = new Date().toISOString().split('T')[0];
 
-        const savedSession = loadSession();
-        if (savedSession) {
-            const account = USER_ACCOUNTS.find(u => u.username === savedSession.username);
-            if (account) { loginAs(savedSession); return; }
-            else clearSession();
+    const savedSession = loadSession();
+    if (savedSession) {
+        const account = USER_ACCOUNTS.find(u => u.username === savedSession.username);
+        if (account) {
+            // savedSession না, বরং USER_ACCOUNTS থেকে fresh, সঠিক role নিয়ে login করানো হচ্ছে
+            const freshUser = { name: account.name, role: account.role, username: account.username };
+            saveSession(freshUser); // localStorage-ও update করে দিচ্ছি, পুরনো ভুল data যেন আর না থাকে
+            loginAs(freshUser);
+            return;
+        } else {
+            clearSession();
         }
-        document.getElementById('loginScreen').style.display = 'flex';
-    });
+    }
+    document.getElementById('loginScreen').style.display = 'flex';
+});
 </script>
 </body>
 </html>
