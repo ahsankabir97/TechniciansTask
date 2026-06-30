@@ -409,7 +409,30 @@ button {
         input:focus, select:focus { border-color:var(--sky); background:rgba(255,255,255,0.80); box-shadow:0 0 0 3px rgba(37,99,235,0.12); }
 
         /* ── BUTTONS ── */
-        .btn-assign { background:var(--grad-assign); color:white; border:none; padding:13px; border-radius:8px; font-family:'Outfit',sans-serif; font-weight:700; font-size:0.74rem; cursor:pointer; text-transform:uppercase; letter-spacing:0.8px; transition:all 0.3s ease; box-shadow:0 6px 18px rgba(37,99,235,0.28); display:flex; align-items:center; justify-content:center; gap:8px; border:1px solid rgba(255,255,255,0.15); width:100%; }
+        .btn-assign { 
+    background:var(--grad-assign); 
+    color:white; 
+    border:none; 
+    padding:16px 13px; 
+    min-height:40px;
+    border-radius:6px; 
+    font-family:'Outfit',sans-serif; 
+    font-weight:700; 
+    font-size:0.78rem; 
+    cursor:pointer; 
+    text-transform:uppercase; 
+    letter-spacing:0.8px; 
+    transition:all 0.3s ease; 
+    box-shadow:0 6px 18px rgba(37,99,235,0.28); 
+    display:flex; 
+    align-items:center; 
+    justify-content:center; 
+    gap:8px; 
+    border:1px solid rgba(255,255,255,0.15); 
+    width:100%; 
+    max-width:480px; 
+    margin:0 auto; 
+}
         .btn-assign:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(37,99,235,0.40); }
         .btn-assign:disabled { opacity:0.6; cursor:not-allowed; transform:none; }
         .btn-done { background:var(--grad-success); color:white; border:none; padding:5px 10px; border-radius:6px; cursor:pointer; font-family:'Outfit',sans-serif; font-weight:700; font-size:0.58rem; margin-top:5px; display:inline-flex; transition:all 0.2s ease; text-transform:uppercase; letter-spacing:0.5px; box-shadow:0 4px 12px rgba(13,148,136,0.28); align-items:center; gap:4px; border:1px solid rgba(255,255,255,0.2); }
@@ -1456,15 +1479,15 @@ button {
             <div class="table-scroll-wrap">
                 <table id="leaveBalanceTable" style="min-width:520px;">
                     <thead>
-                        <tr>
-                            <th>Technician</th>
-                            <th>Sick Used</th>
-                            <th>Sick Left</th>
-                            <th>Casual Used</th>
-                            <th>Casual Left</th>
-                            <th>Total Left</th>
-                        </tr>
-                    </thead>
+    <tr>
+        <th>Tachnician Name</th>
+        <th>Sick Leave Enjoyed</th>
+        <th>Sick Leave Left</th>
+        <th>Casual Leave Enjoyed</th>
+        <th>Casual Leave Left</th>
+        <th>Total Leave Left</th>
+    </tr>
+</thead>
                     <tbody id="leaveBalanceBody">
                         <tr><td colspan="6" align="center" style="padding:14px;color:#64748b;"><i class="fas fa-spinner fa-spin"></i> Loading...</td></tr>
                     </tbody>
@@ -2611,11 +2634,11 @@ function toggleDeleteModeAtm() {
             const totalLeft  = sickLeft + casualLeft;
             return `<tr>
                 <td data-label="Tech"><span class="badge" style="background:${techColors[name]};">${name}</span></td>
-                <td data-label="Sick Used" style="font-family:'Outfit',sans-serif;font-weight:700;">${used.sick}</td>
-                <td data-label="Sick Left" style="font-family:'Outfit',sans-serif;font-weight:800;color:${sickLeft<=2?'#dc2626':'#0d9488'};">${sickLeft}</td>
-                <td data-label="Casual Used" style="font-family:'Outfit',sans-serif;font-weight:700;">${used.casual}</td>
-                <td data-label="Casual Left" style="font-family:'Outfit',sans-serif;font-weight:800;color:${casualLeft<=2?'#dc2626':'#0d9488'};">${casualLeft}</td>
-                <td data-label="Total Left"><span class="badge" style="background:linear-gradient(135deg,#3b82f6,#1d4ed8);color:white;font-family:'Outfit',sans-serif;font-weight:900;padding:3px 6px;border-radius:50%;min-width:32px;min-height:32px;display:inline-flex;align-items:center;justify-content:center;font-size:0.7rem;box-shadow:0 4px 12px rgba(59,130,246,0.35);">${totalLeft}</span></td>
+                <td data-label="Sick Leave Enjoyed" style="font-family:'Outfit',sans-serif;font-weight:700;">${used.sick}</td>
+                <td data-label="Sick Leave Left" style="font-family:'Outfit',sans-serif;font-weight:800;color:${sickLeft<=2?'#dc2626':'#0d9488'};">${sickLeft}</td>
+                <td data-label="Casual Leave Enjoyed" style="font-family:'Outfit',sans-serif;font-weight:700;">${used.casual}</td>
+                <td data-label="Casual Leave Left" style="font-family:'Outfit',sans-serif;font-weight:800;color:${casualLeft<=2?'#dc2626':'#0d9488'};">${casualLeft}</td>
+                <td data-label="Total Leave Left"><span class="badge" style="background:linear-gradient(135deg,#3b82f6,#1d4ed8);color:white;font-family:'Outfit',sans-serif;font-weight:900;padding:3px 6px;border-radius:50%;min-width:32px;min-height:32px;display:inline-flex;align-items:center;justify-content:center;font-size:0.7rem;box-shadow:0 4px 12px rgba(59,130,246,0.35);">${totalLeft}</span></td>
             </tr>`;
         }).join('');
     }
