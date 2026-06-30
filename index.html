@@ -888,8 +888,76 @@ button {
     min-width: 60px;
   }
 
+  /* Leave table → card rows */
+  #leaveTable thead { display: none; }
+  #leaveTable tbody tr {
+    display: block;
+    background: rgba(255,255,255,0.55);
+    border-radius: 12px;
+    border: 1px solid rgba(148,163,184,0.28);
+    margin-bottom: 10px;
+    padding: 10px 12px;
+  }
+  #leaveTable tbody td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(148,163,184,0.12);
+    font-size: 0.72rem;
+    text-align: left;
+  }
+  #leaveTable tbody td:last-child { border-bottom: none; }
+  #leaveTable tbody td::after { display: none !important; }
+  #leaveTable tbody td[data-label]::before {
+    content: attr(data-label);
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.58rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--muted);
+    flex-shrink: 0;
+    margin-right: 8px;
+    min-width: 60px;
+  }
+
+  /* Leave Balance table → card rows */
+  #leaveBalanceTable thead { display: none; }
+  #leaveBalanceTable tbody tr {
+    display: block;
+    background: rgba(255,255,255,0.55);
+    border-radius: 12px;
+    border: 1px solid rgba(148,163,184,0.28);
+    margin-bottom: 10px;
+    padding: 10px 12px;
+  }
+  #leaveBalanceTable tbody td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(148,163,184,0.12);
+    font-size: 0.72rem;
+    text-align: left;
+  }
+  #leaveBalanceTable tbody td:last-child { border-bottom: none; }
+  #leaveBalanceTable tbody td::after { display: none !important; }
+  #leaveBalanceTable tbody td[data-label]::before {
+    content: attr(data-label);
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.58rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--muted);
+    flex-shrink: 0;
+    margin-right: 8px;
+    min-width: 70px;
+  }
+
   /* Remove min-width on mobile so no scroll needed */
-  #ongoingTable, #completedTable, #dailyTable, #monthlyTable, #atmTable {
+  #ongoingTable, #completedTable, #dailyTable, #monthlyTable, #atmTable, #leaveTable, #leaveBalanceTable {
     min-width: unset !important;
   }
   .table-scroll-wrap { overflow-x: unset; }
@@ -1370,6 +1438,98 @@ button {
         </div>
     </div>
 </div>
+
+<!-- SECTION: Leave Info -->
+<div class="dashboard-section" id="section-leave">
+    <div class="card" style="border-top:3px solid #a78bfa;">
+        <div class="card-title" style="color:#a78bfa;"><i class="fas fa-calendar-times"></i> LEAVE INFO</div>
+
+        <div class="engineer-only-notice" id="leaveAdminOnlyNotice" style="display:none;border-color:rgba(167,139,250,0.35);background:rgba(124,58,237,0.08);color:#7c3aed;">
+            <i class="fas fa-lock"></i> Only Admin can add leave entries.
+        </div>
+
+        <!-- Leave Balance Summary -->
+        <div style="background:rgba(124,58,237,0.10); border:1.5px solid rgba(124,58,237,0.30); border-radius:14px; padding:14px; margin-bottom:16px;">
+            <div style="font-family:'Outfit',sans-serif;font-size:0.75rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:#7c3aed;margin-bottom:10px;">
+                <i class="fas fa-wallet"></i> Leave Balance (Yearly: 14 Sick + 10 Casual = 24)
+            </div>
+            <div class="table-scroll-wrap">
+                <table id="leaveBalanceTable" style="min-width:520px;">
+                    <thead>
+                        <tr>
+                            <th>Technician</th>
+                            <th>Sick Used</th>
+                            <th>Sick Left</th>
+                            <th>Casual Used</th>
+                            <th>Casual Left</th>
+                            <th>Total Left</th>
+                        </tr>
+                    </thead>
+                    <tbody id="leaveBalanceBody">
+                        <tr><td colspan="6" align="center" style="padding:14px;color:#64748b;"><i class="fas fa-spinner fa-spin"></i> Loading...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="leaveEntryForm" style="display:none;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
+            <div class="input-group" style="flex:1;min-width:160px;">
+                <label><i class="fas fa-user"></i> Technician</label>
+                <select id="leavePerson">
+                    <option value="">Select</option>
+                    <option>Sumon</option><option>Alamin</option>
+                    <option>Nahid</option><option>Fahim</option>
+                </select>
+            </div>
+            <div class="input-group" style="flex:1;min-width:140px;">
+                <label><i class="far fa-calendar-alt"></i> From Date</label>
+                <input type="date" id="leaveFrom">
+            </div>
+            <div class="input-group" style="flex:1;min-width:140px;">
+                <label><i class="far fa-calendar-alt"></i> To Date</label>
+                <input type="date" id="leaveTo">
+            </div>
+            <div class="input-group" style="flex:1;min-width:170px;">
+                <label><i class="fas fa-comment-medical"></i> Leave Type</label>
+                <select id="leaveReason">
+                    <option value="">Select Type</option>
+                    <option value="Sick Leave">Sick Leave</option>
+                    <option value="Casual Leave">Casual Leave</option>
+                </select>
+            </div>
+            <div style="display:flex;align-items:flex-end;">
+                <button class="btn-assign" onclick="addLeaveEntry()" style="white-space:nowrap;min-width:130px;background:linear-gradient(135deg,#7c3aed,#a78bfa);">
+                    <i class="fas fa-check-circle"></i> Submit
+                </button>
+            </div>
+        </div>
+
+        <!-- Search & Delete -->
+        <div style="margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+            <div style="display:flex;gap:6px;align-items:center;">
+                <button class="btn-delete-mode" id="toggleDeleteLeaveBtn" onclick="toggleDeleteModeLeave()" style="display:none;">
+                    <i class="fas fa-trash-alt"></i> Delete
+                </button>
+                <button class="btn-confirm-delete" id="confirmDeleteLeaveBtn" onclick="deleteSelectedLeave()">
+                    <i class="fas fa-check"></i> Confirm
+                </button>
+            </div>
+            <input type="text" id="leaveSearch" class="search-box" placeholder="Search technician or reason..." oninput="renderLeaveTable()" style="max-width:280px;">
+        </div>
+
+        <!-- Table -->
+        <div class="table-scroll-wrap">
+            <table id="leaveTable">
+                <thead>
+                    <tr id="leaveTableHeader"><th>Technician</th><th>From</th><th>To</th><th>Type</th><th>Days</th><th>Entry By</th></tr>
+                </thead>
+                <tbody id="leaveTableBody">
+                    <tr><td colspan="6" align="center" style="padding:20px;color:#64748b;"><i class="fas fa-spinner fa-spin"></i> Loading...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
     </div><!-- end .main-content -->
 </div><!-- end .container -->
 
@@ -1397,6 +1557,11 @@ button {
 <button class="tab-item" id="tab-atm" onclick="showSection('atm')">
         <div class="tab-icon" style="color:#fbbf24;"><i class="fas fa-credit-card"></i></div>
         <span class="tab-label">ATM</span>
+    </button>
+
+<button class="tab-item" id="tab-leave" onclick="showSection('leave')">
+        <div class="tab-icon" style="color:#a78bfa;"><i class="fas fa-calendar-times"></i></div>
+        <span class="tab-label">Leave</span>
     </button>
 </nav>
 
@@ -1601,8 +1766,17 @@ document.getElementById('downloadExcelBtn').style.display = isAdmin ? 'inline-fl
 const canDelAtm = ['admin','tamim','rupchan','amit'].includes(currentUser.username);
 const atmDelBtn = document.getElementById('toggleDeleteAtmBtn');
 if (atmDelBtn) atmDelBtn.style.display = canDelAtm ? 'inline-flex' : 'none';
+const canDelLeave = ['admin','tamim','rupchan','amit'].includes(currentUser.username);
+const leaveDelBtn = document.getElementById('toggleDeleteLeaveBtn');
+if (leaveDelBtn) leaveDelBtn.style.display = canDelLeave ? 'inline-flex' : 'none';
+const isLeaveAdmin = currentUser.username === 'admin';
+const leaveFormEl = document.getElementById('leaveEntryForm');
+const leaveNoticeEl = document.getElementById('leaveAdminOnlyNotice');
+if (leaveFormEl) leaveFormEl.style.display = isLeaveAdmin ? 'flex' : 'none';
+if (leaveNoticeEl) leaveNoticeEl.style.display = isLeaveAdmin ? 'none' : 'flex';
         startFirebaseSync();
 loadAtmEntries();
+loadLeaveEntries();
     }
 
     function logout() {
@@ -1931,6 +2105,7 @@ function openEditModal(id) {
     if (!canEdit) { showPopup('warning','Access Denied','Only assigned technician or engineer can edit.'); return; }
 
     _editingTaskId = id;
+    _editingCompleted = false;
     document.getElementById('editTicket').value  = task.ticket  || '';
     document.getElementById('editArea').value    = task.area    || '';
     document.getElementById('editAddress').value = task.address || '';
@@ -1944,39 +2119,6 @@ function closeEditModal() {
     _editingCompleted = false;
 }
 
-async function saveEditTask() {
-    const task = ongoing.find(t => t.id === _editingTaskId);
-    if (!task) return;
-
-    const newTicket  = document.getElementById('editTicket').value.trim();
-    const newArea    = document.getElementById('editArea').value;
-    const newAddress = document.getElementById('editAddress').value.trim();
-    const newPerson  = document.getElementById('editPerson').value;
-
-    if (!newTicket || !newArea || !newPerson) {
-        showPopup('warning','Incomplete','Ticket, Area ও Technician অবশ্যই দিতে হবে।');
-        return;
-    }
-
-    const updated = { ...task, ticket: newTicket, area: newArea, address: newAddress, person: newPerson };
-
-    // ── আগেই local state update করো এবং modal বন্ধ করো ──
-    const idx = ongoing.findIndex(t => t.id === _editingTaskId);
-    if (idx !== -1) ongoing[idx] = updated;
-    closeEditModal();
-    renderAll();
-    showPopup('success','Updated',`Task ${newTicket} সফলভাবে update হয়েছে।`);
-
-    // ── Background এ Firebase এ save হবে ──
-    try {
-        await pushTaskToFirebase(updated);
-    } catch(e) {
-        // Firebase fail হলে local change undo করো
-        if (idx !== -1) ongoing[idx] = task;
-        renderAll();
-        showPopup('warning','Sync Error','Firebase এ save হয়নি, changes revert করা হয়েছে।');
-    }
-}
 function openEditModalCompleted(id) {
     const task = completed.find(t => t.id === id);
     if (!task) return;
@@ -2330,6 +2472,154 @@ function toggleDeleteModeAtm() {
       </tr>`;
     }).join('');
     }
+
+// ── LEAVE INFO ──
+    let leaveEntries = [];
+    const LEAVE_SICK_TOTAL   = 14;
+    const LEAVE_CASUAL_TOTAL = 10;
+    const LEAVE_TECHS = ['Sumon','Alamin','Nahid','Fahim'];
+
+    function leaveDaysBetween(from, to) {
+        const f = new Date(from), t = new Date(to);
+        const diff = Math.round((t - f) / 86400000) + 1;
+        return diff > 0 ? diff : 0;
+    }
+
+    async function loadLeaveEntries() {
+        try {
+            const data = await fbGet('leave_info');
+            if (data && typeof data === 'object') {
+                leaveEntries = Object.values(data).sort((a,b) => b.id - a.id);
+            } else { leaveEntries = []; }
+        } catch(e) { leaveEntries = []; }
+        renderLeaveTable();
+        renderLeaveBalance();
+    }
+
+    function getLeaveUsed(person) {
+        let sick = 0, casual = 0;
+        leaveEntries.forEach(e => {
+            if (e.person !== person) return;
+            const d = e.days || leaveDaysBetween(e.from, e.to);
+            if (e.reason === 'Sick Leave') sick += d;
+            else if (e.reason === 'Casual Leave') casual += d;
+        });
+        return { sick, casual };
+    }
+
+    async function addLeaveEntry() {
+        if (currentUser.username !== 'admin') { showPopup('warning','Access Denied','শুধুমাত্র Admin leave entry দিতে পারবে।'); return; }
+        const person = document.getElementById('leavePerson').value;
+        const from   = document.getElementById('leaveFrom').value;
+        const to     = document.getElementById('leaveTo').value;
+        const reason = document.getElementById('leaveReason').value;
+        if (!person || !from || !to || !reason) { showPopup('warning','Missing Info','সব ফিল্ড পূরণ করুন।'); return; }
+        if (to < from) { showPopup('warning','Invalid Dates','To Date, From Date এর আগে হতে পারবে না।'); return; }
+
+        const days = leaveDaysBetween(from, to);
+        const used = getLeaveUsed(person);
+        const limit = reason === 'Sick Leave' ? LEAVE_SICK_TOTAL : LEAVE_CASUAL_TOTAL;
+        const usedSoFar = reason === 'Sick Leave' ? used.sick : used.casual;
+        const remaining = limit - usedSoFar;
+
+        if (days > remaining) {
+            showPopup('warning','Insufficient Balance', `${person} এর ${reason} balance আছে মাত্র ${remaining} দিন, কিন্তু চাওয়া হয়েছে ${days} দিন।`);
+            return;
+        }
+
+        const entry = { id: Date.now(), person, from, to, reason, days, entryBy: currentUser.name };
+        try {
+            await fbSet(`leave_info/${entry.id}`, entry);
+            leaveEntries.unshift(entry);
+            document.getElementById('leavePerson').value = '';
+            document.getElementById('leaveFrom').value = '';
+            document.getElementById('leaveTo').value = '';
+            document.getElementById('leaveReason').value = '';
+            renderLeaveTable();
+            renderLeaveBalance();
+            showPopup('success','Leave Saved', `${person} এর ${reason} (${days} দিন) যোগ হয়েছে।`);
+        } catch(e) { showPopup('warning','Error','Could not save entry.'); }
+    }
+
+    function toggleDeleteModeLeave() {
+        if (!['admin','tamim','rupchan','amit'].includes(currentUser?.username)) { showPopup('warning','Access Denied','Only authorized users can delete.'); return; }
+        window._deleteModeLeave = !window._deleteModeLeave;
+        const btn = document.getElementById('toggleDeleteLeaveBtn');
+        const confirmBtn = document.getElementById('confirmDeleteLeaveBtn');
+        if (window._deleteModeLeave) {
+            btn.innerHTML = '<i class="fas fa-times"></i> Cancel'; btn.style.background='rgba(255,255,255,0.15)';
+            confirmBtn.classList.add('visible');
+        } else {
+            btn.innerHTML = '<i class="fas fa-trash-alt"></i> Delete'; btn.style.background='';
+            confirmBtn.classList.remove('visible');
+        }
+        renderLeaveTable();
+    }
+
+    async function deleteSelectedLeave() {
+        if (!['admin','tamim','rupchan','amit'].includes(currentUser?.username)) { showPopup('warning','Access Denied','Only authorized users can delete.'); return; }
+        const checkboxes = document.querySelectorAll('.leave-del-cb:checked');
+        if (checkboxes.length === 0) { showPopup('warning','None Selected','No entry selected.'); return; }
+        if (!confirm(`Delete ${checkboxes.length} entry(s)?`)) return;
+        const ids = Array.from(checkboxes).map(cb => cb.value);
+        try {
+            await Promise.all(ids.map(id => fetch(`${FB_URL}/leave_info/${id}.json`, { method: 'DELETE' })));
+            leaveEntries = leaveEntries.filter(e => !ids.includes(String(e.id)));
+            window._deleteModeLeave = false;
+            document.getElementById('toggleDeleteLeaveBtn').innerHTML = '<i class="fas fa-trash-alt"></i> Delete';
+            document.getElementById('toggleDeleteLeaveBtn').style.background = '';
+            document.getElementById('confirmDeleteLeaveBtn').classList.remove('visible');
+            renderLeaveTable();
+            renderLeaveBalance();
+            showPopup('success','Deleted',`${ids.length} entry(s) deleted.`);
+        } catch(e) { showPopup('warning','Error','Delete failed.'); }
+    }
+
+    function renderLeaveTable() {
+        const q = (document.getElementById('leaveSearch')?.value || '').toLowerCase();
+        const filtered = leaveEntries.filter(e =>
+            (e.person||'').toLowerCase().includes(q) || (e.reason||'').toLowerCase().includes(q)
+        );
+        const tbody = document.getElementById('leaveTableBody');
+        if (!tbody) return;
+        const inDelLeave = window._deleteModeLeave || false;
+        const colspan = inDelLeave ? '7' : '6';
+        tbody.innerHTML = filtered.length === 0
+    ? `<tr><td colspan="${colspan}" align="center" style="padding:20px;color:#64748b;"><i class="fas fa-inbox"></i> No Leave Records</td></tr>`
+    : filtered.map(e => {
+        const cb = inDelLeave ? `<td><input type="checkbox" class="delete-checkbox leave-del-cb" value="${e.id}"></td>` : '';
+        const d = e.days || leaveDaysBetween(e.from, e.to);
+        const typeColor = e.reason === 'Sick Leave' ? 'linear-gradient(135deg,#dc2626,#e11d48)' : 'linear-gradient(135deg,#7c3aed,#a78bfa)';
+        return `<tr>${cb}
+        <td data-label="Tech"><span class="badge bg-${(e.person||'').toLowerCase()}">${e.person}</span></td>
+        <td data-label="From" style="font-family:'Outfit',sans-serif;font-weight:700;">${formatDateDisplay(e.from)}</td>
+        <td data-label="To" style="font-family:'Outfit',sans-serif;font-weight:700;">${formatDateDisplay(e.to)}</td>
+        <td data-label="Type"><span class="badge" style="background:${typeColor};">${e.reason||'—'}</span></td>
+        <td data-label="Days" style="font-family:'Outfit',sans-serif;font-weight:800;">${d}</td>
+        <td data-label="By" style="color:var(--sky);font-family:'Outfit',sans-serif;font-weight:700;">${e.entryBy||'—'}</td></tr>`;
+    }).join('');
+    }
+
+    function renderLeaveBalance() {
+        const body = document.getElementById('leaveBalanceBody');
+        if (!body) return;
+        const techColors = { 'Sumon':'#0d9488', 'Alamin':'#d97706', 'Fahim':'#1d4ed8', 'Nahid':'#7c3aed' };
+        body.innerHTML = LEAVE_TECHS.map(name => {
+            const used = getLeaveUsed(name);
+            const sickLeft   = LEAVE_SICK_TOTAL - used.sick;
+            const casualLeft = LEAVE_CASUAL_TOTAL - used.casual;
+            const totalLeft  = sickLeft + casualLeft;
+            return `<tr>
+                <td data-label="Tech"><span class="badge" style="background:${techColors[name]};">${name}</span></td>
+                <td data-label="Sick Used" style="font-family:'Outfit',sans-serif;font-weight:700;">${used.sick}</td>
+                <td data-label="Sick Left" style="font-family:'Outfit',sans-serif;font-weight:800;color:${sickLeft<=2?'#dc2626':'#0d9488'};">${sickLeft}</td>
+                <td data-label="Casual Used" style="font-family:'Outfit',sans-serif;font-weight:700;">${used.casual}</td>
+                <td data-label="Casual Left" style="font-family:'Outfit',sans-serif;font-weight:800;color:${casualLeft<=2?'#dc2626':'#0d9488'};">${casualLeft}</td>
+                <td data-label="Total Left"><span class="badge" style="background:linear-gradient(135deg,#3b82f6,#1d4ed8);color:white;font-family:'Outfit',sans-serif;font-weight:900;padding:3px 6px;border-radius:50%;min-width:32px;min-height:32px;display:inline-flex;align-items:center;justify-content:center;font-size:0.7rem;box-shadow:0 4px 12px rgba(59,130,246,0.35);">${totalLeft}</span></td>
+            </tr>`;
+        }).join('');
+    }
+
     // ── PAGE INIT ──
     document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('dateInput').value = new Date().toISOString().split('T')[0];
