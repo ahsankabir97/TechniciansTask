@@ -1679,6 +1679,8 @@ button {
     let completed = [];
     let isSyncing = false;
     let fbPollInterval = null;
+    let reminderPollInterval = null;
+    const REMINDER_INTERVAL_MS = 30 * 60 * 1000; // 30 minutes follow-up reminder
 
     function togglePwVisibility() {
         const inp  = document.getElementById('loginPassword');
@@ -1798,6 +1800,8 @@ const leaveNoticeEl = document.getElementById('leaveAdminOnlyNotice');
 if (leaveFormEl) leaveFormEl.style.display = isLeaveAdmin ? 'flex' : 'none';
 if (leaveNoticeEl) leaveNoticeEl.style.display = isLeaveAdmin ? 'none' : 'flex';
         startFirebaseSync();
+        startReminderChecks();
+        requestNotificationPermission();
 loadAtmEntries();
 loadLeaveEntries();
     }
@@ -1806,6 +1810,7 @@ loadLeaveEntries();
         currentUser = null;
         clearSession();
         if (fbPollInterval) { clearInterval(fbPollInterval); fbPollInterval = null; }
+        stopReminderChecks();
         document.getElementById('mainApp').style.display = 'none';
         document.getElementById('loginScreen').style.display = 'flex';
         document.getElementById('loginUsername').value = '';
@@ -1890,6 +1895,50 @@ loadLeaveEntries();
             txt.innerText = "⚠ Offline";
         } finally {
             isSyncing = false;
+        }
+    }
+
+    // ── 30-MINUTE FOLLOW-UP REMINDER ──
+    // While an assigned technician/engineer is logged in, every 30 minutes they
+    // get reminded that a ticket assigned to them is still running (ongoing).
+    function requestNotificationPermission() {
+        if ('Notification' in window && Notification.permission === 'default') {
+            try { Notification.requestPermission(); } catch(e) {}
+        }
+    }
+
+    function startReminderChecks() {
+        if (reminderPollInterval) clearInterval(reminderPollInterval);
+        checkReminders();
+        reminderPollInterval = setInterval(checkReminders, 30000); // check every 30s, fire every 30min per task
+    }
+
+    function stopReminderChecks() {
+        if (reminderPollInterval) { clearInterval(reminderPollInterval); reminderPollInterval = null; }
+    }
+
+    async function checkReminders() {
+        if (!currentUser) return;
+        const now = Date.now();
+        const isAdmin = currentUser.username === 'admin';
+        const myTasks = isAdmin ? ongoing.filter(t => t) : ongoing.filter(t => t && (
+            (t.person && t.person.toLowerCase() === currentUser.name.toLowerCase()) ||
+            (t.assignedBy && t.assignedBy.toLowerCase() === currentUser.name.toLowerCase())
+        ));
+        for (const task of myTasks) {
+            const baseline = task.lastReminderAt || task.id;
+            if (now - baseline >= REMINDER_INTERVAL_MS) {
+                const minutes = Math.round((now - task.id) / 60000);
+                const msg = `Ticket ${task.ticket} is still running (${minutes} min). Please follow up.`;
+                showPopup('warning', 'Follow-up Reminder', msg);
+                if ('Notification' in window && Notification.permission === 'granted') {
+                    try { new Notification('Follow-up Reminder', { body: msg, tag: 'reminder-' + task.id }); } catch(e) {}
+                }
+                const updated = { ...task, lastReminderAt: now };
+                const idx = ongoing.findIndex(t => t.id === task.id);
+                if (idx !== -1) ongoing[idx] = updated;
+                try { await pushTaskToFirebase(updated); } catch(e) {}
+            }
         }
     }
 
