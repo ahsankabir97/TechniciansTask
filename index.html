@@ -436,7 +436,7 @@ button {
             border-radius: 10px;
         }
         table { width:100%; min-width:560px; border-collapse:separate; border-spacing:0; margin-top:10px; border-radius:10px; overflow:hidden; background:#ffffff; border:1px solid rgba(148,163,184,0.24); box-shadow:0 1px 4px rgba(15,23,42,0.05); }
-        th { text-align:center; padding:10px 8px; background:var(--navy); font-family:'Outfit',sans-serif; font-size:0.63rem; color:rgba(255,255,255,0.85); text-transform:uppercase; letter-spacing:0.5px; border-bottom:none; font-weight:700; position:relative; white-space:nowrap; }
+        th { text-align:center; padding:10px 8px; background:var(--grad-navtab); font-family:'Outfit',sans-serif; font-size:0.63rem; color:rgba(255,255,255,0.85); text-transform:uppercase; letter-spacing:0.5px; border-bottom:none; font-weight:700; position:relative; white-space:nowrap; }
         td { padding:9px 8px; border-bottom:1px solid rgba(148,163,184,0.14); position:relative; font-size:0.70rem; font-family:'Outfit',sans-serif; background:#ffffff; transition:background 0.15s ease; color:var(--slate-text); text-align:center; }
         tr:hover td { background:rgba(79,70,229,0.04); }
         tr:last-child td { border-bottom:none; }
@@ -447,17 +447,26 @@ button {
         .search-box:focus { outline:none; border-color:var(--teal); }
 
         /* ── BADGES ── */
-        .badge { padding:4px 10px; border-radius:6px; font-weight:700; color:white; font-size:0.58rem; font-family:'Outfit',sans-serif; display:inline-flex; align-items:center; gap:4px; width:fit-content; text-transform:uppercase; letter-spacing:0.4px; box-shadow:none; border:none; }
+        .badge {
+            --chip-color: #334155;
+            padding:4px 10px; border-radius:6px; font-weight:800; font-size:0.60rem;
+            font-family:'Outfit',sans-serif; display:inline-flex; align-items:center; gap:4px;
+            width:fit-content; text-transform:uppercase; letter-spacing:0.4px;
+            color: var(--chip-color);
+            background: color-mix(in srgb, var(--chip-color) 12%, #ffffff);
+            border: 1px solid color-mix(in srgb, var(--chip-color) 38%, #ffffff);
+            box-shadow:none;
+        }
         .area-badge { padding:3px 8px; border-radius:6px; font-weight:600; color:white; font-size:0.65rem; font-family:'Outfit',sans-serif; display:inline-flex; align-items:center; gap:3px; width:fit-content; letter-spacing:0.2px; box-shadow:none; border:none; background:var(--navy-light); }
-        .bg-sumon    { background:linear-gradient(135deg,#0d9488 0%,#4338ca 100%); }
-        .bg-alamin   { background:linear-gradient(135deg,#4338ca 0%,#6366f1 100%); }
-        .bg-nahid    { background:linear-gradient(135deg,#5b21b6 0%,#6d28d9 100%); }
-        .bg-fahim    { background:linear-gradient(135deg,#4338ca 0%,#312e81 100%); }
-        .bg-admin    { background:linear-gradient(135deg,#0f172a 0%,#1e3a5f 100%); }
-        .bg-tamim    { background:linear-gradient(135deg,#5b21b6 0%,#4338ca 100%); }
-        .bg-rupchan  { background:linear-gradient(135deg,#0d9488 0%,#065f46 100%); }
-        .bg-amit     { background:linear-gradient(135deg,#92400e 0%,#be123c 100%); }
-        .bg-bashudeb { background:linear-gradient(135deg,#475569 0%,#4338ca 100%); }
+        .bg-sumon    { --chip-color:#0f766e; }
+        .bg-alamin   { --chip-color:#1d4ed8; }
+        .bg-nahid    { --chip-color:#6d28d9; }
+        .bg-fahim    { --chip-color:#3730a3; }
+        .bg-admin    { --chip-color:#0f172a; }
+        .bg-tamim    { --chip-color:#7e22ce; }
+        .bg-rupchan  { --chip-color:#047857; }
+        .bg-amit     { --chip-color:#b45309; }
+        .bg-bashudeb { --chip-color:#0e7490; }
 
         .status-working-cell { vertical-align: middle; text-align: center; }
         .status-working { color:#be123c; font-weight:700; animation:blink 1.5s infinite; font-family:'Outfit',sans-serif; font-size:0.58rem; display:inline-flex; align-items:center; gap:4px; padding:3px 7px; background:rgba(159,18,57,0.08); border-radius:6px; border:1px solid rgba(159,18,57,0.18); backdrop-filter:blur(4px); }
@@ -642,7 +651,7 @@ button {
     color: #a5b4fc; margin-bottom: 6px;
 }
 /* ── MOBILE CARD ROWS ── */
-@media (max-width: 640px) {
+@media (max-width: 768px) {
 
   /* Ongoing table → card rows */
   #ongoingTable thead { display: none; }
@@ -885,6 +894,8 @@ button {
     margin-right: 8px;
     min-width: 70px;
   }
+
+  .badge { font-size: 0.66rem; padding: 5px 11px; }
 
   /* Remove min-width on mobile so no scroll needed */
   #ongoingTable, #completedTable, #dailyTable, #monthlyTable, #atmTable, #leaveTable, #leaveBalanceTable {
@@ -1997,7 +2008,7 @@ loadLeaveEntries();
                 <td><b style="font-family:'Outfit';">${t.ticket}</b></td>
                 <td><span class="area-badge" style="cursor:pointer;" onclick="showAddressPopup(event,'${(t.address||'').replace(/'/g,"\\'")}')"><i class="fas fa-map-marker-alt"></i> ${t.area}</span></td>
                 <td><span class="badge bg-${t.person.toLowerCase()}">${t.person}</span></td>
-                <td><span class="badge" style="background:linear-gradient(135deg,#1e3a5f,#4f46e5);">${assignedBy}</span></td>
+                <td><span class="badge" style="--chip-color:#4338ca;">${assignedBy}</span></td>
                 <td class="status-working-cell"><span class="status-working"><i class="fas fa-spinner fa-pulse"></i> Working</span></td>
 <td>${['admin','amit','rupchan','tamim'].includes(currentUser.username) ? `<button class="btn-edit" onclick="openEditModal(${t.id})" title="Edit"><i class="fas fa-pen"></i></button>` : '—'}</td></tr>`;
             }).join('');
@@ -2038,7 +2049,7 @@ loadLeaveEntries();
     function renderSummary() {
         const allTasks = [...completed];
         const techs = ['Sumon','Alamin','Fahim','Nahid'];
-        const techColors = { 'Sumon':'#0d9488', 'Alamin':'#92400e', 'Fahim':'#4338ca', 'Nahid':'#5b21b6' };
+        const techColors = { 'Sumon':'#0f766e', 'Alamin':'#1d4ed8', 'Fahim':'#3730a3', 'Nahid':'#6d28d9' };
         const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 
         const monthSet = new Set();
@@ -2732,12 +2743,12 @@ function toggleDeleteModeAtm() {
     : filtered.map(e => {
         const cb = inDelLeave ? `<td><input type="checkbox" class="delete-checkbox leave-del-cb" value="${e.id}"></td>` : '';
         const d = e.days || leaveDaysBetween(e.from, e.to);
-        const typeColor = e.reason === 'Sick Leave' ? 'linear-gradient(135deg,#be123c,#9f1239)' : 'linear-gradient(135deg,#5b21b6,#8b5cf6)';
+        const typeColor = e.reason === 'Sick Leave' ? '#be123c' : '#7e22ce';
         return `<tr>${cb}
         <td data-label="Tech"><span class="badge bg-${(e.person||'').toLowerCase()}">${e.person}</span></td>
         <td data-label="From" style="font-family:'Outfit',sans-serif;font-weight:700;">${formatDateDisplay(e.from)}</td>
         <td data-label="To" style="font-family:'Outfit',sans-serif;font-weight:700;">${formatDateDisplay(e.to)}</td>
-        <td data-label="Type"><span class="badge" style="background:${typeColor};">${e.reason||'—'}</span></td>
+        <td data-label="Type"><span class="badge" style="--chip-color:${typeColor};">${e.reason||'—'}</span></td>
         <td data-label="Days" style="font-family:'Outfit',sans-serif;font-weight:800;">${d}</td>
         <td data-label="By" style="color:var(--sky);font-family:'Outfit',sans-serif;font-weight:700;">${e.entryBy||'—'}</td></tr>`;
     }).join('');
@@ -2746,14 +2757,14 @@ function toggleDeleteModeAtm() {
     function renderLeaveBalance() {
         const body = document.getElementById('leaveBalanceBody');
         if (!body) return;
-        const techColors = { 'Sumon':'#0d9488', 'Alamin':'#92400e', 'Fahim':'#4338ca', 'Nahid':'#5b21b6' };
+        const techColors = { 'Sumon':'#0f766e', 'Alamin':'#1d4ed8', 'Fahim':'#3730a3', 'Nahid':'#6d28d9' };
         body.innerHTML = LEAVE_TECHS.map(name => {
             const used = getLeaveUsed(name);
             const sickLeft   = LEAVE_SICK_TOTAL - used.sick;
             const casualLeft = LEAVE_CASUAL_TOTAL - used.casual;
             const totalLeft  = sickLeft + casualLeft;
             return `<tr>
-                <td data-label="Tech"><span class="badge" style="background:${techColors[name]};">${name}</span></td>
+                <td data-label="Tech"><span class="badge" style="--chip-color:${techColors[name]};">${name}</span></td>
                 <td data-label="Sick Leave Enjoyed" style="font-family:'Outfit',sans-serif;font-weight:700;">${used.sick}</td>
                 <td data-label="Sick Leave Left" style="font-family:'Outfit',sans-serif;font-weight:800;color:${sickLeft<=2?'#be123c':'#0d9488'};">${sickLeft}</td>
                 <td data-label="Casual Leave Enjoyed" style="font-family:'Outfit',sans-serif;font-weight:700;">${used.casual}</td>
