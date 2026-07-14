@@ -1518,6 +1518,18 @@ button {
     });
     if (!r.ok) throw new Error('Firebase error');
 }
+    // Partial update -- merges only the given fields into the existing Firebase node,
+    // without touching other fields. Used so a periodic background write (like the
+    // 30-min follow-up reminder timestamp) can never clobber a `status` change
+    // (e.g. someone marking the ticket Done) made concurrently by another client.
+    async function fbPatch(path, data) {
+        const r = await fetch(`${FB_URL}/${path}.json`, {
+            method: 'PATCH',
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify(data)
+        });
+        if (!r.ok) throw new Error('Firebase error');
+    }
     async function fbDelete(path, taskId) {
         const taskData = ongoing.find(t => t.id === taskId) || completed.find(t => t.id === taskId);
         await fetch(`${FB_URL}/${path}.json`, { method: 'DELETE' });
@@ -1906,10 +1918,14 @@ loadLeaveEntries();
                 if ('Notification' in window && Notification.permission === 'granted') {
                     try { new Notification('Follow-up Reminder', { body: msg, tag: 'reminder-' + task.id }); } catch(e) {}
                 }
-                const updated = { ...task, lastReminderAt: now };
                 const idx = ongoing.findIndex(t => t.id === task.id);
-                if (idx !== -1) ongoing[idx] = updated;
-                try { await pushTaskToFirebase(updated); } catch(e) {}
+                if (idx !== -1) ongoing[idx] = { ...task, lastReminderAt: now };
+                // Use a partial PATCH (only lastReminderAt), never a full task PUT here.
+                // This local `task` object came from the last 5s poll and can be stale --
+                // if someone else marked it Done in the meantime, pushing the whole stale
+                // object back would overwrite status: "completed" with the old "ongoing",
+                // which is exactly what made Done tickets reappear in the pending list.
+                try { await fbPatch(`tasks/${task.id}`, { lastReminderAt: now }); } catch(e) {}
             }
         }
     }
