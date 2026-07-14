@@ -9,31 +9,32 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --navy:        #0f1f3d;
-            --navy-mid:    #1a3158;
-            --navy-light:  #1e3a6e;
-            --steel:       #2e4a7a;
-            --sky:         #2563eb;
-            --sky-light:   #3b82f6;
+            --navy:        #0f172a;
+            --navy-mid:    #1e293b;
+            --navy-light:  #1e3a5f;
+            --steel:       #475569;
+            --sky:         #4f46e5;
+            --sky-light:   #6366f1;
             --teal:        #0d9488;
             --teal-light:  #14b8a6;
-            --amber:       #d97706;
-            --amber-light: #f59e0b;
-            --crimson:     #dc2626;
-            --rose:        #e11d48;
+            --amber:       #92400e;
+            --amber-light: #b45309;
+            --crimson:     #be123c;
+            --rose:        #9f1239;
             --slate-text:  #334155;
             --muted:       #64748b;
             --soft:        #94a3b8;
-            --grad-header:   linear-gradient(135deg, #0f1f3d 0%, #1e3a6e 60%, #1a3158 100%);
-            --grad-primary:  linear-gradient(135deg, #1e3a6e 0%, #2563eb 100%);
+            --grad-header:   linear-gradient(135deg, #0f172a 0%, #1e3a5f 60%, #1e293b 100%);
+            --grad-primary:  linear-gradient(135deg, #1e3a5f 0%, #4f46e5 100%);
             --grad-success:  linear-gradient(135deg, #0d9488 0%, #14b8a6 100%);
-            --grad-danger:   linear-gradient(135deg, #dc2626 0%, #e11d48 100%);
-            --grad-warning:  linear-gradient(135deg, #d97706 0%, #f59e0b 100%);
-            --grad-assign:   linear-gradient(135deg, #1e3a6e 0%, #2563eb 100%);
+            --grad-danger:   linear-gradient(135deg, #be123c 0%, #9f1239 100%);
+            --grad-warning:  linear-gradient(135deg, #92400e 0%, #b45309 100%);
+            --grad-assign:   linear-gradient(135deg, #1e3a5f 0%, #4f46e5 100%);
+            --grad-navtab:   linear-gradient(135deg, #0f172a 0%, #123a52 55%, #0f5c52 100%);
             --glass-bg:        rgba(255,255,255,0.86);
             --glass-bg-hover:  rgba(255,255,255,0.95);
             --glass-border:    rgba(148,163,184,0.24);
-            --glass-shadow:    0 2px 10px rgba(15,31,61,0.06);
+            --glass-shadow:    0 2px 10px rgba(15,23,42,0.06);
             --glass-blur:      blur(6px);
             --radius: 14px;
         }
@@ -68,10 +69,10 @@ button {
     font-weight: 700; font-size: 0.58rem;
     display: inline-flex; align-items: center; gap: 4px;
     transition: all 0.2s ease; text-transform: uppercase;
-    letter-spacing: 0.5px; box-shadow: 0 4px 12px rgba(220,38,38,0.28);
+    letter-spacing: 0.5px; box-shadow: 0 4px 12px rgba(190,18,60,0.28);
     border: 1px solid rgba(255,255,255,0.2);
 }
-.btn-delete-mode:hover { transform: translateY(-1px); box-shadow: 0 5px 14px rgba(220,38,38,0.40); }
+.btn-delete-mode:hover { transform: translateY(-1px); box-shadow: 0 5px 14px rgba(190,18,60,0.40); }
 .btn-confirm-delete {
     background: var(--grad-danger);
     color: white; border: none;
@@ -81,26 +82,26 @@ button {
     align-items: center; gap: 4px;
     transition: all 0.2s ease; text-transform: uppercase;
     letter-spacing: 0.5px;
-    box-shadow: 0 4px 12px rgba(220,38,38,0.28);
+    box-shadow: 0 4px 12px rgba(190,18,60,0.28);
     border: 1px solid rgba(255,255,255,0.2);
     margin-left: 8px;
     display: none !important;
 }
 .btn-confirm-delete:hover { 
     transform: translateY(-1px); 
-    box-shadow: 0 5px 14px rgba(220,38,38,0.40); 
+    box-shadow: 0 5px 14px rgba(190,18,60,0.40); 
 }
 .btn-confirm-delete.visible { 
     display: inline-flex !important; 
 }
-.delete-checkbox { width: 16px; height: 16px; cursor: pointer; accent-color: #dc2626; }
+.delete-checkbox { width: 16px; height: 16px; cursor: pointer; accent-color: #be123c; }
 
         /* ── LOGIN SCREEN ── */
         #loginScreen {
             position: fixed; inset: 0; z-index: 9999;
             display: flex; align-items: center; justify-content: center;
             padding: 15px;
-            background: linear-gradient(160deg, #0c1a33 0%, #14264a 100%);
+            background: linear-gradient(160deg, #0f172a 0%, #1e293b 100%);
         }
         .login-box {
             background: rgba(255,255,255,0.06);
@@ -140,16 +141,16 @@ button {
             box-sizing: border-box;
         }
         .login-input::placeholder { color: rgba(255,255,255,0.28); }
-        .login-input:focus { border-color: rgba(59,130,246,0.65); background: rgba(255,255,255,0.12); box-shadow: 0 0 0 3px rgba(37,99,235,0.18); }
+        .login-input:focus { border-color: rgba(99,102,241,0.65); background: rgba(255,255,255,0.12); box-shadow: 0 0 0 3px rgba(79,70,229,0.18); }
         .login-input-icon {
             position: absolute; right: 13px; top: 50%; transform: translateY(-50%);
             color: rgba(255,255,255,0.30); font-size: 0.82rem; cursor: pointer;
         }
         .login-input-icon:hover { color: rgba(255,255,255,0.65); }
         .login-error {
-            background: rgba(220,38,38,0.18); border: 1px solid rgba(220,38,38,0.35);
+            background: rgba(190,18,60,0.18); border: 1px solid rgba(190,18,60,0.35);
             border-radius: 8px; padding: 9px 12px;
-            font-size: 0.73rem; color: #fca5a5;
+            font-size: 0.73rem; color: #fda4af;
             font-family: 'Outfit', sans-serif;
             margin-bottom: 14px; text-align: left;
             display: none; align-items: center; gap: 7px;
@@ -162,7 +163,7 @@ button {
             font-family: 'Outfit', sans-serif; font-weight: 700;
             font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.8px;
             cursor: pointer; transition: all 0.2s ease;
-            box-shadow: 0 2px 8px rgba(37,99,235,0.25);
+            box-shadow: 0 2px 8px rgba(79,70,229,0.25);
             display: flex; align-items: center; justify-content: center; gap: 8px;
             margin-top: 6px;
         }
@@ -178,7 +179,7 @@ button {
         }
         #changePwModal.active { display: flex; }
         .cpm-box {
-            background: linear-gradient(145deg, #0f1f3d, #1a3158);
+            background: linear-gradient(145deg, #0f172a, #1e293b);
             border: 1px solid rgba(255,255,255,0.15);
             border-radius: 20px; padding: 28px 24px;
             width: 100%; max-width: 380px;
@@ -274,11 +275,11 @@ button {
 
         /* ── HEADER ── (CHANGED: slim border bottom) */
         header {
-            background: var(--navy);
+            background: var(--grad-navtab);
             padding: 14px 20px; border-radius: var(--radius);
             color: white; display: flex;
             justify-content: space-between; align-items: center;
-            box-shadow: 0 2px 10px rgba(15,31,61,0.18);
+            box-shadow: 0 2px 10px rgba(15,23,42,0.18);
             margin-bottom: 14px; position: relative; overflow: hidden;
             border: 1px solid rgba(255,255,255,0.08);
             border-bottom: 2px solid var(--sky);
@@ -295,7 +296,7 @@ button {
             white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
             line-height: 1.2;
         }
-        .company-name { font-family:'Outfit',sans-serif; font-size:0.92rem; font-weight:600; color:#93c5fd; display:block; letter-spacing:0.3px; line-height:1.2; }
+        .company-name { font-family:'Outfit',sans-serif; font-size:0.92rem; font-weight:600; color:#a5b4fc; display:block; letter-spacing:0.3px; line-height:1.2; }
         .header-right { text-align:right; position:relative; z-index:2; display:flex; align-items:center; gap:8px; flex-shrink:0; }
         .datetime-container { display:flex; flex-direction:column; align-items:flex-end; gap:2px; }
         #liveDate { font-family:'Outfit',sans-serif; font-size:0.65rem; font-weight:500; color:rgba(255,255,255,0.70); letter-spacing:0.3px; }
@@ -306,16 +307,16 @@ button {
             font-weight: 700;
             font-size: 0.62rem;
             letter-spacing: 1px;
-            color: #86efac;
+            color: #6ee7b7;
         }
         .sync-indicator { display: none; }
         .live-dot {
             width: 7px; height: 7px;
             border-radius: 50%;
-            background: #4ade80;
+            background: #34d399;
             flex-shrink: 0;
         }
-        .sync-indicator.updating { background:#facc15; animation:pulse 1s infinite; }
+        .sync-indicator.updating { background:#ca8a04; animation:pulse 1s infinite; }
 
         .current-user-badge {
             background: rgba(255,255,255,0.10);
@@ -362,8 +363,8 @@ button {
         .card-title { font-family:'Outfit',sans-serif; font-weight:700; font-size:0.85rem; margin-bottom:14px; display:flex; align-items:center; gap:8px; text-transform:uppercase; letter-spacing:0.4px; border-bottom:1px solid rgba(148,163,184,0.20); padding-bottom:12px; }
 
         .engineer-only-notice {
-            background: rgba(37,99,235,0.08);
-            border: 1px dashed rgba(37,99,235,0.30);
+            background: rgba(79,70,229,0.08);
+            border: 1px dashed rgba(79,70,229,0.30);
             border-radius: 10px; padding: 10px 14px;
             font-size: 0.73rem; color: var(--sky);
             font-family: 'Outfit', sans-serif;
@@ -379,7 +380,7 @@ button {
         .input-group { display:flex; flex-direction:column; gap:6px; }
         label { font-family:'Outfit',sans-serif; font-size:0.65rem; font-weight:700; color:var(--navy-mid); text-transform:uppercase; letter-spacing:0.5px; }
         input, select { padding:10px 12px; border:1.5px solid rgba(148,163,184,0.35); border-radius:8px; outline:none; font-family:'Outfit',sans-serif; font-size:0.82rem; background:#ffffff; color:var(--slate-text); transition:all 0.2s ease; width:100%; }
-        input:focus, select:focus { border-color:var(--sky); box-shadow:0 0 0 3px rgba(37,99,235,0.12); }
+        input:focus, select:focus { border-color:var(--sky); box-shadow:0 0 0 3px rgba(79,70,229,0.12); }
 
         /* ── BUTTONS ── */
         .btn-assign { 
@@ -396,7 +397,7 @@ button {
     text-transform:uppercase; 
     letter-spacing:0.6px; 
     transition:all 0.2s ease; 
-    box-shadow:0 2px 8px rgba(37,99,235,0.20); 
+    box-shadow:0 2px 8px rgba(79,70,229,0.20); 
     display:flex; 
     align-items:center; 
     justify-content:center; 
@@ -406,26 +407,26 @@ button {
     max-width:480px; 
     margin:0 auto; 
 }
-        .btn-assign:hover { filter:brightness(1.08); box-shadow:0 4px 12px rgba(37,99,235,0.28); }
+        .btn-assign:hover { filter:brightness(1.08); box-shadow:0 4px 12px rgba(79,70,229,0.28); }
         .btn-assign:disabled { opacity:0.6; cursor:not-allowed; transform:none; }
         .btn-done { background:var(--grad-success); color:white; border:none; padding:5px 10px; border-radius:6px; cursor:pointer; font-family:'Outfit',sans-serif; font-weight:700; font-size:0.58rem; margin-top:5px; display:inline-flex; transition:all 0.2s ease; text-transform:uppercase; letter-spacing:0.5px; box-shadow:0 1px 4px rgba(13,148,136,0.20); align-items:center; gap:4px; border:1px solid rgba(255,255,255,0.2); }
         .btn-done:hover { filter:brightness(1.08); }
 .btn-edit {
-    background: linear-gradient(135deg, #d97706, #f59e0b);
+    background: linear-gradient(135deg, #92400e, #b45309);
     color: white; border: none;
-    padding: 5px 10px; border-radius: 6px;
+    width: 30px; height: 30px; padding: 0; border-radius: 50%;
     cursor: pointer; font-family: 'Outfit', sans-serif;
-    font-weight: 700; font-size: 0.58rem;
-    display: inline-flex; align-items: center; gap: 4px;
-    transition: all 0.2s ease; text-transform: uppercase;
-    letter-spacing: 0.5px; box-shadow: 0 1px 4px rgba(217,119,6,0.20);
+    font-size: 0.72rem;
+    display: inline-flex; align-items: center; justify-content: center;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 4px rgba(146,64,14,0.20);
     border: 1px solid rgba(255,255,255,0.2);
 }
-.btn-edit:hover { filter:brightness(1.08); }
-        .btn-clear { background:var(--grad-danger); color:white; border:none; padding:10px 16px; border-radius:8px; cursor:pointer; font-family:'Outfit',sans-serif; font-weight:700; font-size:0.72rem; transition:all 0.3s ease; text-transform:uppercase; letter-spacing:0.5px; box-shadow:0 4px 12px rgba(220,38,38,0.22); display:flex; align-items:center; gap:6px; border:1px solid rgba(255,255,255,0.15); }
-        .btn-clear:hover { transform:translateY(-2px); box-shadow:0 6px 18px rgba(220,38,38,0.32); }
+.btn-edit:hover { filter:brightness(1.08); transform:scale(1.08); }
+        .btn-clear { background:var(--grad-danger); color:white; border:none; padding:10px 16px; border-radius:8px; cursor:pointer; font-family:'Outfit',sans-serif; font-weight:700; font-size:0.72rem; transition:all 0.3s ease; text-transform:uppercase; letter-spacing:0.5px; box-shadow:0 4px 12px rgba(190,18,60,0.22); display:flex; align-items:center; gap:6px; border:1px solid rgba(255,255,255,0.15); }
+        .btn-clear:hover { transform:translateY(-2px); box-shadow:0 6px 18px rgba(190,18,60,0.32); }
         .btn-logout { background:rgba(255,255,255,0.08); color:#fff; border:1px solid rgba(255,255,255,0.20); padding:7px 10px; border-radius:8px; cursor:pointer; font-family:'Outfit',sans-serif; font-weight:600; font-size:0.65rem; text-transform:uppercase; transition:all 0.2s; display:flex; align-items:center; gap:6px; }
-        .btn-logout:hover { background:rgba(220,38,38,0.20); border-color:rgba(220,38,38,0.40); }
+        .btn-logout:hover { background:rgba(190,18,60,0.20); border-color:rgba(190,18,60,0.40); }
 
         /* ── TABLES ── */
         .table-scroll-wrap {
@@ -434,13 +435,13 @@ button {
             -webkit-overflow-scrolling: touch;
             border-radius: 10px;
         }
-        table { width:100%; min-width:560px; border-collapse:separate; border-spacing:0; margin-top:10px; border-radius:10px; overflow:hidden; background:#ffffff; border:1px solid rgba(148,163,184,0.24); box-shadow:0 1px 4px rgba(15,31,61,0.05); }
+        table { width:100%; min-width:560px; border-collapse:separate; border-spacing:0; margin-top:10px; border-radius:10px; overflow:hidden; background:#ffffff; border:1px solid rgba(148,163,184,0.24); box-shadow:0 1px 4px rgba(15,23,42,0.05); }
         th { text-align:center; padding:10px 8px; background:var(--navy); font-family:'Outfit',sans-serif; font-size:0.63rem; color:rgba(255,255,255,0.85); text-transform:uppercase; letter-spacing:0.5px; border-bottom:none; font-weight:700; position:relative; white-space:nowrap; }
         td { padding:9px 8px; border-bottom:1px solid rgba(148,163,184,0.14); position:relative; font-size:0.70rem; font-family:'Outfit',sans-serif; background:#ffffff; transition:background 0.15s ease; color:var(--slate-text); text-align:center; }
-        tr:hover td { background:rgba(37,99,235,0.04); }
+        tr:hover td { background:rgba(79,70,229,0.04); }
         tr:last-child td { border-bottom:none; }
         tr:nth-child(even) td { background:rgba(241,245,249,0.6); }
-        tr:nth-child(even):hover td { background:rgba(37,99,235,0.05); }
+        tr:nth-child(even):hover td { background:rgba(79,70,229,0.05); }
 
         .search-box { padding:9px 11px; border:1.5px solid rgba(148,163,184,0.35); border-radius:8px; font-size:0.74rem; font-family:'Outfit',sans-serif; background:#ffffff; color:var(--slate-text); }
         .search-box:focus { outline:none; border-color:var(--teal); }
@@ -448,28 +449,28 @@ button {
         /* ── BADGES ── */
         .badge { padding:4px 10px; border-radius:6px; font-weight:700; color:white; font-size:0.58rem; font-family:'Outfit',sans-serif; display:inline-flex; align-items:center; gap:4px; width:fit-content; text-transform:uppercase; letter-spacing:0.4px; box-shadow:none; border:none; }
         .area-badge { padding:3px 8px; border-radius:6px; font-weight:600; color:white; font-size:0.65rem; font-family:'Outfit',sans-serif; display:inline-flex; align-items:center; gap:3px; width:fit-content; letter-spacing:0.2px; box-shadow:none; border:none; background:var(--navy-light); }
-        .bg-sumon    { background:linear-gradient(135deg,#0d9488 0%,#0891b2 100%); }
-        .bg-alamin   { background:linear-gradient(135deg,#0891b2 0%,#6366f1 100%); }
-        .bg-nahid    { background:linear-gradient(135deg,#7c3aed 0%,#a21caf 100%); }
-        .bg-fahim    { background:linear-gradient(135deg,#1d4ed8 0%,#1e3a8a 100%); }
-        .bg-admin    { background:linear-gradient(135deg,#0f1f3d 0%,#1e3a6e 100%); }
-        .bg-tamim    { background:linear-gradient(135deg,#7c3aed 0%,#4338ca 100%); }
+        .bg-sumon    { background:linear-gradient(135deg,#0d9488 0%,#4338ca 100%); }
+        .bg-alamin   { background:linear-gradient(135deg,#4338ca 0%,#6366f1 100%); }
+        .bg-nahid    { background:linear-gradient(135deg,#5b21b6 0%,#6d28d9 100%); }
+        .bg-fahim    { background:linear-gradient(135deg,#4338ca 0%,#312e81 100%); }
+        .bg-admin    { background:linear-gradient(135deg,#0f172a 0%,#1e3a5f 100%); }
+        .bg-tamim    { background:linear-gradient(135deg,#5b21b6 0%,#4338ca 100%); }
         .bg-rupchan  { background:linear-gradient(135deg,#0d9488 0%,#065f46 100%); }
-        .bg-amit     { background:linear-gradient(135deg,#ea580c 0%,#dc2626 100%); }
-        .bg-bashudeb { background:linear-gradient(135deg,#0891b2 0%,#1d4ed8 100%); }
+        .bg-amit     { background:linear-gradient(135deg,#92400e 0%,#be123c 100%); }
+        .bg-bashudeb { background:linear-gradient(135deg,#475569 0%,#4338ca 100%); }
 
         .status-working-cell { vertical-align: middle; text-align: center; }
-        .status-working { color:#be123c; font-weight:700; animation:blink 1.5s infinite; font-family:'Outfit',sans-serif; font-size:0.58rem; display:inline-flex; align-items:center; gap:4px; padding:3px 7px; background:rgba(225,29,72,0.08); border-radius:6px; border:1px solid rgba(225,29,72,0.18); backdrop-filter:blur(4px); }
+        .status-working { color:#be123c; font-weight:700; animation:blink 1.5s infinite; font-family:'Outfit',sans-serif; font-size:0.58rem; display:inline-flex; align-items:center; gap:4px; padding:3px 7px; background:rgba(159,18,57,0.08); border-radius:6px; border:1px solid rgba(159,18,57,0.18); backdrop-filter:blur(4px); }
         @keyframes blink { 50%{ opacity:0.35; } }
 
         /* ── POPUP ── */
         .popup-message { position:fixed; top:14px; right:10px; left:10px; z-index:10000; animation:slideInRight 0.5s ease forwards; }
         @media (min-width: 480px) { .popup-message { left:auto; max-width:300px; } }
-        .popup-content { background:#ffffff; border-radius:10px; padding:14px 18px; box-shadow:0 8px 24px rgba(15,31,61,0.16); border:1px solid rgba(148,163,184,0.20); position:relative; overflow:hidden; }
+        .popup-content { background:#ffffff; border-radius:10px; padding:14px 18px; box-shadow:0 8px 24px rgba(15,23,42,0.16); border:1px solid rgba(148,163,184,0.20); position:relative; overflow:hidden; }
         .popup-content::before { content:''; position:absolute; top:0; left:0; right:0; height:4px; background:var(--grad-primary); }
         .popup-content.warning::before { background:var(--grad-warning); }
         .popup-content.success::before { background:var(--grad-success); }
-        .popup-content.info::before    { background:linear-gradient(90deg,#2563eb,#0ea5e9); }
+        .popup-content.info::before    { background:linear-gradient(90deg,#4f46e5,#6366f1); }
         .popup-title { font-family:'Outfit',sans-serif; font-weight:700; font-size:0.82rem; color:var(--navy); margin-bottom:4px; text-transform:uppercase; letter-spacing:0.5px; display:flex; align-items:center; gap:8px; }
         .popup-text { font-family:'Outfit',sans-serif; font-size:0.77rem; color:var(--muted); line-height:1.4; margin-left:28px; }
         .popup-close { position:absolute; top:10px; right:10px; background:none; border:none; color:var(--soft); font-size:1.1rem; cursor:pointer; width:24px; height:24px; border-radius:50%; display:flex; align-items:center; justify-content:center; transition:all 0.2s ease; }
@@ -497,10 +498,10 @@ button {
             position: fixed;
             bottom: 0; left: 0; right: 0;
             z-index: 1000;
-            background: var(--navy);
+            background: var(--grad-navtab);
             border-top: 1px solid rgba(255,255,255,0.08);
             display: flex;
-            box-shadow: 0 -2px 10px rgba(15,31,61,0.20);
+            box-shadow: 0 -2px 10px rgba(15,23,42,0.20);
             padding-bottom: env(safe-area-inset-bottom, 0px);
         }
         .tab-item {
@@ -541,13 +542,13 @@ button {
         .tab-item.active .tab-icon {
             transform: translateY(-2px);
         }
-        .tab-icon-assign  { color: #93c5fd; }
-        .tab-icon-summary { color: #7dd3fc; }
+        .tab-icon-assign  { color: #a5b4fc; }
+        .tab-icon-summary { color: #a5b4fc; }
         .tab-icon-ongoing { color: #fda4af; }
         .tab-icon-done    { color: #99f6e4; }
-        .tab-item.active .tab-icon-assign  { background: rgba(37,99,235,0.30); }
-        .tab-item.active .tab-icon-summary { background: rgba(2,132,199,0.30); }
-        .tab-item.active .tab-icon-ongoing { background: rgba(225,29,72,0.25); }
+        .tab-item.active .tab-icon-assign  { background: rgba(79,70,229,0.30); }
+        .tab-item.active .tab-icon-summary { background: rgba(99,102,241,0.30); }
+        .tab-item.active .tab-icon-ongoing { background: rgba(159,18,57,0.25); }
         .tab-item.active .tab-icon-done    { background: rgba(13,148,136,0.25); }
         .tab-item {
             transition: background 0.2s ease;
@@ -576,7 +577,7 @@ button {
         .tab-badge {
             position: absolute;
             top: 4px; right: calc(50% - 20px);
-            background: rgba(225,29,72,0.9);
+            background: rgba(159,18,57,0.9);
             border: 1px solid rgba(255,255,255,0.25);
             color: #fff;
             font-family: 'Outfit', sans-serif;
@@ -623,10 +624,10 @@ button {
 
 #addressFloatBox {
     position: fixed; z-index: 99999;
-    background: linear-gradient(135deg, #0f1f3d, #1e3a6e);
-    border: 1px solid rgba(59,130,246,0.45);
+    background: linear-gradient(135deg, #0f172a, #1e3a5f);
+    border: 1px solid rgba(99,102,241,0.45);
     border-radius: 12px; padding: 14px 18px;
-    box-shadow: 0 12px 35px rgba(15,31,61,0.45);
+    box-shadow: 0 12px 35px rgba(15,23,42,0.45);
     color: #fff; font-family: 'Outfit', sans-serif;
     font-size: 0.80rem; max-width: 240px;
     display: none; line-height: 1.6;
@@ -638,7 +639,7 @@ button {
     font-family: 'Outfit', sans-serif;
     font-size: 0.60rem; font-weight: 700;
     text-transform: uppercase; letter-spacing: 1px;
-    color: #7dd3fc; margin-bottom: 6px;
+    color: #a5b4fc; margin-bottom: 6px;
 }
 /* ── MOBILE CARD ROWS ── */
 @media (max-width: 640px) {
@@ -652,7 +653,7 @@ button {
     border: 1px solid rgba(148,163,184,0.28);
     margin-bottom: 10px;
     padding: 10px 12px;
-    box-shadow: 0 2px 8px rgba(15,31,61,0.07);
+    box-shadow: 0 2px 8px rgba(15,23,42,0.07);
   }
   #ongoingTable tbody tr:hover { background: #f8fafc; }
   #ongoingTable tbody td {
@@ -688,7 +689,7 @@ button {
     border: 1px solid rgba(148,163,184,0.28);
     margin-bottom: 10px;
     padding: 10px 12px;
-    box-shadow: 0 2px 8px rgba(15,31,61,0.07);
+    box-shadow: 0 2px 8px rgba(15,23,42,0.07);
   }
   #completedTable tbody tr:hover { background: #f8fafc; }
   #completedTable tbody td {
@@ -983,9 +984,9 @@ button {
 </div>
 <!-- EDIT TASK MODAL -->
 <div id="editTaskModal" style="position:fixed;inset:0;z-index:99999;display:none;align-items:center;justify-content:center;padding:15px;background:rgba(10,20,45,0.75);backdrop-filter:blur(8px);">
-    <div style="background:linear-gradient(145deg,#0f1f3d,#1a3158);border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:28px 24px;width:100%;max-width:420px;box-shadow:0 20px 55px rgba(0,0,0,0.40);">
+    <div style="background:linear-gradient(145deg,#0f172a,#1e293b);border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:28px 24px;width:100%;max-width:420px;box-shadow:0 20px 55px rgba(0,0,0,0.40);">
         <div style="font-family:'Outfit',sans-serif;font-weight:800;font-size:0.9rem;color:#fff;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;display:flex;align-items:center;gap:9px;">
-            <i class="fas fa-pen" style="color:#f59e0b;"></i> Edit Task
+            <i class="fas fa-pen" style="color:#b45309;"></i> Edit Task
         </div>
         <div style="font-size:0.7rem;color:rgba(255,255,255,0.45);margin-bottom:22px;font-family:'Outfit',sans-serif;">Ongoing task details update করুন</div>
 
@@ -1001,23 +1002,23 @@ button {
             <div class="login-input-wrap">
                 <select id="editArea" class="login-input" style="background:#0f2244;color:#fff;border:1.5px solid rgba(255,255,255,0.18);">
                     <option value="" style="background:#0f2244;color:rgba(255,255,255,0.45);">Select Area</option>
-<option style="background:#0f2244;color:#7dd3fc;">Aganagar</option><option style="background:#0f2244;color:#7dd3fc;">Babubazar</option><option style="background:#0f2244;color:#7dd3fc;">Bangshal</option>
-<option style="background:#0f2244;color:#7dd3fc;">BailyRoad</option><option style="background:#0f2244;color:#7dd3fc;">Chawkbazar</option><option style="background:#0f2244;color:#7dd3fc;">Dhalpur</option>
-<option style="background:#0f2244;color:#7dd3fc;">Donia</option><option style="background:#0f2244;color:#7dd3fc;">Demra</option><option style="background:#0f2244;color:#7dd3fc;">Eskaton</option>
-<option style="background:#0f2244;color:#7dd3fc;">Ganderia</option><option style="background:#0f2244;color:#7dd3fc;">Gulistan</option><option style="background:#0f2244;color:#7dd3fc;">Imamganj</option>
-<option style="background:#0f2244;color:#7dd3fc;">Islampur</option><option style="background:#0f2244;color:#7dd3fc;">Jatrabari</option><option style="background:#0f2244;color:#7dd3fc;">Joypara</option>
-<option style="background:#0f2244;color:#7dd3fc;">Jurain</option><option style="background:#0f2244;color:#7dd3fc;">Kakrail</option><option style="background:#0f2244;color:#7dd3fc;">Kamlapur</option>
-<option style="background:#0f2244;color:#7dd3fc;">Keraniganj</option><option style="background:#0f2244;color:#7dd3fc;">Lalbagh</option><option style="background:#0f2244;color:#7dd3fc;">Matuail</option>
-<option style="background:#0f2244;color:#7dd3fc;">Malibag</option><option style="background:#0f2244;color:#7dd3fc;">Mitford</option><option style="background:#0f2244;color:#7dd3fc;">Moghbazar</option>
-<option style="background:#0f2244;color:#7dd3fc;">Motijheel</option><option style="background:#0f2244;color:#7dd3fc;">Moulovibazar</option><option style="background:#0f2244;color:#7dd3fc;">Nawabpur</option>
-<option style="background:#0f2244;color:#7dd3fc;">Nayabazar</option><option value="Purana Paltan" style="background:#0f2244;color:#7dd3fc;">Purana Paltan</option>
-<option value="Naya Paltan" style="background:#0f2244;color:#7dd3fc;">Naya Paltan</option><option style="background:#0f2244;color:#7dd3fc;">Rajarbag</option>
-<option style="background:#0f2244;color:#7dd3fc;">Ramna</option><option value="RK Mission Road" style="background:#0f2244;color:#7dd3fc;">RK Mission</option>
-<option style="background:#0f2244;color:#7dd3fc;">SadarGhat</option><option style="background:#0f2244;color:#7dd3fc;">SanirAkhra</option><option style="background:#0f2244;color:#7dd3fc;">Segunbagicha</option>
-<option style="background:#0f2244;color:#7dd3fc;">Shahjahanpur</option><option style="background:#0f2244;color:#7dd3fc;">Shantinagar</option><option style="background:#0f2244;color:#7dd3fc;">Shyampur</option>
-<option style="background:#0f2244;color:#7dd3fc;">Siddheshwari</option><option style="background:#0f2244;color:#7dd3fc;">Tikatuli</option><option style="background:#0f2244;color:#7dd3fc;">Wari</option>
-<option style="background:#0f2244;color:#7dd3fc;">Gopibag</option><option style="background:#0f2244;color:#7dd3fc;">Maniknagar</option><option style="background:#0f2244;color:#7dd3fc;">Nimtola</option>
-<option style="background:#0f2244;color:#7dd3fc;">Fakirapool</option><option style="background:#0f2244;color:#7dd3fc;">AlauddinRoad</option>
+<option style="background:#0f2244;color:#a5b4fc;">Aganagar</option><option style="background:#0f2244;color:#a5b4fc;">Babubazar</option><option style="background:#0f2244;color:#a5b4fc;">Bangshal</option>
+<option style="background:#0f2244;color:#a5b4fc;">BailyRoad</option><option style="background:#0f2244;color:#a5b4fc;">Chawkbazar</option><option style="background:#0f2244;color:#a5b4fc;">Dhalpur</option>
+<option style="background:#0f2244;color:#a5b4fc;">Donia</option><option style="background:#0f2244;color:#a5b4fc;">Demra</option><option style="background:#0f2244;color:#a5b4fc;">Eskaton</option>
+<option style="background:#0f2244;color:#a5b4fc;">Ganderia</option><option style="background:#0f2244;color:#a5b4fc;">Gulistan</option><option style="background:#0f2244;color:#a5b4fc;">Imamganj</option>
+<option style="background:#0f2244;color:#a5b4fc;">Islampur</option><option style="background:#0f2244;color:#a5b4fc;">Jatrabari</option><option style="background:#0f2244;color:#a5b4fc;">Joypara</option>
+<option style="background:#0f2244;color:#a5b4fc;">Jurain</option><option style="background:#0f2244;color:#a5b4fc;">Kakrail</option><option style="background:#0f2244;color:#a5b4fc;">Kamlapur</option>
+<option style="background:#0f2244;color:#a5b4fc;">Keraniganj</option><option style="background:#0f2244;color:#a5b4fc;">Lalbagh</option><option style="background:#0f2244;color:#a5b4fc;">Matuail</option>
+<option style="background:#0f2244;color:#a5b4fc;">Malibag</option><option style="background:#0f2244;color:#a5b4fc;">Mitford</option><option style="background:#0f2244;color:#a5b4fc;">Moghbazar</option>
+<option style="background:#0f2244;color:#a5b4fc;">Motijheel</option><option style="background:#0f2244;color:#a5b4fc;">Moulovibazar</option><option style="background:#0f2244;color:#a5b4fc;">Nawabpur</option>
+<option style="background:#0f2244;color:#a5b4fc;">Nayabazar</option><option value="Purana Paltan" style="background:#0f2244;color:#a5b4fc;">Purana Paltan</option>
+<option value="Naya Paltan" style="background:#0f2244;color:#a5b4fc;">Naya Paltan</option><option style="background:#0f2244;color:#a5b4fc;">Rajarbag</option>
+<option style="background:#0f2244;color:#a5b4fc;">Ramna</option><option value="RK Mission Road" style="background:#0f2244;color:#a5b4fc;">RK Mission</option>
+<option style="background:#0f2244;color:#a5b4fc;">SadarGhat</option><option style="background:#0f2244;color:#a5b4fc;">SanirAkhra</option><option style="background:#0f2244;color:#a5b4fc;">Segunbagicha</option>
+<option style="background:#0f2244;color:#a5b4fc;">Shahjahanpur</option><option style="background:#0f2244;color:#a5b4fc;">Shantinagar</option><option style="background:#0f2244;color:#a5b4fc;">Shyampur</option>
+<option style="background:#0f2244;color:#a5b4fc;">Siddheshwari</option><option style="background:#0f2244;color:#a5b4fc;">Tikatuli</option><option style="background:#0f2244;color:#a5b4fc;">Wari</option>
+<option style="background:#0f2244;color:#a5b4fc;">Gopibag</option><option style="background:#0f2244;color:#a5b4fc;">Maniknagar</option><option style="background:#0f2244;color:#a5b4fc;">Nimtola</option>
+<option style="background:#0f2244;color:#a5b4fc;">Fakirapool</option><option style="background:#0f2244;color:#a5b4fc;">AlauddinRoad</option>
                 </select>
             </div>
         </div>
@@ -1033,17 +1034,48 @@ button {
             <div class="login-input-wrap">
                 <select id="editPerson" class="login-input" style="background:#0f2244;color:#fff;border:1.5px solid rgba(255,255,255,0.18);">
     <option value="" style="background:#0f2244;color:rgba(255,255,255,0.45);">Select Technician</option>
-    <option style="background:#0f2244;color:#7dd3fc;">Sumon</option>
-    <option style="background:#0f2244;color:#7dd3fc;">Alamin</option>
-    <option style="background:#0f2244;color:#7dd3fc;">Nahid</option>
-    <option style="background:#0f2244;color:#7dd3fc;">Fahim</option>
+    <option style="background:#0f2244;color:#a5b4fc;">Sumon</option>
+    <option style="background:#0f2244;color:#a5b4fc;">Alamin</option>
+    <option style="background:#0f2244;color:#a5b4fc;">Nahid</option>
+    <option style="background:#0f2244;color:#a5b4fc;">Fahim</option>
 </select>
             </div>
         </div>
 
         <div style="display:flex;gap:10px;margin-top:20px;">
             <button onclick="closeEditModal()" style="flex:1;padding:11px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.14);border-radius:9px;color:rgba(255,255,255,0.65);font-family:'Outfit',sans-serif;font-weight:700;font-size:0.82rem;text-transform:uppercase;cursor:pointer;">Cancel</button>
-            <button onclick="saveEditTask()" style="flex:1;padding:11px;background:linear-gradient(135deg,#d97706,#f59e0b);border:1px solid rgba(255,255,255,0.15);border-radius:9px;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:0.72rem;text-transform:uppercase;cursor:pointer;box-shadow:0 4px 14px rgba(217,119,6,0.28);">
+            <button onclick="saveEditTask()" style="flex:1;padding:11px;background:linear-gradient(135deg,#92400e,#b45309);border:1px solid rgba(255,255,255,0.15);border-radius:9px;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:0.72rem;text-transform:uppercase;cursor:pointer;box-shadow:0 4px 14px rgba(146,64,14,0.28);">
+                <i class="fas fa-save"></i> Save Changes
+            </button>
+        </div>
+    </div>
+</div>
+<!-- EDIT ATM ENTRY MODAL (admin only) -->
+<div id="editAtmModal" style="position:fixed;inset:0;z-index:99999;display:none;align-items:center;justify-content:center;padding:15px;background:rgba(10,20,45,0.75);backdrop-filter:blur(8px);">
+    <div style="background:linear-gradient(145deg,#0f172a,#1e293b);border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:28px 24px;width:100%;max-width:420px;box-shadow:0 20px 55px rgba(0,0,0,0.40);">
+        <div style="font-family:'Outfit',sans-serif;font-weight:800;font-size:0.9rem;color:#fff;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;display:flex;align-items:center;gap:9px;">
+            <i class="fas fa-pen" style="color:#b45309;"></i> Edit ATM Entry
+        </div>
+        <div style="font-size:0.7rem;color:rgba(255,255,255,0.45);margin-bottom:22px;font-family:'Outfit',sans-serif;">ATM contact details update করুন</div>
+
+        <div class="login-field-group">
+            <label class="login-field-label"><i class="fas fa-university"></i> Bank ATM Name</label>
+            <div class="login-input-wrap">
+                <input type="text" id="editAtmBankName" class="login-input" placeholder="e.g. Dutch Bangla ATM - Motijheel">
+                <i class="fas fa-university login-input-icon"></i>
+            </div>
+        </div>
+        <div class="login-field-group">
+            <label class="login-field-label"><i class="fas fa-phone"></i> Cell Number</label>
+            <div class="login-input-wrap">
+                <input type="text" id="editAtmCellNumber" class="login-input" placeholder="Cell Number">
+                <i class="fas fa-phone login-input-icon"></i>
+            </div>
+        </div>
+
+        <div style="display:flex;gap:10px;margin-top:20px;">
+            <button onclick="closeEditAtmModal()" style="flex:1;padding:11px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.14);border-radius:9px;color:rgba(255,255,255,0.65);font-family:'Outfit',sans-serif;font-weight:700;font-size:0.82rem;text-transform:uppercase;cursor:pointer;">Cancel</button>
+            <button onclick="saveEditAtm()" style="flex:1;padding:11px;background:linear-gradient(135deg,#92400e,#b45309);border:1px solid rgba(255,255,255,0.15);border-radius:9px;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:0.72rem;text-transform:uppercase;cursor:pointer;box-shadow:0 4px 14px rgba(146,64,14,0.28);">
                 <i class="fas fa-save"></i> Save Changes
             </button>
         </div>
@@ -1212,7 +1244,7 @@ button {
                 </div>
 
                 <!-- Monthly Stats -->
-                <div style="background:rgba(37,99,235,0.14); border:1.5px solid rgba(37,99,235,0.40); border-radius:14px; padding:14px;">
+                <div style="background:rgba(79,70,229,0.14); border:1.5px solid rgba(79,70,229,0.40); border-radius:14px; padding:14px;">
                     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px;">
                         <div style="font-family:'Outfit',sans-serif;font-size:0.75rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--navy-mid);">
                             <i class="fas fa-calendar-alt"></i> Monthly Count
@@ -1279,7 +1311,7 @@ button {
     <button class="btn-done" id="downloadPdfBtn" onclick="downloadCompletedPDF()" style="display:none;padding:6px 12px;font-size:0.60rem;">
         <i class="fas fa-file-pdf"></i> PDF
     </button>
-    <button class="btn-done" id="downloadExcelBtn" onclick="downloadCompletedExcel()" style="display:none;padding:6px 12px;font-size:0.60rem;background:linear-gradient(135deg,#16a34a,#15803d);">
+    <button class="btn-done" id="downloadExcelBtn" onclick="downloadCompletedExcel()" style="display:none;padding:6px 12px;font-size:0.60rem;background:linear-gradient(135deg,#059669,#047857);">
         <i class="fas fa-file-excel"></i> Excel
     </button>
     <button class="btn-delete-mode" id="toggleDeleteCompletedBtn" onclick="toggleDeleteModeCompleted()">
@@ -1305,7 +1337,7 @@ button {
                     </select>
                 </div>
 
-                <div id="completedTaskCount" style="margin-bottom:10px;font-family:'Outfit',sans-serif;font-size:0.75rem;font-weight:700;color:var(--amber);background:rgba(217,119,6,0.10);border:1px solid rgba(217,119,6,0.25);border-radius:8px;padding:7px 14px;display:inline-flex;align-items:center;gap:7px;">
+                <div id="completedTaskCount" style="margin-bottom:10px;font-family:'Outfit',sans-serif;font-size:0.75rem;font-weight:700;color:var(--amber);background:rgba(146,64,14,0.10);border:1px solid rgba(146,64,14,0.25);border-radius:8px;padding:7px 14px;display:inline-flex;align-items:center;gap:7px;">
                     <i class="fas fa-list-check"></i> Total: <span id="completedTaskCountNum" style="font-size:1rem;font-weight:900;color:var(--amber);">0</span>
                 </div>
 
@@ -1321,8 +1353,8 @@ button {
         </div>
 <!-- SECTION: ATM Contact -->
 <div class="dashboard-section" id="section-atm">
-    <div class="card" style="border-top:3px solid #f59e0b;">
-        <div class="card-title" style="color:#f59e0b;"><i class="fas fa-credit-card"></i> ATM CONTACT</div>
+    <div class="card" style="border-top:3px solid #b45309;">
+        <div class="card-title" style="color:#b45309;"><i class="fas fa-credit-card"></i> ATM CONTACT</div>
 
         <!-- Input form -->
         <div style="display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
@@ -1358,10 +1390,10 @@ button {
         <div class="table-scroll-wrap">
             <table id="atmTable">
                 <thead>
-                    <tr id="atmTableHeader"><th>Bank ATM Name</th><th>Cell Number</th><th>Entry Date & By</th></tr>
+                    <tr id="atmTableHeader"><th>Bank ATM Name</th><th>Cell Number</th><th>Entry Date & By</th><th>Edit</th></tr>
                 </thead>
                 <tbody id="atmTableBody">
-                    <tr><td colspan="3" align="center" style="padding:20px;color:#64748b;"><i class="fas fa-spinner fa-spin"></i> Loading...</td></tr>
+                    <tr><td colspan="4" align="center" style="padding:20px;color:#64748b;"><i class="fas fa-spinner fa-spin"></i> Loading...</td></tr>
                 </tbody>
             </table>
         </div>
@@ -1370,16 +1402,16 @@ button {
 
 <!-- SECTION: Leave Info -->
 <div class="dashboard-section" id="section-leave">
-    <div class="card" style="border-top:3px solid #a78bfa;">
-        <div class="card-title" style="color:#a78bfa;"><i class="fas fa-calendar-times"></i> LEAVE INFO</div>
+    <div class="card" style="border-top:3px solid #8b5cf6;">
+        <div class="card-title" style="color:#8b5cf6;"><i class="fas fa-calendar-times"></i> LEAVE INFO</div>
 
-        <div class="engineer-only-notice" id="leaveAdminOnlyNotice" style="display:none;border-color:rgba(167,139,250,0.35);background:rgba(124,58,237,0.08);color:#7c3aed;">
+        <div class="engineer-only-notice" id="leaveAdminOnlyNotice" style="display:none;border-color:rgba(139,92,246,0.35);background:rgba(91,33,182,0.08);color:#5b21b6;">
             <i class="fas fa-lock"></i> Only Admin can add leave entries.
         </div>
 
         <!-- Leave Balance Summary -->
-        <div style="background:rgba(124,58,237,0.10); border:1.5px solid rgba(124,58,237,0.30); border-radius:14px; padding:14px; margin-bottom:16px;">
-            <div style="font-family:'Outfit',sans-serif;font-size:0.75rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:#7c3aed;margin-bottom:10px;">
+        <div style="background:rgba(91,33,182,0.10); border:1.5px solid rgba(91,33,182,0.30); border-radius:14px; padding:14px; margin-bottom:16px;">
+            <div style="font-family:'Outfit',sans-serif;font-size:0.75rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:#5b21b6;margin-bottom:10px;">
                 <i class="fas fa-wallet"></i> Leave Balance (Yearly: 14 Sick + 10 Casual = 24)
             </div>
             <div class="table-scroll-wrap">
@@ -1427,7 +1459,7 @@ button {
                 </select>
             </div>
             <div style="display:flex;align-items:flex-end;">
-                <button class="btn-assign" onclick="addLeaveEntry()" style="white-space:nowrap;min-width:130px;background:linear-gradient(135deg,#7c3aed,#a78bfa);">
+                <button class="btn-assign" onclick="addLeaveEntry()" style="white-space:nowrap;min-width:130px;background:linear-gradient(135deg,#5b21b6,#8b5cf6);">
                     <i class="fas fa-check-circle"></i> Submit
                 </button>
             </div>
@@ -1484,12 +1516,12 @@ button {
     </button>
 
 <button class="tab-item" id="tab-atm" onclick="showSection('atm')">
-        <div class="tab-icon" style="color:#fbbf24;"><i class="fas fa-credit-card"></i></div>
+        <div class="tab-icon" style="color:#b45309;"><i class="fas fa-credit-card"></i></div>
         <span class="tab-label">ATM</span>
     </button>
 
 <button class="tab-item" id="tab-leave" onclick="showSection('leave')">
-        <div class="tab-icon" style="color:#a78bfa;"><i class="fas fa-calendar-times"></i></div>
+        <div class="tab-icon" style="color:#8b5cf6;"><i class="fas fa-calendar-times"></i></div>
         <span class="tab-label">Leave</span>
     </button>
 </nav>
@@ -1779,7 +1811,7 @@ loadLeaveEntries();
     function showPopup(type, title, msg) {
         const c  = document.getElementById('popupContainer');
         const id = 'popup-' + Date.now();
-        const icons = { success:'<i class="fas fa-check-circle" style="color:#0d9488"></i>', warning:'<i class="fas fa-exclamation-triangle" style="color:#d97706"></i>', info:'<i class="fas fa-info-circle" style="color:#2563eb"></i>' };
+        const icons = { success:'<i class="fas fa-check-circle" style="color:#0d9488"></i>', warning:'<i class="fas fa-exclamation-triangle" style="color:#92400e"></i>', info:'<i class="fas fa-info-circle" style="color:#4f46e5"></i>' };
         const el = document.createElement('div');
         el.id = id; el.className = 'popup-message';
         el.innerHTML = `<div class="popup-content ${type}"><button class="popup-close" onclick="closePopup('${id}')">&times;</button><div class="popup-title">${icons[type]||''} ${title}</div><div class="popup-text">${msg}</div></div>`;
@@ -1965,9 +1997,9 @@ loadLeaveEntries();
                 <td><b style="font-family:'Outfit';">${t.ticket}</b></td>
                 <td><span class="area-badge" style="cursor:pointer;" onclick="showAddressPopup(event,'${(t.address||'').replace(/'/g,"\\'")}')"><i class="fas fa-map-marker-alt"></i> ${t.area}</span></td>
                 <td><span class="badge bg-${t.person.toLowerCase()}">${t.person}</span></td>
-                <td><span class="badge" style="background:linear-gradient(135deg,#1e3a6e,#2563eb);">${assignedBy}</span></td>
+                <td><span class="badge" style="background:linear-gradient(135deg,#1e3a5f,#4f46e5);">${assignedBy}</span></td>
                 <td class="status-working-cell"><span class="status-working"><i class="fas fa-spinner fa-pulse"></i> Working</span></td>
-<td>${['admin','amit','rupchan','tamim'].includes(currentUser.username) ? `<button class="btn-edit" onclick="openEditModal(${t.id})"><i class="fas fa-pen"></i> Edit</button>` : '—'}</td></tr>`;
+<td>${['admin','amit','rupchan','tamim'].includes(currentUser.username) ? `<button class="btn-edit" onclick="openEditModal(${t.id})" title="Edit"><i class="fas fa-pen"></i></button>` : '—'}</td></tr>`;
             }).join('');
 
         const st = document.getElementById('filterTech').value;
@@ -1997,7 +2029,7 @@ loadLeaveEntries();
         <td data-label="Tech">${t.person}</td>
         <td data-label="By">${t.assignedBy||'—'}</td>
         <td data-label="Status">Done</td>
-        <td data-label="Edit">${currentUser.username === 'admin' ? `<button class="btn-edit" onclick="openEditModalCompleted(${t.id})"><i class="fas fa-pen"></i> Edit</button>` : '—'}</td></tr>`;
+        <td data-label="Edit">${currentUser.username === 'admin' ? `<button class="btn-edit" onclick="openEditModalCompleted(${t.id})" title="Edit"><i class="fas fa-pen"></i></button>` : '—'}</td></tr>`;
     }).join('');
 
         renderSummary();
@@ -2006,7 +2038,7 @@ loadLeaveEntries();
     function renderSummary() {
         const allTasks = [...completed];
         const techs = ['Sumon','Alamin','Fahim','Nahid'];
-        const techColors = { 'Sumon':'#0d9488', 'Alamin':'#d97706', 'Fahim':'#1d4ed8', 'Nahid':'#7c3aed' };
+        const techColors = { 'Sumon':'#0d9488', 'Alamin':'#92400e', 'Fahim':'#4338ca', 'Nahid':'#5b21b6' };
         const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 
         const monthSet = new Set();
@@ -2076,8 +2108,8 @@ loadLeaveEntries();
         return `<td data-label="${name}">
             <span style="font-weight:900;font-family:'Outfit',sans-serif;font-size:1.1rem;color:${techColors[name]};">${dailyCount[name]}</span>
             <span style="font-size:0.60rem;font-family:'Outfit',sans-serif;font-weight:800;color:${techColors[name]};margin-left:4px;opacity:0.75;">(${dailyRankMap[name]})</span>
-            ${isFree?`<span style="display:inline-block;margin-left:6px;padding:2px 7px;background:linear-gradient(135deg,#16a34a,#15803d);color:#fff;border-radius:5px;font-size:0.55rem;font-family:'Outfit',sans-serif;font-weight:800;">✓ FREE</span>`:''}
-            ${techOngoing.length>0?`<span style="display:inline-block;margin-left:6px;padding:2px 7px;background:linear-gradient(135deg,#ea580c,#c2410c);color:#fff;border-radius:5px;font-size:0.58rem;font-family:'Outfit',sans-serif;font-weight:800;">${techOngoing.join(', ')}</span>`:''}
+            ${isFree?`<span style="display:inline-block;margin-left:6px;padding:2px 7px;background:linear-gradient(135deg,#059669,#047857);color:#fff;border-radius:5px;font-size:0.55rem;font-family:'Outfit',sans-serif;font-weight:800;">✓ FREE</span>`:''}
+            ${techOngoing.length>0?`<span style="display:inline-block;margin-left:6px;padding:2px 7px;background:linear-gradient(135deg,#92400e,#92400e);color:#fff;border-radius:5px;font-size:0.58rem;font-family:'Outfit',sans-serif;font-weight:800;">${techOngoing.join(', ')}</span>`:''}
         </td>`;
     }).join('')}
     <td data-label="Total"><strong style="font-family:'Outfit',sans-serif;font-size:1rem;font-weight:900;color:var(--navy-mid);">${dailyTotal}</strong></td></tr>`;
@@ -2159,10 +2191,10 @@ let _editingCompleted = false;
 function openEditModal(id) {
     const task = ongoing.find(t => t.id === id);
     if (!task) return;
-    const isAdmin    = currentUser.username === 'admin';
-    const isAssigned = task.person.toLowerCase() === currentUser.name.toLowerCase();
-    const canEdit    = isAdmin || isAssigned || currentUser.role === 'engineer';
-    if (!canEdit) { showPopup('warning','Access Denied','Only assigned technician or engineer can edit.'); return; }
+    // Kept in sync with the button-visibility list in renderAll() -- only these
+    // accounts may edit ongoing tickets, regardless of who it's assigned to.
+    const canEdit = ['admin','amit','rupchan','tamim'].includes(currentUser.username);
+    if (!canEdit) { showPopup('warning','Access Denied','Only Admin, Amit, Rupchan or Tamim can edit ongoing tasks.'); return; }
 
     _editingTaskId = id;
     _editingCompleted = false;
@@ -2180,6 +2212,11 @@ function closeEditModal() {
 }
 
 function openEditModalCompleted(id) {
+    // Kept in sync with the button-visibility check in renderAll() -- only Admin
+    // may edit completed (Done) tasks. Guarding here too closes the gap where
+    // this function could otherwise be invoked directly (e.g. via console) by
+    // a non-admin user, bypassing the UI-level restriction.
+    if (currentUser.username !== 'admin') { showPopup('warning','Access Denied','Only Admin can edit completed tasks.'); return; }
     const task = completed.find(t => t.id === id);
     if (!task) return;
     _editingTaskId = id;
@@ -2225,6 +2262,10 @@ async function saveEditTask() {
 }
 
 async function saveEditCompleted() {
+    // Defense in depth: re-check here too, since saveEditTask() dispatches to
+    // this function and _editingCompleted/_editingTaskId are plain module-level
+    // variables that a console user could otherwise manipulate directly.
+    if (currentUser.username !== 'admin') { showPopup('warning','Access Denied','Only Admin can edit completed tasks.'); return; }
     const task = completed.find(t => t.id === _editingTaskId);
     if (!task) return;
 
@@ -2372,7 +2413,7 @@ async function saveEditCompleted() {
             body: rows,
             theme: 'grid',
             styles: { fontSize:8, cellPadding:3, valign:'middle', halign:'center', textColor:[30,40,60], lineColor:[200,210,230], lineWidth:0.3 },
-            headStyles: { fillColor:[30,58,110], textColor:[255,255,255], fontStyle:'bold', fontSize:8.5 },
+            headStyles: { fillColor:[30,58,95], textColor:[255,255,255], fontStyle:'bold', fontSize:8.5 },
             alternateRowStyles: { fillColor:[237,244,255] },
             columnStyles: { 0:{cellWidth:10}, 1:{cellWidth:28}, 2:{cellWidth:20}, 3:{cellWidth:20}, 4:{cellWidth:55}, 5:{cellWidth:28}, 6:{cellWidth:25}, 7:{cellWidth:28}, 8:{cellWidth:20} },
             margin: { left:10, right:10 },
@@ -2512,6 +2553,47 @@ function toggleDeleteModeAtm() {
             showPopup('success','Deleted',`${ids.length} entry(s) deleted.`);
         } catch(e) { showPopup('warning','Error','Delete failed.'); }
     }
+    let _editingAtmId = null;
+
+    function openEditAtmModal(id) {
+        if (currentUser.username !== 'admin') { showPopup('warning','Access Denied','Only Admin can edit ATM entries.'); return; }
+        const entry = atmEntries.find(e => e.id === id);
+        if (!entry) return;
+        _editingAtmId = id;
+        document.getElementById('editAtmBankName').value = entry.bankName || '';
+        document.getElementById('editAtmCellNumber').value = entry.cellNumber || '';
+        document.getElementById('editAtmModal').style.display = 'flex';
+    }
+
+    function closeEditAtmModal() {
+        document.getElementById('editAtmModal').style.display = 'none';
+        _editingAtmId = null;
+    }
+
+    async function saveEditAtm() {
+        if (currentUser.username !== 'admin') { showPopup('warning','Access Denied','Only Admin can edit ATM entries.'); return; }
+        const entry = atmEntries.find(e => e.id === _editingAtmId);
+        if (!entry) return;
+
+        const newBankName = document.getElementById('editAtmBankName').value.trim();
+        const newCellNumber = document.getElementById('editAtmCellNumber').value.trim();
+        if (!newBankName || !newCellNumber) { showPopup('warning','Missing Info','Please fill Bank ATM Name and Cell Number.'); return; }
+
+        const updated = { ...entry, bankName: newBankName, cellNumber: newCellNumber };
+        const idx = atmEntries.findIndex(e => e.id === _editingAtmId);
+        if (idx !== -1) atmEntries[idx] = updated;
+        closeEditAtmModal();
+        renderAtmTable();
+        showPopup('success','Updated',`${newBankName} entry updated.`);
+        try {
+            await fbSet(`atm_contacts/${entry.id}`, updated);
+        } catch(e) {
+            if (idx !== -1) atmEntries[idx] = entry;
+            renderAtmTable();
+            showPopup('warning','Sync Error','Firebase এ save হয়নি, changes revert করা হয়েছে।');
+        }
+    }
+
     function renderAtmTable() {
         const q = (document.getElementById('atmSearch')?.value || '').toLowerCase();
         const filtered = atmEntries.filter(e =>
@@ -2520,7 +2602,7 @@ function toggleDeleteModeAtm() {
         const tbody = document.getElementById('atmTableBody');
         if (!tbody) return;
         const inDelAtm = window._deleteModeAtm || false;
-        const colspan = inDelAtm ? '4' : '3';
+        const colspan = inDelAtm ? '5' : '4';
         tbody.innerHTML = filtered.length === 0
     ? `<tr><td colspan="${colspan}" align="center" style="padding:20px;color:#64748b;"><i class="fas fa-inbox"></i> No Entries Found</td></tr>`
     : filtered.map(e => {
@@ -2529,6 +2611,7 @@ function toggleDeleteModeAtm() {
         <td data-label="ATM Name"><strong style="font-family:'Outfit',sans-serif;">${e.bankName}</strong></td>
         <td data-label="Cell No" style="font-family:'Outfit',sans-serif;color:var(--teal);font-weight:700;">${e.cellNumber}</td>
         <td data-label="Entry"><strong style="font-family:'Outfit',sans-serif;font-size:0.68rem;">${formatDateDisplay(e.entryDate)}</strong> &amp; <span style="color:var(--sky);font-family:'Outfit',sans-serif;font-weight:700;font-size:0.68rem;">${e.entryBy||'—'}</span></td>
+        <td data-label="Edit">${currentUser.username === 'admin' ? `<button class="btn-edit" onclick="openEditAtmModal(${e.id})" title="Edit"><i class="fas fa-pen"></i></button>` : '—'}</td>
       </tr>`;
     }).join('');
     }
@@ -2649,7 +2732,7 @@ function toggleDeleteModeAtm() {
     : filtered.map(e => {
         const cb = inDelLeave ? `<td><input type="checkbox" class="delete-checkbox leave-del-cb" value="${e.id}"></td>` : '';
         const d = e.days || leaveDaysBetween(e.from, e.to);
-        const typeColor = e.reason === 'Sick Leave' ? 'linear-gradient(135deg,#dc2626,#e11d48)' : 'linear-gradient(135deg,#7c3aed,#a78bfa)';
+        const typeColor = e.reason === 'Sick Leave' ? 'linear-gradient(135deg,#be123c,#9f1239)' : 'linear-gradient(135deg,#5b21b6,#8b5cf6)';
         return `<tr>${cb}
         <td data-label="Tech"><span class="badge bg-${(e.person||'').toLowerCase()}">${e.person}</span></td>
         <td data-label="From" style="font-family:'Outfit',sans-serif;font-weight:700;">${formatDateDisplay(e.from)}</td>
@@ -2663,7 +2746,7 @@ function toggleDeleteModeAtm() {
     function renderLeaveBalance() {
         const body = document.getElementById('leaveBalanceBody');
         if (!body) return;
-        const techColors = { 'Sumon':'#0d9488', 'Alamin':'#d97706', 'Fahim':'#1d4ed8', 'Nahid':'#7c3aed' };
+        const techColors = { 'Sumon':'#0d9488', 'Alamin':'#92400e', 'Fahim':'#4338ca', 'Nahid':'#5b21b6' };
         body.innerHTML = LEAVE_TECHS.map(name => {
             const used = getLeaveUsed(name);
             const sickLeft   = LEAVE_SICK_TOTAL - used.sick;
@@ -2672,10 +2755,10 @@ function toggleDeleteModeAtm() {
             return `<tr>
                 <td data-label="Tech"><span class="badge" style="background:${techColors[name]};">${name}</span></td>
                 <td data-label="Sick Leave Enjoyed" style="font-family:'Outfit',sans-serif;font-weight:700;">${used.sick}</td>
-                <td data-label="Sick Leave Left" style="font-family:'Outfit',sans-serif;font-weight:800;color:${sickLeft<=2?'#dc2626':'#0d9488'};">${sickLeft}</td>
+                <td data-label="Sick Leave Left" style="font-family:'Outfit',sans-serif;font-weight:800;color:${sickLeft<=2?'#be123c':'#0d9488'};">${sickLeft}</td>
                 <td data-label="Casual Leave Enjoyed" style="font-family:'Outfit',sans-serif;font-weight:700;">${used.casual}</td>
-                <td data-label="Casual Leave Left" style="font-family:'Outfit',sans-serif;font-weight:800;color:${casualLeft<=2?'#dc2626':'#0d9488'};">${casualLeft}</td>
-                <td data-label="Total Leave Left"><span class="badge" style="background:linear-gradient(135deg,#3b82f6,#1d4ed8);color:white;font-family:'Outfit',sans-serif;font-weight:900;padding:3px 6px;border-radius:50%;min-width:32px;min-height:32px;display:inline-flex;align-items:center;justify-content:center;font-size:0.7rem;box-shadow:0 4px 12px rgba(59,130,246,0.35);">${totalLeft}</span></td>
+                <td data-label="Casual Leave Left" style="font-family:'Outfit',sans-serif;font-weight:800;color:${casualLeft<=2?'#be123c':'#0d9488'};">${casualLeft}</td>
+                <td data-label="Total Leave Left"><span class="badge" style="background:linear-gradient(135deg,#6366f1,#4338ca);color:white;font-family:'Outfit',sans-serif;font-weight:900;padding:3px 6px;border-radius:50%;min-width:32px;min-height:32px;display:inline-flex;align-items:center;justify-content:center;font-size:0.7rem;box-shadow:0 4px 12px rgba(99,102,241,0.35);">${totalLeft}</span></td>
             </tr>`;
         }).join('');
     }
