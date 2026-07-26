@@ -101,28 +101,42 @@ button {
             position: fixed; inset: 0; z-index: 9999;
             display: flex; align-items: center; justify-content: center;
             padding: 15px;
-            background: linear-gradient(160deg, #0f172a 0%, #1e293b 100%);
+            background: linear-gradient(135deg, #0c2e75 0%, #1e56d8 50%, #3b82f6 100%);
         }
         .login-box {
-            background: rgba(255,255,255,0.06);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255,255,255,0.14);
+            position: relative;
+            background: #ffffff;
+            border: 1px solid rgba(59,130,246,0.12);
             border-radius: 18px;
-            padding: 30px 24px;
+            padding: 34px 26px 28px;
             width: 100%; max-width: 400px;
-            box-shadow: 0 20px 45px rgba(0,0,0,0.28);
+            box-shadow: 0 25px 60px rgba(11,42,107,0.35);
             text-align: center;
+            overflow: hidden;
         }
-        .login-logo { height: 60px; margin-bottom: 8px; }
+        .login-box::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+            background: linear-gradient(90deg, #0b2a6b 0%, #2f6fed 55%, #60a5fa 100%);
+        }
+        .login-logo-frame {
+            width: 78px; height: 78px; margin: 0 auto 14px;
+            border-radius: 16px;
+            background: #fff;
+            border: 2px solid #dbeafe;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 8px 20px rgba(47,111,237,0.18);
+            overflow: hidden;
+        }
+        .login-logo-frame img { width: 100%; height: 100%; object-fit: contain; }
         .login-title {
             font-family: 'Outfit', sans-serif;
-            font-size: 1rem; font-weight: 700;
-            color: #fff; text-transform: uppercase;
-            letter-spacing: 1px; margin-bottom: 4px;
+            font-size: 1.1rem; font-weight: 800;
+            color: #0f1f4d;
+            letter-spacing: 0.3px; margin-bottom: 4px;
         }
-        .login-sub { font-size: 0.72rem; color: rgba(255,255,255,0.55); margin-bottom: 22px; }
+        .login-sub { font-size: 0.72rem; color: #64748b; margin-bottom: 24px; font-weight: 600; letter-spacing: 0.3px; }
 
-        .login-field-group { margin-bottom: 12px; text-align: left; }
+        .login-field-group { margin-bottom: 14px; text-align: left; }
         .login-field-label {
             font-family: 'Outfit', sans-serif;
             font-size: 0.62rem; font-weight: 700;
@@ -155,19 +169,27 @@ button {
             margin-bottom: 14px; text-align: left;
             display: none; align-items: center; gap: 7px;
         }
+        /* Light-theme overrides scoped to the login screen only — other modals keep the dark styling above */
+        #loginScreen .login-field-label { color: #1e3a8a; }
+        #loginScreen .login-input { background: #eef4fc; border: 1.5px solid #cfe0f7; color: #1e293b; }
+        #loginScreen .login-input::placeholder { color: #94a3b8; }
+        #loginScreen .login-input:focus { border-color: #3b82f6; background: #fff; box-shadow: 0 0 0 3px rgba(59,130,246,0.16); }
+        #loginScreen .login-input-icon { color: #93a8c9; }
+        #loginScreen .login-input-icon:hover { color: #2f6fed; }
+        #loginScreen .login-error { background: #fef2f2; border: 1px solid #fecaca; color: #b91c1c; }
         .login-btn {
             width: 100%; padding: 13px;
-            background: var(--sky);
-            border: 1px solid rgba(255,255,255,0.15);
+            background: linear-gradient(90deg, #0b2a6b 0%, #2f6fed 100%);
+            border: none;
             border-radius: 9px; color: #fff;
             font-family: 'Outfit', sans-serif; font-weight: 700;
             font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.8px;
             cursor: pointer; transition: all 0.2s ease;
-            box-shadow: 0 2px 8px rgba(79,70,229,0.25);
+            box-shadow: 0 8px 20px rgba(47,111,237,0.35);
             display: flex; align-items: center; justify-content: center; gap: 8px;
             margin-top: 6px;
         }
-        .login-btn:hover { filter:brightness(1.1); }
+        .login-btn:hover { filter:brightness(1.08); transform: translateY(-1px); box-shadow: 0 10px 24px rgba(47,111,237,0.42); }
         .login-btn:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
 
         /* Change Password Modal */
@@ -219,51 +241,51 @@ button {
         }
         .login-divider::before, .login-divider::after {
             content: ''; flex: 1; height: 1px;
-            background: rgba(255,255,255,0.12);
+            background: #e2e8f0;
         }
         .login-divider span {
             font-family: 'Outfit', sans-serif; font-size: 0.58rem;
             font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px;
-            color: rgba(255,255,255,0.30);
+            color: #94a3b8;
         }
         .login-changepw-btn {
             width: 100%; padding: 11px;
-            background: rgba(255,255,255,0.05);
-            border: 1.5px solid rgba(255,255,255,0.12);
-            border-radius: 10px; color: rgba(255,255,255,0.55);
+            background: #f8fafc;
+            border: 1.5px solid #cfe0f7;
+            border-radius: 10px; color: #1d4ed8;
             font-family: 'Outfit', sans-serif; font-weight: 700;
             font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.8px;
             cursor: pointer; transition: all 0.25s ease;
             display: flex; align-items: center; justify-content: center; gap: 8px;
         }
         .login-changepw-btn:hover {
-            background: rgba(13,148,136,0.15);
-            border-color: rgba(13,148,136,0.40);
-            color: #14b8a6;
+            background: rgba(59,130,246,0.08);
+            border-color: #93c5fd;
+            color: #1e40af;
         }
         #loginChangePwPanel {
             display: none;
-            background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(255,255,255,0.10);
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
             border-radius: 12px; padding: 16px; margin-top: 12px;
         }
         .panel-title {
             font-family: 'Outfit', sans-serif; font-size: 0.65rem;
             font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px;
-            color: #14b8a6; margin-bottom: 12px;
+            color: #1d4ed8; margin-bottom: 12px;
             display: flex; align-items: center; gap: 7px;
         }
         .login-changepw-save {
             width: 100%; padding: 11px; margin-top: 10px;
-            background: linear-gradient(135deg, #0d9488, #14b8a6);
-            border: 1px solid rgba(255,255,255,0.15); border-radius: 9px;
+            background: linear-gradient(90deg, #0b2a6b 0%, #2f6fed 100%);
+            border: none; border-radius: 9px;
             color: #fff; font-family: 'Outfit', sans-serif;
             font-weight: 700; font-size: 0.72rem; text-transform: uppercase;
             cursor: pointer; transition: all 0.2s;
-            box-shadow: 0 4px 14px rgba(13,148,136,0.28);
+            box-shadow: 0 4px 14px rgba(47,111,237,0.30);
             display: flex; align-items: center; justify-content: center; gap: 7px;
         }
-        .login-changepw-save:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(13,148,136,0.40); }
+        .login-changepw-save:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(47,111,237,0.40); }
 
         /* ── MAIN APP ── */
         .container {
@@ -638,7 +660,7 @@ button {
     border-radius: 12px; padding: 14px 18px;
     box-shadow: 0 12px 35px rgba(15,23,42,0.45);
     color: #fff; font-family: 'Outfit', sans-serif;
-    font-size: 0.80rem; max-width: 240px;
+    font-size: 0.80rem; max-width: 280px;
     display: none; line-height: 1.6;
     pointer-events: auto;
     user-select: text;
@@ -649,6 +671,15 @@ button {
     font-size: 0.60rem; font-weight: 700;
     text-transform: uppercase; letter-spacing: 1px;
     color: #a5b4fc; margin-bottom: 6px;
+}
+#addressFloatBox .af-line {
+    margin-top: 4px;
+}
+#addressFloatBox .af-line i {
+    color: #a5b4fc;
+    width: 14px;
+    text-align: center;
+    margin-right: 4px;
 }
 /* ── MOBILE CARD ROWS ── */
 @media (max-width: 768px) {
@@ -913,9 +944,10 @@ button {
 <!-- LOGIN SCREEN -->
 <div id="loginScreen">
     <div class="login-box">
-        <img src="https://z-cdn-media.chatglm.cn/files/acb00912-a376-4782-b313-80248fd0f8ed.png?auth_key=1870834439-20e10467e7154c949132c6f76f1a421e-0-71eb8030909b232371f257313e5acc97"
-             alt="Link3 Logo" class="login-logo">
-        <div class="login-title">Work Dashboard</div>
+        <div class="login-logo-frame">
+            <img src="https://z-cdn-media.chatglm.cn/files/acb00912-a376-4782-b313-80248fd0f8ed.png?auth_key=1870834439-20e10467e7154c949132c6f76f1a421e-0-71eb8030909b232371f257313e5acc97" alt="Link3 Logo">
+        </div>
+        <div class="login-title">Technician Work Dashboard</div>
         <div class="login-sub">Link3 Technologies Ltd &nbsp;·&nbsp; Enter your credentials</div>
 
         <div id="loginError" class="login-error">
@@ -955,7 +987,7 @@ button {
                 <i class="fas fa-exclamation-circle"></i>
                 <span id="lcpErrorMsg"></span>
             </div>
-            <div id="lcpSuccess" style="display:none; background:rgba(13,148,136,0.18); border:1px solid rgba(13,148,136,0.35); border-radius:8px; padding:9px 12px; font-size:0.73rem; color:#5eead4; font-family:'Outfit',sans-serif; margin-bottom:10px; align-items:center; gap:7px;">
+            <div id="lcpSuccess" style="display:none; background:rgba(59,130,246,0.10); border:1px solid rgba(59,130,246,0.30); border-radius:8px; padding:9px 12px; font-size:0.73rem; color:#1d4ed8; font-family:'Outfit',sans-serif; margin-bottom:10px; align-items:center; gap:7px;">
                 <i class="fas fa-check-circle"></i> <span id="lcpSuccessMsg"></span>
             </div>
 
@@ -1540,6 +1572,22 @@ button {
 </div><!-- end #mainApp -->
 
 <div id="popupContainer"></div>
+
+<div id="deleteConfirmModal" style="position:fixed;inset:0;z-index:999999;display:none;align-items:center;justify-content:center;padding:15px;background:rgba(10,20,45,0.75);backdrop-filter:blur(8px);">
+    <div style="background:linear-gradient(145deg,#0f172a,#1e293b);border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:28px 24px;width:100%;max-width:380px;box-shadow:0 20px 55px rgba(0,0,0,0.40);text-align:center;">
+        <div style="width:52px;height:52px;border-radius:50%;background:rgba(190,18,60,0.15);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
+            <i class="fas fa-exclamation-triangle" style="color:#be123c;font-size:1.3rem;"></i>
+        </div>
+        <div style="font-family:'Outfit',sans-serif;font-weight:800;font-size:0.95rem;color:#fff;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Confirm Delete</div>
+        <div id="deleteConfirmMsg" style="font-size:0.78rem;color:rgba(255,255,255,0.6);font-family:'Outfit',sans-serif;margin-bottom:22px;line-height:1.5;"></div>
+        <div style="display:flex;gap:10px;">
+            <button onclick="closeDeleteConfirm()" style="flex:1;padding:11px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.14);border-radius:9px;color:rgba(255,255,255,0.75);font-family:'Outfit',sans-serif;font-weight:700;font-size:0.72rem;text-transform:uppercase;cursor:pointer;">Cancel</button>
+            <button onclick="runDeleteConfirm()" style="flex:1;padding:11px;background:linear-gradient(135deg,#be123c,#9f1239);border:1px solid rgba(255,255,255,0.15);border-radius:9px;color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:0.72rem;text-transform:uppercase;cursor:pointer;box-shadow:0 4px 14px rgba(190,18,60,0.28);">
+                <i class="fas fa-trash-alt"></i> Yes, Delete
+            </button>
+        </div>
+    </div>
+</div>
 <div id="addressFloatBox"></div>
 
 <script>
@@ -1638,6 +1686,14 @@ button {
     let currentUser = null;
     let ongoing   = [];
     let completed = [];
+    // ── Delete-mode selections persist across re-renders (auto-sync every 5s would otherwise wipe them) ──
+    window._selOngoing   = new Set();
+    window._selCompleted = new Set();
+    window._selAtm       = new Set();
+    window._selLeave     = new Set();
+    function toggleSelectId(set, el) {
+        if (el.checked) set.add(String(el.value)); else set.delete(String(el.value));
+    }
     let knownOngoingIds = null; // null = not yet initialized (first sync sets the baseline, no notifications fire)
     let isSyncing = false;
     let fbPollInterval = null;
@@ -1834,6 +1890,24 @@ loadLeaveEntries();
         if (el) { el.style.animation='fadeOut 0.4s ease forwards'; setTimeout(()=>el.parentNode&&el.parentNode.removeChild(el),400); }
     }
 
+    // ── Delete confirmation modal (এক ক্লিকেই যাতে ভুলে ডিলিট না হয়ে যায় সেজন্য) ──
+    window._pendingDeleteAction = null;
+    function askDeleteConfirm(message, onConfirm) {
+        document.getElementById('deleteConfirmMsg').textContent = message;
+        window._pendingDeleteAction = onConfirm;
+        document.getElementById('deleteConfirmModal').style.display = 'flex';
+    }
+    function closeDeleteConfirm() {
+        document.getElementById('deleteConfirmModal').style.display = 'none';
+        window._pendingDeleteAction = null;
+    }
+    function runDeleteConfirm() {
+        const action = window._pendingDeleteAction;
+        document.getElementById('deleteConfirmModal').style.display = 'none';
+        window._pendingDeleteAction = null;
+        if (action) action();
+    }
+
     async function startFirebaseSync() {
         await pullFromFirebase();
         if (fbPollInterval) clearInterval(fbPollInterval);
@@ -2001,12 +2075,12 @@ loadLeaveEntries();
                 const canDone  = isAdmin || isMyTask;
                 const actionCell = canDone ? `<button class="btn-done" onclick="markDone(${t.id})"><i class="fas fa-check"></i> DONE</button>` : '';
                 const assignedBy = t.assignedBy || '—';
-                const checkboxCell = inDeleteMode ? `<td><input type="checkbox" class="delete-checkbox ongoing-del-cb" value="${t.id}"></td>` : '';
+                const checkboxCell = inDeleteMode ? `<td><input type="checkbox" class="delete-checkbox ongoing-del-cb" value="${t.id}" onchange="toggleSelectId(window._selOngoing,this)" ${window._selOngoing.has(String(t.id))?'checked':''}></td>` : '';
                 return `<tr>${checkboxCell}
                 <td><strong>${formatDateDisplay(t.date)}</strong><br>${actionCell}</td>
                 <td style="color:var(--navy-light);font-weight:600;font-family:'Outfit';">${t.startTime}</td>
                 <td><b style="font-family:'Outfit';">${t.ticket}</b></td>
-                <td><span class="area-badge" style="cursor:pointer;" onclick="showAddressPopup(event,'${(t.address||'').replace(/'/g,"\\'")}')"><i class="fas fa-map-marker-alt"></i> ${t.area}</span></td>
+                <td><span class="area-badge" style="cursor:pointer;" onclick="showAddressPopup(event,'${escJsStr(t.address)}','${escJsStr(t.clientCodeName)}','${escJsStr(t.contact)}')"><i class="fas fa-map-marker-alt"></i> ${t.area}</span></td>
                 <td><span class="badge bg-${t.person.toLowerCase()}">${t.person}</span></td>
                 <td><span class="badge" style="--chip-color:#4338ca;">${assignedBy}</span></td>
                 <td class="status-working-cell"><span class="status-working"><i class="fas fa-spinner fa-pulse"></i> Working</span></td>
@@ -2029,14 +2103,16 @@ loadLeaveEntries();
         cb.innerHTML = filtered.length === 0
     ? '<tr><td colspan="9" align="center" style="padding:20px;color:#64748b;font-size:0.8rem;"><i class="fas fa-inbox"></i> No Completed Tasks</td></tr>'
     : filtered.map(t => {
-        const inDC = inDeleteModeCompleted ? `<td><input type="checkbox" class="delete-checkbox completed-del-cb" value="${t.id}"></td>` : '';
-        const safeAddr = (t.address || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+        const inDC = inDeleteModeCompleted ? `<td><input type="checkbox" class="delete-checkbox completed-del-cb" value="${t.id}" onchange="toggleSelectId(window._selCompleted,this)" ${window._selCompleted.has(String(t.id))?'checked':''}></td>` : '';
+        const safeAddr = escJsStr(t.address);
+        const safeCcn  = escJsStr(t.clientCodeName);
+        const safeContact = escJsStr(t.contact);
         return `<tr>${inDC}
         <td data-label="Date">${formatDateDisplay(t.date)}</td>
         <td data-label="Start">${t.startTime}</td>
         <td data-label="End">${t.doneTime}</td>
         <td data-label="Ticket">${t.ticket}</td>
-        <td data-label="Area"><span class="area-badge" style="cursor:pointer;" onclick="showAddressPopup(event,'${safeAddr}')"><i class="fas fa-map-marker-alt"></i> ${t.area}</span></td>
+        <td data-label="Area"><span class="area-badge" style="cursor:pointer;" onclick="showAddressPopup(event,'${safeAddr}','${safeCcn}','${safeContact}')"><i class="fas fa-map-marker-alt"></i> ${t.area}</span></td>
         <td data-label="Tech">${t.person}</td>
         <td data-label="By">${t.assignedBy||'—'}</td>
         <td data-label="Status">Done</td>
@@ -2330,11 +2406,12 @@ async function saveEditCompleted() {
         const btn = document.getElementById('toggleDeleteBtn');
         const confirmBtn = document.getElementById('confirmDeleteBtn');
         if (window._deleteMode) {
-            btn.innerHTML = '<i class="fas fa-times"></i> Cancel'; btn.style.background='rgba(255,255,255,0.15)';
+            btn.innerHTML = '<i class="fas fa-times"></i> Cancel'; btn.style.background='linear-gradient(135deg,#475569,#334155)';
             confirmBtn.classList.add('visible');
         } else {
             btn.innerHTML = '<i class="fas fa-trash-alt"></i> Delete'; btn.style.background='';
             confirmBtn.classList.remove('visible');
+            window._selOngoing.clear();
         }
         renderAll();
     }
@@ -2343,18 +2420,20 @@ async function saveEditCompleted() {
     if (!['admin','rupchan','amit','tamim'].includes(currentUser?.username)) { showPopup('warning','Access Denied','Only authorized users can delete.'); return; }
     const checkboxes = document.querySelectorAll('.ongoing-del-cb:checked');
         if (checkboxes.length === 0) { showPopup('warning','None Selected','No task selected.'); return; }
-        if (!confirm(`Delete ${checkboxes.length} task(s)?`)) return;
+        askDeleteConfirm(`You are about to delete ${checkboxes.length} task(s). This cannot be undone.`, async () => {
         const ids = Array.from(checkboxes).map(cb => parseInt(cb.value));
         try {
             await Promise.all(ids.map(id => fbDelete(`tasks/${id}`, id)));
             ongoing = ongoing.filter(t => !ids.includes(t.id));
             window._deleteMode = false;
+            window._selOngoing.clear();
             document.getElementById('toggleDeleteBtn').innerHTML = '<i class="fas fa-trash-alt"></i> Delete';
             document.getElementById('toggleDeleteBtn').style.background = '';
             document.getElementById('confirmDeleteBtn').classList.remove('visible');
             renderAll();
             showPopup('success','Deleted',`${ids.length} task(s) deleted.`);
         } catch(e) { showPopup('warning','Error','Delete failed.'); }
+        });
     }
 
     function toggleDeleteModeCompleted() {
@@ -2364,11 +2443,12 @@ async function saveEditCompleted() {
         const btn = document.getElementById('toggleDeleteCompletedBtn');
         const confirmBtn = document.getElementById('confirmDeleteCompletedBtn');
         if (window._deleteModeCompleted) {
-            btn.innerHTML = '<i class="fas fa-times"></i> Cancel'; btn.style.background='rgba(255,255,255,0.15)';
+            btn.innerHTML = '<i class="fas fa-times"></i> Cancel'; btn.style.background='linear-gradient(135deg,#475569,#334155)';
             confirmBtn.classList.add('visible');
         } else {
             btn.innerHTML = '<i class="fas fa-trash-alt"></i> Delete'; btn.style.background='';
             confirmBtn.classList.remove('visible');
+            window._selCompleted.clear();
         }
         renderAll();
     }
@@ -2377,18 +2457,20 @@ async function saveEditCompleted() {
         if (!['admin','tamim','rupchan','amit'].includes(currentUser?.username)) { showPopup('warning','Access Denied','Only authorized users can delete.'); return; }
         const checkboxes = document.querySelectorAll('.completed-del-cb:checked');
         if (checkboxes.length === 0) { showPopup('warning','None Selected','No task selected.'); return; }
-        if (!confirm(`Delete ${checkboxes.length} completed task(s)?`)) return;
+        askDeleteConfirm(`You are about to delete ${checkboxes.length} completed task(s). This cannot be undone.`, async () => {
         const ids = Array.from(checkboxes).map(cb => parseInt(cb.value));
         try {
             await Promise.all(ids.map(id => fbDelete(`tasks/${id}`)));
             completed = completed.filter(t => !ids.includes(t.id));
             window._deleteModeCompleted = false;
+            window._selCompleted.clear();
             document.getElementById('toggleDeleteCompletedBtn').innerHTML = '<i class="fas fa-trash-alt"></i> Delete';
             document.getElementById('toggleDeleteCompletedBtn').style.background = '';
             document.getElementById('confirmDeleteCompletedBtn').classList.remove('visible');
             renderAll();
             showPopup('success','Deleted',`${ids.length} task(s) deleted.`);
         } catch(e) { showPopup('warning','Error','Delete failed.'); }
+        });
     }
 
     function downloadCompletedPDF() {
@@ -2482,10 +2564,19 @@ function downloadCompletedExcel() {
     XLSX.writeFile(wb, `Completed_Tasks${st ? '_' + st : '_All'}_${today}.xlsx`);
     showPopup('success', 'Excel Downloaded', `${filtered.length} tasks exported.`);
 }
-    function showAddressPopup(event, addr) {
+    // JS string literal এর মধ্যে backslash ও single-quote নিরাপদে escape করার জন্য
+    function escJsStr(s) {
+        return String(s || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+    }
+
+    function showAddressPopup(event, addr, clientCodeName, contact) {
         const box = document.getElementById('addressFloatBox');
-        box.innerHTML = `<div class="af-title"><i class="fas fa-address-card"></i> Address / Cell No</div>${addr || 'No info added'}`;
-        const x = Math.min(event.clientX + 12, window.innerWidth - 260);
+        let lines = '';
+        if (clientCodeName) lines += `<div class="af-line"><i class="fas fa-id-badge"></i> ${clientCodeName}</div>`;
+        if (contact) lines += `<div class="af-line"><i class="fas fa-phone"></i> ${contact}</div>`;
+        lines += `<div class="af-line"><i class="fas fa-address-card"></i> ${addr || 'No info added'}</div>`;
+        box.innerHTML = `<div class="af-title">Client Details</div>${lines}`;
+        const x = Math.min(event.clientX + 12, window.innerWidth - 300);
         const y = Math.min(event.clientY + 12, window.innerHeight - 100);
         box.style.display = 'block';
         box.style.left = x + 'px';
@@ -2538,11 +2629,12 @@ function toggleDeleteModeAtm() {
         const btn = document.getElementById('toggleDeleteAtmBtn');
         const confirmBtn = document.getElementById('confirmDeleteAtmBtn');
         if (window._deleteModeAtm) {
-            btn.innerHTML = '<i class="fas fa-times"></i> Cancel'; btn.style.background='rgba(255,255,255,0.15)';
+            btn.innerHTML = '<i class="fas fa-times"></i> Cancel'; btn.style.background='linear-gradient(135deg,#475569,#334155)';
             confirmBtn.classList.add('visible');
         } else {
             btn.innerHTML = '<i class="fas fa-trash-alt"></i> Delete'; btn.style.background='';
             confirmBtn.classList.remove('visible');
+            window._selAtm.clear();
         }
         renderAtmTable();
     }
@@ -2551,18 +2643,20 @@ function toggleDeleteModeAtm() {
         if (!['admin','tamim','rupchan','amit'].includes(currentUser?.username)) { showPopup('warning','Access Denied','Only authorized users can delete.'); return; }
         const checkboxes = document.querySelectorAll('.atm-del-cb:checked');
         if (checkboxes.length === 0) { showPopup('warning','None Selected','No entry selected.'); return; }
-        if (!confirm(`Delete ${checkboxes.length} entry(s)?`)) return;
+        askDeleteConfirm(`You are about to delete ${checkboxes.length} entry(s). This cannot be undone.`, async () => {
         const ids = Array.from(checkboxes).map(cb => cb.value);
         try {
             await Promise.all(ids.map(id => fetch(`${FB_URL}/atm_contacts/${id}.json`, { method: 'DELETE' })));
             atmEntries = atmEntries.filter(e => !ids.includes(String(e.id)));
             window._deleteModeAtm = false;
+            window._selAtm.clear();
             document.getElementById('toggleDeleteAtmBtn').innerHTML = '<i class="fas fa-trash-alt"></i> Delete';
             document.getElementById('toggleDeleteAtmBtn').style.background = '';
             document.getElementById('confirmDeleteAtmBtn').classList.remove('visible');
             renderAtmTable();
             showPopup('success','Deleted',`${ids.length} entry(s) deleted.`);
         } catch(e) { showPopup('warning','Error','Delete failed.'); }
+        });
     }
     let _editingAtmId = null;
 
@@ -2617,7 +2711,7 @@ function toggleDeleteModeAtm() {
         tbody.innerHTML = filtered.length === 0
     ? `<tr><td colspan="${colspan}" align="center" style="padding:20px;color:#64748b;"><i class="fas fa-inbox"></i> No Entries Found</td></tr>`
     : filtered.map(e => {
-        const cb = inDelAtm ? `<td><input type="checkbox" class="delete-checkbox atm-del-cb" value="${e.id}"></td>` : '';
+        const cb = inDelAtm ? `<td><input type="checkbox" class="delete-checkbox atm-del-cb" value="${e.id}" onchange="toggleSelectId(window._selAtm,this)" ${window._selAtm.has(String(e.id))?'checked':''}></td>` : '';
         return `<tr>${cb}
         <td data-label="ATM Name"><strong style="font-family:'Outfit',sans-serif;">${e.bankName}</strong></td>
         <td data-label="Cell No" style="font-family:'Outfit',sans-serif;color:var(--teal);font-weight:700;">${e.cellNumber}</td>
@@ -2701,11 +2795,12 @@ function toggleDeleteModeAtm() {
         const btn = document.getElementById('toggleDeleteLeaveBtn');
         const confirmBtn = document.getElementById('confirmDeleteLeaveBtn');
         if (window._deleteModeLeave) {
-            btn.innerHTML = '<i class="fas fa-times"></i> Cancel'; btn.style.background='rgba(255,255,255,0.15)';
+            btn.innerHTML = '<i class="fas fa-times"></i> Cancel'; btn.style.background='linear-gradient(135deg,#475569,#334155)';
             confirmBtn.classList.add('visible');
         } else {
             btn.innerHTML = '<i class="fas fa-trash-alt"></i> Delete'; btn.style.background='';
             confirmBtn.classList.remove('visible');
+            window._selLeave.clear();
         }
         renderLeaveTable();
     }
@@ -2714,12 +2809,13 @@ function toggleDeleteModeAtm() {
         if (!['admin','tamim','rupchan','amit'].includes(currentUser?.username)) { showPopup('warning','Access Denied','Only authorized users can delete.'); return; }
         const checkboxes = document.querySelectorAll('.leave-del-cb:checked');
         if (checkboxes.length === 0) { showPopup('warning','None Selected','No entry selected.'); return; }
-        if (!confirm(`Delete ${checkboxes.length} entry(s)?`)) return;
+        askDeleteConfirm(`You are about to delete ${checkboxes.length} entry(s). This cannot be undone.`, async () => {
         const ids = Array.from(checkboxes).map(cb => cb.value);
         try {
             await Promise.all(ids.map(id => fetch(`${FB_URL}/leave_info/${id}.json`, { method: 'DELETE' })));
             leaveEntries = leaveEntries.filter(e => !ids.includes(String(e.id)));
             window._deleteModeLeave = false;
+            window._selLeave.clear();
             document.getElementById('toggleDeleteLeaveBtn').innerHTML = '<i class="fas fa-trash-alt"></i> Delete';
             document.getElementById('toggleDeleteLeaveBtn').style.background = '';
             document.getElementById('confirmDeleteLeaveBtn').classList.remove('visible');
@@ -2727,6 +2823,7 @@ function toggleDeleteModeAtm() {
             renderLeaveBalance();
             showPopup('success','Deleted',`${ids.length} entry(s) deleted.`);
         } catch(e) { showPopup('warning','Error','Delete failed.'); }
+        });
     }
 
     function renderLeaveTable() {
@@ -2741,7 +2838,7 @@ function toggleDeleteModeAtm() {
         tbody.innerHTML = filtered.length === 0
     ? `<tr><td colspan="${colspan}" align="center" style="padding:20px;color:#64748b;"><i class="fas fa-inbox"></i> No Leave Records</td></tr>`
     : filtered.map(e => {
-        const cb = inDelLeave ? `<td><input type="checkbox" class="delete-checkbox leave-del-cb" value="${e.id}"></td>` : '';
+        const cb = inDelLeave ? `<td><input type="checkbox" class="delete-checkbox leave-del-cb" value="${e.id}" onchange="toggleSelectId(window._selLeave,this)" ${window._selLeave.has(String(e.id))?'checked':''}></td>` : '';
         const d = e.days || leaveDaysBetween(e.from, e.to);
         const typeColor = e.reason === 'Sick Leave' ? '#be123c' : '#7e22ce';
         return `<tr>${cb}
