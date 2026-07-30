@@ -2573,7 +2573,7 @@ function downloadCompletedExcel() {
         const box = document.getElementById('addressFloatBox');
         let lines = '';
         if (clientCodeName) lines += `<div class="af-line"><i class="fas fa-id-badge"></i> ${clientCodeName}</div>`;
-        if (contact) lines += `<div class="af-line"><i class="fas fa-phone"></i> ${contact}</div>`;
+        if (contact) lines += `<div class="af-line"><i class="fas fa-phone"></i> <a href="tel:${contact.replace(/[^0-9+]/g,'')}" style="color:#fff;text-decoration:underline;">${contact}</a></div>`;
         lines += `<div class="af-line"><i class="fas fa-address-card"></i> ${addr || 'No info added'}</div>`;
         box.innerHTML = `<div class="af-title">Client Details</div>${lines}`;
         const x = Math.min(event.clientX + 12, window.innerWidth - 300);
