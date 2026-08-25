@@ -468,6 +468,36 @@ button {
         .search-box { padding:9px 11px; border:1.5px solid rgba(148,163,184,0.35); border-radius:8px; font-size:0.74rem; font-family:'Outfit',sans-serif; background:#ffffff; color:var(--slate-text); }
         .search-box:focus { outline:none; border-color:var(--teal); }
 
+        /* ── Done (Completed) & ATM tables: column dividers + nicer look ── */
+        #completedTable th,
+        #completedTable td,
+        #atmTable th,
+        #atmTable td {
+            border-right: 1px solid rgba(148,163,184,0.20);
+        }
+        #completedTable th:last-child,
+        #completedTable td:last-child,
+        #atmTable th:last-child,
+        #atmTable td:last-child {
+            border-right: none;
+        }
+        #completedTable th,
+        #atmTable th {
+            box-shadow: inset 0 -2px 0 rgba(255,255,255,0.08);
+            border-right-color: rgba(255,255,255,0.14);
+        }
+        #completedTable tr:hover td,
+        #atmTable tr:hover td {
+            background: rgba(13,148,136,0.06);
+        }
+        #atmTable tr:hover td {
+            background: rgba(180,83,9,0.06);
+        }
+        #completedTable tbody tr,
+        #atmTable tbody tr {
+            transition: background 0.15s ease;
+        }
+
         /* ── BADGES ── */
         .badge {
             --chip-color: #334155;
@@ -534,6 +564,7 @@ button {
             display: flex;
             box-shadow: 0 -2px 10px rgba(15,23,42,0.20);
             padding-bottom: env(safe-area-inset-bottom, 0px);
+            -webkit-tap-highlight-color: transparent;
         }
         .tab-item {
             flex: 1;
@@ -543,10 +574,18 @@ button {
             justify-content: center;
             padding: 8px 4px;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.25s ease;
             position: relative;
             border: none;
             background: none;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+            user-select: none;
+            -webkit-user-select: none;
+            outline: none;
+        }
+        .tab-item:active {
+            transform: scale(0.92);
         }
         .tab-item::before {
             content: '';
@@ -555,7 +594,7 @@ button {
             height: 2px;
             border-radius: 0 0 3px 3px;
             background: transparent;
-            transition: all 0.25s;
+            transition: background 0.3s ease;
         }
         .tab-item.active::before {
             background: var(--sky-light);
@@ -568,7 +607,7 @@ button {
             justify-content: center;
             font-size: 0.78rem;
             margin-bottom: 3px;
-            transition: all 0.25s;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
         .tab-item.active .tab-icon {
             transform: translateY(-2px);
@@ -581,9 +620,6 @@ button {
         .tab-item.active .tab-icon-summary { background: rgba(99,102,241,0.30); }
         .tab-item.active .tab-icon-ongoing { background: rgba(159,18,57,0.25); }
         .tab-item.active .tab-icon-done    { background: rgba(13,148,136,0.25); }
-        .tab-item {
-            transition: background 0.2s ease;
-        }
         .tab-item:not(.active):hover {
             background: rgba(255,255,255,0.05);
         }
@@ -600,7 +636,7 @@ button {
             text-transform: uppercase;
             letter-spacing: 0.5px;
             color: rgba(255,255,255,0.40);
-            transition: color 0.2s;
+            transition: color 0.25s ease;
         }
         .tab-item.active .tab-label {
             color: rgba(255,255,255,0.90);
@@ -684,6 +720,21 @@ button {
 /* ── MOBILE CARD ROWS ── */
 @media (max-width: 768px) {
 
+  /* Bottom tab bar → smoother mobile feel */
+  .bottom-tab-bar {
+    -webkit-overflow-scrolling: touch;
+  }
+  .tab-item {
+    padding: 7px 2px;
+  }
+  .tab-icon {
+    width: 26px; height: 26px;
+    font-size: 0.74rem;
+  }
+  .tab-label {
+    font-size: 0.46rem;
+  }
+
   /* Ongoing table → card rows */
   #ongoingTable thead { display: none; }
   #ongoingTable tbody tr {
@@ -727,17 +778,19 @@ button {
     background: #ffffff;
     border-radius: 12px;
     border: 1px solid rgba(148,163,184,0.28);
+    border-left: 3px solid #0d9488;
     margin-bottom: 10px;
     padding: 10px 12px;
     box-shadow: 0 2px 8px rgba(15,23,42,0.07);
+    transition: box-shadow 0.2s ease;
   }
-  #completedTable tbody tr:hover { background: #f8fafc; }
+  #completedTable tbody tr:hover { background: #f8fafc; box-shadow: 0 4px 12px rgba(15,23,42,0.10); }
   #completedTable tbody td {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 5px 0;
-    border-bottom: 1px solid rgba(148,163,184,0.12);
+    padding: 6px 0;
+    border-bottom: 1px dashed rgba(148,163,184,0.25);
     font-size: 0.72rem;
     text-align: left;
   }
@@ -831,15 +884,19 @@ button {
     background: #ffffff;
     border-radius: 12px;
     border: 1px solid rgba(148,163,184,0.28);
+    border-left: 3px solid #b45309;
     margin-bottom: 10px;
     padding: 10px 12px;
+    box-shadow: 0 2px 8px rgba(15,23,42,0.07);
+    transition: box-shadow 0.2s ease;
   }
+  #atmTable tbody tr:hover { background: #f8fafc; box-shadow: 0 4px 12px rgba(15,23,42,0.10); }
   #atmTable tbody td {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 5px 0;
-    border-bottom: 1px solid rgba(148,163,184,0.12);
+    padding: 6px 0;
+    border-bottom: 1px dashed rgba(148,163,184,0.25);
     font-size: 0.72rem;
     text-align: left;
   }
@@ -1561,11 +1618,6 @@ button {
 <button class="tab-item" id="tab-atm" onclick="showSection('atm')">
         <div class="tab-icon" style="color:#b45309;"><i class="fas fa-credit-card"></i></div>
         <span class="tab-label">ATM</span>
-    </button>
-
-<button class="tab-item" id="tab-leave" onclick="showSection('leave')">
-        <div class="tab-icon" style="color:#8b5cf6;"><i class="fas fa-calendar-times"></i></div>
-        <span class="tab-label">Leave</span>
     </button>
 </nav>
 
