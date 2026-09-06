@@ -566,6 +566,10 @@ button {
             padding-bottom: env(safe-area-inset-bottom, 0px);
             -webkit-tap-highlight-color: transparent;
         }
+        /* Hard lock: Manage tab is admin-only no matter what inline styles anything else tries to set.
+           The !important here beats any stray inline style="display:..." so this can never leak open. */
+        #tab-manage { display: none !important; }
+        #tab-manage.is-admin-visible { display: flex !important; }
         .tab-item {
             flex: 1;
             display: flex;
@@ -1774,6 +1778,28 @@ button {
         { username: 'nahid',    name: 'Nahid',         role: 'technician', defaultPw: 'nahid1234',  active: true },
     ];
     let USER_ACCOUNTS = DEFAULT_USER_ACCOUNTS.map(u => ({ ...u }));
+    const ADMIN_USERNAME = 'admin';
+    // Single source of truth for "is this the admin account" — used everywhere (tab visibility,
+    // section guard, AND inside every user-management action) so a stale/tampered username can
+    // never accidentally slip through as admin.
+    function isAdminUser(user) { return !!user && String(user.username || '').trim().toLowerCase() === ADMIN_USERNAME; }
+
+    // Single source of truth for the Manage tab's visibility. Always re-checks currentUser fresh
+    // (never trusts a cached boolean) and toggles a CSS class backed by !important, so nothing else
+    // in the app — a stray inline style, a leftover state from a previous session, a future bug —
+    // can accidentally leave it visible for a non-admin. Called on login, on logout, and on a
+    // recurring interval as a belt-and-braces safeguard.
+    function enforceManageTabVisibility() {
+        const tabEl = document.getElementById('tab-manage');
+        if (!tabEl) return;
+        if (isAdminUser(currentUser)) {
+            tabEl.classList.add('is-admin-visible');
+        } else {
+            tabEl.classList.remove('is-admin-visible');
+        }
+    }
+    // Recurring safety net: re-assert every 2s regardless of what else is happening in the app.
+    setInterval(enforceManageTabVisibility, 2000);
 
     const USERS_STORAGE_KEY = 'dash_users_v1';
     function loadLocalUsers() {
@@ -1945,6 +1971,14 @@ button {
 
     function loginAs(userObj) {
         currentUser = userObj;
+
+        // Resolve Manage-tab visibility FIRST, before anything else in this function runs. This app
+        // never reloads the page between logins (logout -> login is all in-memory), so if this line
+        // ran near the bottom and something above it ever threw an error, a Manage tab left visible
+        // from a PREVIOUS admin session could stay stuck on-screen for whoever logs in next. Doing it
+        // first guarantees every login — success or partial failure — always gets the correct value.
+        enforceManageTabVisibility();
+
         document.getElementById('loginScreen').style.display = 'none';
         document.getElementById('mainApp').style.display = 'block';
 
@@ -1964,7 +1998,7 @@ button {
             document.getElementById('personInput').value = currentUser.name;
         }
 
-        const isAdmin = currentUser.username === 'admin';
+        const isAdmin = isAdminUser(currentUser);
 const canDelOngoing = ['admin','rupchan','amit','tamim'].includes(currentUser.username);
 const isEngineerOrAdmin = isAdmin || currentUser.role === 'engineer';
 document.getElementById('toggleDeleteBtn').style.display = canDelOngoing ? 'inline-flex' : 'none';
@@ -1979,13 +2013,11 @@ if (atmDelBtn) atmDelBtn.style.display = canDelAtm ? 'inline-flex' : 'none';
 const canDelLeave = ['admin','tamim','rupchan','amit'].includes(currentUser.username);
 const leaveDelBtn = document.getElementById('toggleDeleteLeaveBtn');
 if (leaveDelBtn) leaveDelBtn.style.display = canDelLeave ? 'inline-flex' : 'none';
-const isLeaveAdmin = currentUser.username === 'admin';
+const isLeaveAdmin = isAdminUser(currentUser);
 const leaveFormEl = document.getElementById('leaveEntryForm');
 const leaveNoticeEl = document.getElementById('leaveAdminOnlyNotice');
 if (leaveFormEl) leaveFormEl.style.display = isLeaveAdmin ? 'flex' : 'none';
 if (leaveNoticeEl) leaveNoticeEl.style.display = isLeaveAdmin ? 'none' : 'flex';
-        const manageTabEl = document.getElementById('tab-manage');
-        if (manageTabEl) manageTabEl.style.display = isAdmin ? 'flex' : 'none';
         populateTechnicianDropdowns();
         if (isAdmin) renderManageUsers();
         startFirebaseSync();
@@ -1999,6 +2031,7 @@ loadLeaveEntries();
     function logout() {
         currentUser = null;
         clearSession();
+        enforceManageTabVisibility(); // currentUser is now null -> always hides immediately on logout
         if (fbPollInterval) { clearInterval(fbPollInterval); fbPollInterval = null; }
         stopReminderChecks();
         knownOngoingIds = null;
@@ -2376,6 +2409,7 @@ loadLeaveEntries();
 
     // ── TAB NAVIGATION ──
     function showSection(name) {
+        if (name === 'manage' && !isAdminUser(currentUser)) return;
         document.querySelectorAll('.dashboard-section').forEach(s => s.classList.remove('active'));
         document.querySelectorAll('.tab-item').forEach(n => n.classList.remove('active'));
 
@@ -3073,6 +3107,7 @@ function toggleDeleteModeAtm() {
     }
 
     function renderManageUsers() {
+        if (!isAdminUser(currentUser)) return; // never render admin-only data for anyone else
         const activeBody = document.getElementById('mgActiveTableBody');
         const removedBody = document.getElementById('mgRemovedTableBody');
         if (!activeBody) return;
@@ -3084,7 +3119,7 @@ function toggleDeleteModeAtm() {
                 <td data-label="Username">${escapeHtml(u.username)}</td>
                 <td data-label="Role"><span class="badge" style="--chip-color:${u.role==='engineer'?'#4f46e5':'#0d9488'};">${escapeHtml(u.role)}</span></td>
                 <td data-label="Action">
-                    ${u.username === 'admin' ? '<span style="color:#94a3b8;font-size:0.68rem;">Protected</span>' : `<button class="btn-delete-mode" onclick="deleteUser('${escapeHtml(u.username)}')"><i class="fas fa-user-slash"></i> Remove</button>`}
+                    ${isAdminUser(u) ? '<span style="color:#94a3b8;font-size:0.68rem;">Protected</span>' : `<button class="btn-delete-mode" onclick="deleteUser('${escapeHtml(u.username)}')"><i class="fas fa-user-slash"></i> Remove</button>`}
                 </td>
             </tr>`).join('') : '<tr><td colspan="4" align="center" style="padding:14px;color:#94a3b8;">No active users.</td></tr>';
 
@@ -3099,6 +3134,7 @@ function toggleDeleteModeAtm() {
     }
 
     async function addNewUser() {
+        if (!isAdminUser(currentUser)) return; // block direct/console calls from non-admins
         const errBox = document.getElementById('mgAddError');
         errBox.style.display = 'none';
         const name = document.getElementById('mgUserName').value.trim();
@@ -3127,9 +3163,10 @@ function toggleDeleteModeAtm() {
     }
 
     async function deleteUser(username) {
+        if (!isAdminUser(currentUser)) return; // block direct/console calls from non-admins
         const user = USER_ACCOUNTS.find(u => u.username === username);
         if (!user) return;
-        if (username === 'admin') return;
+        if (isAdminUser(user)) return;
         if (!confirm(`Remove ${user.name} (${user.username})? They will no longer be able to log in or be assigned new tasks, but every past record under their name stays exactly as it is.`)) return;
         user.active = false;
         await pushUserList();
@@ -3138,6 +3175,7 @@ function toggleDeleteModeAtm() {
     }
 
     async function restoreUser(username) {
+        if (!isAdminUser(currentUser)) return; // block direct/console calls from non-admins
         const user = USER_ACCOUNTS.find(u => u.username === username);
         if (!user) return;
         user.active = true;
