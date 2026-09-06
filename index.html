@@ -1500,6 +1500,73 @@ button {
     </div>
 </div>
 
+<!-- SECTION: Manage Users (Admin only) -->
+<div class="dashboard-section" id="section-manage">
+    <div class="card" style="border-top:3px solid #4f46e5;">
+        <div class="card-title" style="color:#4f46e5;"><i class="fas fa-users-cog"></i> USER MANAGEMENT</div>
+        <div style="font-size:0.72rem;color:#64748b;margin-bottom:16px;line-height:1.5;">
+            Add or remove login accounts here. Removing a user only blocks their login and hides them from
+            "assign to" lists going forward — it never touches tickets, ATM, or leave records already saved
+            under their name, and the account stays visible below under "Removed Users" as a permanent history.
+        </div>
+
+        <!-- Add User Form -->
+        <div style="display:flex;gap:12px;margin-bottom:18px;flex-wrap:wrap;">
+            <div class="input-group" style="flex:1;min-width:150px;">
+                <label><i class="fas fa-user"></i> Full Name</label>
+                <input type="text" id="mgUserName" placeholder="e.g. Karim">
+            </div>
+            <div class="input-group" style="flex:1;min-width:140px;">
+                <label><i class="fas fa-at"></i> Username</label>
+                <input type="text" id="mgUsername" placeholder="e.g. karim" autocomplete="off">
+            </div>
+            <div class="input-group" style="flex:1;min-width:140px;">
+                <label><i class="fas fa-user-tag"></i> Role</label>
+                <select id="mgRole">
+                    <option value="technician">Technician</option>
+                    <option value="engineer">Engineer</option>
+                </select>
+            </div>
+            <div class="input-group" style="flex:1;min-width:150px;">
+                <label><i class="fas fa-key"></i> Password</label>
+                <input type="text" id="mgPassword" placeholder="Min 4 characters">
+            </div>
+            <div style="display:flex;align-items:flex-end;">
+                <button class="btn-assign" onclick="addNewUser()" style="white-space:nowrap;min-width:130px;">
+                    <i class="fas fa-user-plus"></i> Add User
+                </button>
+            </div>
+        </div>
+        <div id="mgAddError" style="display:none;background:#fef2f2;border:1px solid #fecaca;color:#b91c1c;border-radius:8px;padding:9px 12px;font-size:0.73rem;margin-bottom:14px;"></div>
+
+        <!-- Active Users -->
+        <div style="font-family:'Outfit',sans-serif;font-size:0.75rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:#1e293b;margin-bottom:8px;">
+            <i class="fas fa-user-check"></i> Active Users
+        </div>
+        <div class="table-scroll-wrap" style="margin-bottom:22px;">
+            <table id="mgActiveTable">
+                <thead><tr><th>Name</th><th>Username</th><th>Role</th><th>Action</th></tr></thead>
+                <tbody id="mgActiveTableBody">
+                    <tr><td colspan="4" align="center" style="padding:20px;color:#64748b;"><i class="fas fa-spinner fa-spin"></i> Loading...</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Removed Users (History) -->
+        <div style="font-family:'Outfit',sans-serif;font-size:0.75rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:#64748b;margin-bottom:8px;">
+            <i class="fas fa-history"></i> Removed Users <span style="font-weight:500;text-transform:none;letter-spacing:0;">(kept as history — never deleted permanently)</span>
+        </div>
+        <div class="table-scroll-wrap">
+            <table id="mgRemovedTable">
+                <thead><tr><th>Name</th><th>Username</th><th>Role</th><th>Action</th></tr></thead>
+                <tbody id="mgRemovedTableBody">
+                    <tr><td colspan="4" align="center" style="padding:14px;color:#94a3b8;">No removed users.</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
 <!-- SECTION: Leave Info -->
 <div class="dashboard-section" id="section-leave">
     <div class="card" style="border-top:3px solid #8b5cf6;">
@@ -1619,6 +1686,11 @@ button {
         <div class="tab-icon" style="color:#b45309;"><i class="fas fa-credit-card"></i></div>
         <span class="tab-label">ATM</span>
     </button>
+
+<button class="tab-item" id="tab-manage" onclick="showSection('manage')" style="display:none;">
+        <div class="tab-icon" style="color:#4f46e5;"><i class="fas fa-users-cog"></i></div>
+        <span class="tab-label">Manage</span>
+    </button>
 </nav>
 
 </div><!-- end #mainApp -->
@@ -1684,17 +1756,54 @@ button {
     }
 
     // ── USER ACCOUNTS ──
-    const USER_ACCOUNTS = [
-        { username: 'admin',    name: 'Admin', role: 'engineer',   defaultPw: '78773597in' },
-        { username: 'tamim',    name: 'Tamim',         role: 'engineer',   defaultPw: 'tamim1234'  },
-        { username: 'rupchan',  name: 'Rupchan',       role: 'engineer',   defaultPw: 'rupchan1234'},
-        { username: 'amit',     name: 'Amit',          role: 'engineer',   defaultPw: 'amit1234'   },
-        { username: 'bashudeb', name: 'Bashudeb',      role: 'engineer',   defaultPw: 'bashudeb1234'},
-        { username: 'sumon',    name: 'Sumon',         role: 'technician', defaultPw: 'sumon1234'  },
-        { username: 'alamin',   name: 'Alamin',        role: 'technician', defaultPw: 'alamin1234' },
-        { username: 'fahim',    name: 'Fahim',         role: 'technician', defaultPw: 'fahim1234'  },
-        { username: 'nahid',    name: 'Nahid',         role: 'technician', defaultPw: 'nahid1234'  },
+    // These are the seed/default accounts. The LIVE list (USER_ACCOUNTS below) is synced from
+    // Firebase under 'users' so the Admin "Manage" tab can add/remove users and have the change
+    // apply everywhere (login, all technician dropdowns) on every device. Deleting a user is a
+    // SOFT delete (active:false) — the record itself is never erased, so it keeps showing up in
+    // the "Removed users" history list and any past task/ATM/leave entries that reference the
+    // person's name (stored as plain text) are completely unaffected.
+    const DEFAULT_USER_ACCOUNTS = [
+        { username: 'admin',    name: 'Admin', role: 'engineer',   defaultPw: '78773597in', active: true },
+        { username: 'tamim',    name: 'Tamim',         role: 'engineer',   defaultPw: 'tamim1234',  active: true },
+        { username: 'rupchan',  name: 'Rupchan',       role: 'engineer',   defaultPw: 'rupchan1234', active: true },
+        { username: 'amit',     name: 'Amit',          role: 'engineer',   defaultPw: 'amit1234',   active: true },
+        { username: 'bashudeb', name: 'Bashudeb',      role: 'engineer',   defaultPw: 'bashudeb1234', active: true },
+        { username: 'sumon',    name: 'Sumon',         role: 'technician', defaultPw: 'sumon1234',  active: true },
+        { username: 'alamin',   name: 'Alamin',        role: 'technician', defaultPw: 'alamin1234', active: true },
+        { username: 'fahim',    name: 'Fahim',         role: 'technician', defaultPw: 'fahim1234',  active: true },
+        { username: 'nahid',    name: 'Nahid',         role: 'technician', defaultPw: 'nahid1234',  active: true },
     ];
+    let USER_ACCOUNTS = DEFAULT_USER_ACCOUNTS.map(u => ({ ...u }));
+
+    const USERS_STORAGE_KEY = 'dash_users_v1';
+    function loadLocalUsers() {
+        try { const s = localStorage.getItem(USERS_STORAGE_KEY); const p = s ? JSON.parse(s) : null; return (p && p.length) ? p : null; } catch(e) { return null; }
+    }
+    function saveLocalUsers(list) { try { localStorage.setItem(USERS_STORAGE_KEY, JSON.stringify(list)); } catch(e) {} }
+
+    // Pull the latest user list from Firebase (falls back to whatever we already have locally/in memory).
+    async function syncUsersFromFirebase() {
+        try {
+            const remote = await fbGet('users');
+            if (remote && typeof remote === 'object' && Object.keys(remote).length) {
+                USER_ACCOUNTS = Object.values(remote);
+                saveLocalUsers(USER_ACCOUNTS);
+                return USER_ACCOUNTS;
+            }
+        } catch(e) {}
+        const local = loadLocalUsers();
+        if (local) USER_ACCOUNTS = local;
+        return USER_ACCOUNTS;
+    }
+    // Push the current in-memory user list up to Firebase so every device sees add/delete instantly.
+    async function pushUserList() {
+        const obj = {};
+        USER_ACCOUNTS.forEach(u => obj[u.username] = u);
+        saveLocalUsers(USER_ACCOUNTS);
+        try { await fbSet('users', obj); } catch(e) {}
+    }
+    function activeUsersByRole(role) { return USER_ACCOUNTS.filter(u => u.active !== false && u.role === role); }
+    function removedUsersList() { return USER_ACCOUNTS.filter(u => u.active === false); }
 
     const SESSION_KEY = 'dash_session_v3';
     function saveSession(user) { localStorage.setItem(SESSION_KEY, JSON.stringify(user)); }
@@ -1808,11 +1917,17 @@ button {
 
         errBox.style.display = 'none';
         if (!uname || !pw) { document.getElementById('loginErrorMsg').textContent = 'Username and password are required.'; errBox.style.display = 'flex'; return; }
-        const account = USER_ACCOUNTS.find(u => u.username === uname);
-        if (!account) { document.getElementById('loginErrorMsg').textContent = 'User not found.'; errBox.style.display = 'flex'; return; }
 
         btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verifying...'; btn.disabled = true;
-        await Promise.race([syncPasswordsFromFirebase(), new Promise(r => setTimeout(r, 2000))]);
+        await Promise.race([Promise.all([syncPasswordsFromFirebase(), syncUsersFromFirebase()]), new Promise(r => setTimeout(r, 2500))]);
+
+        const account = USER_ACCOUNTS.find(u => u.username === uname);
+        if (!account || account.active === false) {
+            document.getElementById('loginErrorMsg').textContent = 'User not found.';
+            errBox.style.display = 'flex';
+            btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login'; btn.disabled = false;
+            return;
+        }
 
         const passwords = getPasswords();
         if ((passwords[uname] || account.defaultPw) !== pw) {
@@ -1869,6 +1984,10 @@ const leaveFormEl = document.getElementById('leaveEntryForm');
 const leaveNoticeEl = document.getElementById('leaveAdminOnlyNotice');
 if (leaveFormEl) leaveFormEl.style.display = isLeaveAdmin ? 'flex' : 'none';
 if (leaveNoticeEl) leaveNoticeEl.style.display = isLeaveAdmin ? 'none' : 'flex';
+        const manageTabEl = document.getElementById('tab-manage');
+        if (manageTabEl) manageTabEl.style.display = isAdmin ? 'flex' : 'none';
+        populateTechnicianDropdowns();
+        if (isAdmin) renderManageUsers();
         startFirebaseSync();
         startReminderChecks();
         requestNotificationPermission();
@@ -2777,7 +2896,7 @@ function toggleDeleteModeAtm() {
     let leaveEntries = [];
     const LEAVE_SICK_TOTAL   = 14;
     const LEAVE_CASUAL_TOTAL = 10;
-    const LEAVE_TECHS = ['Sumon','Alamin','Nahid','Fahim'];
+    let LEAVE_TECHS = ['Sumon','Alamin','Nahid','Fahim'];
 
     function leaveDaysBetween(from, to) {
         const f = new Date(from), t = new Date(to);
@@ -2913,7 +3032,7 @@ function toggleDeleteModeAtm() {
             const casualLeft = LEAVE_CASUAL_TOTAL - used.casual;
             const totalLeft  = sickLeft + casualLeft;
             return `<tr>
-                <td data-label="Tech"><span class="badge" style="--chip-color:${techColors[name]};">${name}</span></td>
+                <td data-label="Tech"><span class="badge" style="--chip-color:${techColors[name] || '#334155'};">${name}</span></td>
                 <td data-label="Sick Leave Enjoyed" style="font-family:'Outfit',sans-serif;font-weight:700;">${used.sick}</td>
                 <td data-label="Sick Leave Left" style="font-family:'Outfit',sans-serif;font-weight:800;color:${sickLeft<=2?'#be123c':'#0d9488'};">${sickLeft}</td>
                 <td data-label="Casual Leave Enjoyed" style="font-family:'Outfit',sans-serif;font-weight:700;">${used.casual}</td>
@@ -2923,25 +3042,146 @@ function toggleDeleteModeAtm() {
         }).join('');
     }
 
+    // ── USER MANAGEMENT (Admin "Manage" tab) ──
+    function escapeHtml(str) {
+        return String(str == null ? '' : str).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
+
+    // Refresh every "assign to / technician" dropdown across the app from the live, active-only user list.
+    // This is what makes an added user show up everywhere, and a removed user disappear from selection
+    // everywhere, without touching a single historical record.
+    function populateTechnicianDropdowns() {
+        const techs = activeUsersByRole('technician');
+        const optsHtml = techs.map(u => `<option>${escapeHtml(u.name)}</option>`).join('');
+
+        const personInput = document.getElementById('personInput');
+        if (personInput) { const cur = personInput.value; personInput.innerHTML = '<option value="">Assign to...</option>' + optsHtml; if (techs.some(u => u.name === cur)) personInput.value = cur; }
+
+        const editPerson = document.getElementById('editPerson');
+        if (editPerson) { const cur = editPerson.value; editPerson.innerHTML = '<option value="">Select Technician</option>' + techs.map(u => `<option>${escapeHtml(u.name)}</option>`).join(''); if (techs.some(u => u.name === cur)) editPerson.value = cur; }
+
+        const filterTech = document.getElementById('filterTech');
+        if (filterTech) { const cur = filterTech.value; filterTech.innerHTML = '<option value="">All Technicians</option>' + optsHtml; if (techs.some(u => u.name === cur)) filterTech.value = cur; }
+
+        const leavePerson = document.getElementById('leavePerson');
+        if (leavePerson) { const cur = leavePerson.value; leavePerson.innerHTML = '<option value="">Select</option>' + optsHtml; if (techs.some(u => u.name === cur)) leavePerson.value = cur; }
+
+        // Leave balance table lists every technician who ever existed (active or removed) so past
+        // leave history for a removed technician is still visible — only the dropdowns above hide them.
+        LEAVE_TECHS = USER_ACCOUNTS.filter(u => u.role === 'technician').map(u => u.name);
+        if (typeof renderLeaveBalance === 'function' && document.getElementById('leaveBalanceBody')) renderLeaveBalance();
+    }
+
+    function renderManageUsers() {
+        const activeBody = document.getElementById('mgActiveTableBody');
+        const removedBody = document.getElementById('mgRemovedTableBody');
+        if (!activeBody) return;
+
+        const active = USER_ACCOUNTS.filter(u => u.active !== false);
+        activeBody.innerHTML = active.length ? active.map(u => `
+            <tr>
+                <td data-label="Name" style="font-weight:700;">${escapeHtml(u.name)}</td>
+                <td data-label="Username">${escapeHtml(u.username)}</td>
+                <td data-label="Role"><span class="badge" style="--chip-color:${u.role==='engineer'?'#4f46e5':'#0d9488'};">${escapeHtml(u.role)}</span></td>
+                <td data-label="Action">
+                    ${u.username === 'admin' ? '<span style="color:#94a3b8;font-size:0.68rem;">Protected</span>' : `<button class="btn-delete-mode" onclick="deleteUser('${escapeHtml(u.username)}')"><i class="fas fa-user-slash"></i> Remove</button>`}
+                </td>
+            </tr>`).join('') : '<tr><td colspan="4" align="center" style="padding:14px;color:#94a3b8;">No active users.</td></tr>';
+
+        const removed = removedUsersList();
+        removedBody.innerHTML = removed.length ? removed.map(u => `
+            <tr style="opacity:0.65;">
+                <td data-label="Name" style="text-decoration:line-through;">${escapeHtml(u.name)}</td>
+                <td data-label="Username">${escapeHtml(u.username)}</td>
+                <td data-label="Role">${escapeHtml(u.role)}</td>
+                <td data-label="Action"><button class="btn-confirm-delete" style="display:inline-flex;" onclick="restoreUser('${escapeHtml(u.username)}')"><i class="fas fa-undo"></i> Restore</button></td>
+            </tr>`).join('') : '<tr><td colspan="4" align="center" style="padding:14px;color:#94a3b8;">No removed users.</td></tr>';
+    }
+
+    async function addNewUser() {
+        const errBox = document.getElementById('mgAddError');
+        errBox.style.display = 'none';
+        const name = document.getElementById('mgUserName').value.trim();
+        const username = document.getElementById('mgUsername').value.trim().toLowerCase();
+        const role = document.getElementById('mgRole').value;
+        const pw = document.getElementById('mgPassword').value;
+
+        if (!name || !username || !pw) { errBox.textContent = 'Name, username and password are required.'; errBox.style.display = 'block'; return; }
+        if (!/^[a-z0-9_.]+$/.test(username)) { errBox.textContent = 'Username can only contain lowercase letters, numbers, dots or underscores.'; errBox.style.display = 'block'; return; }
+        if (pw.length < 4) { errBox.textContent = 'Password must be at least 4 characters.'; errBox.style.display = 'block'; return; }
+        if (USER_ACCOUNTS.some(u => u.username === username)) { errBox.textContent = 'This username already exists (active or removed).'; errBox.style.display = 'block'; return; }
+
+        const newUser = { username, name, role, defaultPw: pw, active: true };
+        USER_ACCOUNTS.push(newUser);
+        await pushUserList();
+        const passwords = getPasswords();
+        passwords[username] = pw;
+        savePasswords(passwords);
+
+        document.getElementById('mgUserName').value = '';
+        document.getElementById('mgUsername').value = '';
+        document.getElementById('mgPassword').value = '';
+        renderManageUsers();
+        populateTechnicianDropdowns();
+        showPopup('success', 'User Added', `${name} can now log in as a ${role}.`);
+    }
+
+    async function deleteUser(username) {
+        const user = USER_ACCOUNTS.find(u => u.username === username);
+        if (!user) return;
+        if (username === 'admin') return;
+        if (!confirm(`Remove ${user.name} (${user.username})? They will no longer be able to log in or be assigned new tasks, but every past record under their name stays exactly as it is.`)) return;
+        user.active = false;
+        await pushUserList();
+        renderManageUsers();
+        populateTechnicianDropdowns();
+    }
+
+    async function restoreUser(username) {
+        const user = USER_ACCOUNTS.find(u => u.username === username);
+        if (!user) return;
+        user.active = true;
+        await pushUserList();
+        renderManageUsers();
+        populateTechnicianDropdowns();
+    }
+
     // ── PAGE INIT ──
     document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('dateInput').value = new Date().toISOString().split('T')[0];
-
-    const savedSession = loadSession();
-    if (savedSession) {
-        const account = USER_ACCOUNTS.find(u => u.username === savedSession.username);
-        if (account) {
-            // savedSession না, বরং USER_ACCOUNTS থেকে fresh, সঠিক role নিয়ে login করানো হচ্ছে
-            const freshUser = { name: account.name, role: account.role, username: account.username };
-            saveSession(freshUser); // localStorage-ও update করে দিচ্ছি, পুরনো ভুল data যেন আর না থাকে
-            loginAs(freshUser);
-            return;
-        } else {
-            clearSession();
-        }
-    }
-    document.getElementById('loginScreen').style.display = 'flex';
+    initUsersAndSession();
 });
+
+    async function initUsersAndSession() {
+        try {
+            const remote = await fbGet('users');
+            if (remote && typeof remote === 'object' && Object.keys(remote).length) {
+                USER_ACCOUNTS = Object.values(remote);
+                saveLocalUsers(USER_ACCOUNTS);
+            } else {
+                // First run ever — seed Firebase with the default accounts so the list persists from now on.
+                await pushUserList();
+            }
+        } catch(e) {
+            const local = loadLocalUsers();
+            if (local) USER_ACCOUNTS = local;
+        }
+
+        const savedSession = loadSession();
+        if (savedSession) {
+            const account = USER_ACCOUNTS.find(u => u.username === savedSession.username && u.active !== false);
+            if (account) {
+                // savedSession না, বরং USER_ACCOUNTS থেকে fresh, সঠিক role নিয়ে login করানো হচ্ছে
+                const freshUser = { name: account.name, role: account.role, username: account.username };
+                saveSession(freshUser); // localStorage-ও update করে দিচ্ছি, পুরনো ভুল data যেন আর না থাকে
+                loginAs(freshUser);
+                return;
+            } else {
+                clearSession();
+            }
+        }
+        document.getElementById('loginScreen').style.display = 'flex';
+    }
 </script>
 </body>
 </html>
