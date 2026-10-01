@@ -995,7 +995,79 @@ button {
   }
   .table-scroll-wrap { overflow-x: unset; }
 }  
-  </style>
+  
+/* ── DUTY SCHEDULE ── */
+#tab-duty { display: none !important; }
+#tab-duty.is-duty-visible { display: flex !important; }
+.duty-toolbar { display:flex; flex-wrap:wrap; gap:10px; align-items:flex-end; margin-bottom:14px; }
+.duty-toolbar .input-group { min-width:150px; }
+.duty-month-nav { display:flex; gap:6px; align-items:center; }
+.duty-month-nav input[type=month] { padding:9px 10px; border:1.5px solid rgba(148,163,184,0.35); border-radius:8px; font-family:'Outfit',sans-serif; font-size:0.78rem; background:#fff; color:var(--slate-text); }
+.duty-nav-btn { background:#fff !important; color:var(--navy-mid) !important; border:1.5px solid rgba(148,163,184,0.35) !important; cursor:pointer; padding:8px 11px !important; }
+.duty-holiday-box { background:rgba(13,148,136,0.06); border:1.5px dashed rgba(13,148,136,0.35); border-radius:12px; padding:12px; margin-bottom:14px; }
+.duty-holiday-box .hb-title { font-family:'Outfit',sans-serif; font-size:0.66rem; font-weight:800; letter-spacing:0.6px; text-transform:uppercase; color:#0f766e; margin-bottom:8px; }
+.duty-holiday-box .hb-row { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+.duty-holiday-box input { padding:8px 10px; border:1.5px solid rgba(148,163,184,0.35); border-radius:8px; font-family:'Outfit',sans-serif; font-size:0.74rem; background:#fff; color:var(--slate-text); }
+.duty-holiday-box input[type=text] { flex:1; min-width:150px; }
+#dutyTable { min-width:560px; }
+#dutyTable th, #dutyTable td { border-right:1px solid rgba(148,163,184,0.28); }
+#dutyTable th:last-child, #dutyTable td:last-child { border-right:none; }
+#dutyTable td { background:#fff !important; vertical-align:middle; }
+#dutyTable tr:hover td { background:#fff !important; }
+#dutyTable tr.duty-grp-end td { border-bottom:2px solid rgba(71,85,105,0.45); }
+#dutyTable td.duty-date { text-align:left; padding-left:12px; white-space:nowrap; font-weight:700; }
+#dutyTable td.duty-date.is-holiday { background:rgba(254,226,226,0.55) !important; }
+.duty-sub { display:flex; flex-wrap:wrap; gap:4px; align-items:center; margin-top:3px; font-weight:600; font-size:0.58rem; color:var(--muted); }
+.duty-badge { display:inline-flex; align-items:center; gap:4px; padding:2px 7px; border-radius:20px; font-size:0.56rem; font-weight:800; color:#fff; }
+.duty-badge.govt   { background:linear-gradient(135deg,#be123c,#9f1239); }
+.duty-badge.custom { background:linear-gradient(135deg,#b45309,#92400e); }
+.duty-badge button { all:unset; cursor:pointer; font-size:0.7rem; line-height:1; opacity:.85; padding:0 1px; }
+.duty-badge button:hover { opacity:1; }
+.duty-sel { width:100%; min-width:105px; padding:7px 6px; border:1.5px solid rgba(148,163,184,0.35); border-radius:8px; background:#fff; font-family:'Outfit',sans-serif; font-size:0.74rem; font-weight:600; color:var(--navy-mid); cursor:pointer; text-align:center; text-align-last:center; }
+.duty-sel:focus { outline:none; border-color:var(--teal); box-shadow:0 0 0 3px rgba(13,148,136,0.14); }
+.duty-sel.filled { border-color:rgba(13,148,136,0.55); background:rgba(13,148,136,0.06); }
+.duty-off-chip { display:inline-block; margin:2px; padding:4px 11px; border-radius:20px; font-weight:800; font-size:0.72rem; color:#fff; background:linear-gradient(135deg,#475569,#334155); }
+.duty-empty { text-align:center; padding:22px; color:var(--muted); font-size:0.78rem; }
+
+/* ── DUTY SCHEDULE: COMPACT OVERRIDES ── */
+#section-duty .card { padding:10px 10px 8px !important; }
+#section-duty .card-title { margin-bottom:8px; padding-bottom:7px; font-size:0.78rem; }
+#section-duty .duty-toolbar { margin-bottom:8px; gap:6px; align-items:center; }
+#section-duty .duty-toolbar .input-group { min-width:0; flex-direction:row; align-items:center; gap:6px; }
+#section-duty .duty-toolbar .input-group > label { display:none; }
+#section-duty .duty-month-nav { gap:4px; }
+#section-duty .duty-month-nav input[type=month] { padding:5px 8px; font-size:0.72rem; }
+#section-duty button { padding:5px 9px !important; font-size:0.64rem !important; border-radius:7px !important; }
+#section-duty .duty-holiday-box { display:flex; flex-wrap:wrap; align-items:center; gap:6px 8px; padding:6px 8px; margin-bottom:8px; border-radius:9px; }
+#section-duty .duty-holiday-box .hb-title { margin:0; font-size:0.6rem; white-space:nowrap; }
+#section-duty .duty-holiday-box .hb-row { flex:1; gap:5px; min-width:220px; flex-wrap:nowrap; }
+#section-duty .duty-holiday-box input { padding:5px 8px; font-size:0.7rem; border-radius:7px; }
+#section-duty .duty-holiday-box input[type=date] { width:128px; flex:none; }
+#section-duty .duty-holiday-box input[type=text] { min-width:80px; }
+#section-duty .table-scroll-wrap table, #dutyTable { min-width:0; margin-top:0; }
+#dutyTable th { padding:6px 5px; font-size:0.58rem; }
+#dutyTable td { padding:3px 5px; font-size:0.66rem; }
+#dutyTable td.duty-date { padding-left:8px; font-size:0.68rem; line-height:1.2; }
+/* fixed layout: selecting a name must never shift columns */
+#dutyTable { table-layout:fixed !important; width:100% !important; }
+#dutyTable th:nth-child(1) { width:30%; }
+#dutyTable th:nth-child(2), #dutyTable th:nth-child(3) { width:26%; }
+#dutyTable th:nth-child(4) { width:18%; }
+#dutyTable td { overflow:hidden; }
+#dutyTable td.duty-date { white-space:normal !important; }
+#dutyTable td .duty-sel { width:100% !important; min-width:0 !important; max-width:100%; height:28px; display:block; box-sizing:border-box; }
+#dutyTable td.duty-off-cell { vertical-align:middle; }
+#dutyTable tr.duty-grp-end td, #dutyTable td.duty-off-cell { border-bottom:3px solid #1e293b !important; }
+#dutyTable tr:last-child td { border-bottom:3px solid #1e293b !important; }
+.duty-sub { display:inline-flex; margin:0 0 0 5px; gap:3px; font-size:0.54rem; vertical-align:middle; }
+.duty-badge { padding:1px 6px; font-size:0.52rem; gap:3px; }
+.duty-sel { min-width:80px; padding:4px 4px; font-size:0.68rem; border-radius:6px; border-width:1px; }
+.duty-off-chip { margin:1px; padding:2px 8px; font-size:0.64rem; }
+.duty-empty { padding:12px; font-size:0.72rem; }
+#section-duty .duty-note { margin-top:6px !important; font-size:0.56rem !important; line-height:1.35 !important; }
+
+
+</style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -1505,6 +1577,51 @@ button {
 </div>
 
 <!-- SECTION: Manage Users (Admin only) -->
+
+<div class="dashboard-section" id="section-duty">
+    <div class="card" style="border-top:3px solid #0d9488;">
+        <div class="card-title" style="color:#0d9488;"><i class="fas fa-calendar-alt"></i> DUTY SCHEDULE</div>
+
+        <div class="duty-toolbar">
+            <div class="input-group">
+                <label><i class="fas fa-calendar"></i> Month</label>
+                <div class="duty-month-nav">
+                    <button class="duty-nav-btn" onclick="dutyShiftMonth(-1)" title="Previous month"><i class="fas fa-chevron-left"></i></button>
+                    <input type="month" id="dutyMonth" onchange="dutyLoad()">
+                    <button class="duty-nav-btn" onclick="dutyShiftMonth(1)" title="Next month"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+            <div style="margin-left:auto;">
+                <button class="btn-assign" onclick="dutyDownloadImage()" title="Download full month schedule as image"><i class="fas fa-image"></i> Download Image</button>
+            </div>
+            <div id="dutyRestoreWrap" style="display:none;">
+                <button class="duty-nav-btn" onclick="dutyRestoreHidden()"><i class="fas fa-undo"></i> <span id="dutyRestoreTxt">Restore holidays</span></button>
+            </div>
+        </div>
+
+        <div class="duty-holiday-box">
+            <div class="hb-title"><i class="fas fa-plus-circle"></i> Extra Holiday</div>
+            <div class="hb-row">
+                <input type="date" id="dutyHolDate">
+                <input type="text" id="dutyHolName" placeholder="Holiday name (e.g. Eid-ul-Azha)">
+                <button class="btn-assign" onclick="dutyAddHoliday()" style="white-space:nowrap;"><i class="fas fa-check-circle"></i> Add</button>
+            </div>
+        </div>
+
+        <div class="table-scroll-wrap">
+            <table id="dutyTable">
+                <thead>
+                    <tr><th>Date</th><th>Technician-1</th><th>Technician-2</th><th>Weekly Off</th></tr>
+                </thead>
+                <tbody id="dutyBody"></tbody>
+            </table>
+        </div>
+        <div class="duty-note" style="color:var(--muted);font-family:'Outfit',sans-serif;">
+            <i class="fas fa-info-circle"></i> Friday &amp; Saturday and government/added holidays auto-appear. Cell e click kore technician select korun. Je technician kono duty te thakbe na, tar naam auto <b>Weekly Off</b> e chole jabe (consecutive din gulor group onujayi).
+        </div>
+    </div>
+</div>
+
 <div class="dashboard-section" id="section-manage">
     <div class="card" style="border-top:3px solid #4f46e5;">
         <div class="card-title" style="color:#4f46e5;"><i class="fas fa-users-cog"></i> USER MANAGEMENT</div>
@@ -1695,6 +1812,11 @@ button {
         <div class="tab-icon" style="color:#4f46e5;"><i class="fas fa-users-cog"></i></div>
         <span class="tab-label">Manage</span>
     </button>
+<button class="tab-item" id="tab-duty" onclick="showSection('duty')" style="display:none;">
+        <div class="tab-icon" style="color:#5eead4;"><i class="fas fa-calendar-alt"></i></div>
+        <span class="tab-label">Duty</span>
+    </button>
+
 </nav>
 
 </div><!-- end #mainApp -->
@@ -1796,6 +1918,11 @@ button {
             tabEl.classList.add('is-admin-visible');
         } else {
             tabEl.classList.remove('is-admin-visible');
+        }
+        const dutyTab = document.getElementById('tab-duty');
+        if (dutyTab) {
+            if (typeof canManageDuty === 'function' && canManageDuty(currentUser)) dutyTab.classList.add('is-duty-visible');
+            else dutyTab.classList.remove('is-duty-visible');
         }
     }
     // Recurring safety net: re-assert every 2s regardless of what else is happening in the app.
@@ -2407,9 +2534,408 @@ loadLeaveEntries();
         }
     }
 
+
+    // ═══════════════════════════════════════════════════════
+    // DUTY SCHEDULE  (access: admin, sumon, alamin)
+    // ═══════════════════════════════════════════════════════
+    const DUTY_ACCESS = ['admin', 'sumon', 'alamin'];
+    const DUTY_WEEKLY_OFF_DAYS = [5, 6];             // 5 = Friday, 6 = Saturday
+    const DUTY_DISPLAY_NAME = { alamin: 'Al.Amin' };  // name shown in the schedule (falls back to account name)
+    const DUTY_DAY_NAMES = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    // Fixed-date government holidays (same every year)
+    const DUTY_GOVT_FIXED = {
+        '02-21': 'Shaheed Day',
+        '03-26': 'Independence Day',
+        '04-14': 'Pohela Boishakh',
+        '05-01': 'May Day',
+        '08-05': 'July Uprising Day',
+        '12-16': 'Victory Day',
+        '12-25': 'Christmas Day'
+    };
+    // Year-specific / moon-dependent ones. Add any other (Eid etc.) with the "Add Extra Holiday" box.
+    const DUTY_GOVT_DATED = {
+        '2026-08-26': 'Eid-e-Miladunnabi',
+        '2026-09-04': 'Janmashtami',
+        '2026-10-20': 'Durga Puja (Navami)',
+        '2026-10-21': 'Durga Puja (Bijoya Dashami)'
+    };
+
+    let dutyState = { month: '', data: {}, custom: {}, hidden: {} };
+    let dutyPollTimer = null;
+
+    function canManageDuty(user) {
+        return !!user && DUTY_ACCESS.includes(String(user.username || '').trim().toLowerCase());
+    }
+    function dutyPad(n) { return String(n).padStart(2, '0'); }
+    function dutyDefaultMonth() { const n = new Date(); return n.getFullYear() + '-' + dutyPad(n.getMonth() + 1); }
+    function dutyNameOf(username) {
+        if (!username) return '';
+        if (DUTY_DISPLAY_NAME[username]) return DUTY_DISPLAY_NAME[username];
+        const u = USER_ACCOUNTS.find(x => x.username === username);
+        return u ? u.name : username;
+    }
+
+    async function dutyInit() {
+        if (!canManageDuty(currentUser)) return;
+        const mi = document.getElementById('dutyMonth');
+        if (!mi.value) mi.value = dutyDefaultMonth();
+        await dutyLoad();
+        if (dutyPollTimer) clearInterval(dutyPollTimer);
+        dutyPollTimer = setInterval(() => {
+            const sec = document.getElementById('section-duty');
+            if (!sec || !sec.classList.contains('active') || !canManageDuty(currentUser)) {
+                clearInterval(dutyPollTimer); dutyPollTimer = null; return;
+            }
+            const ae = document.activeElement;
+            if (ae && ae.classList && ae.classList.contains('duty-sel')) return; // don't disturb an open dropdown
+            dutyLoad(true);
+        }, 20000);
+    }
+
+    async function dutyLoad(silent) {
+        const mi = document.getElementById('dutyMonth');
+        if (!mi.value) mi.value = dutyDefaultMonth();
+        const month = mi.value;
+        try {
+            const [d, c, hd] = await Promise.all([
+                fbGet('dutySchedule/' + month),
+                fbGet('dutyHolidays/custom'),
+                fbGet('dutyHolidays/hidden')
+            ]);
+            if (mi.value !== month) return; // user already switched month
+            dutyState = { month, data: d || {}, custom: c || {}, hidden: hd || {} };
+        } catch (e) {
+            if (!silent) showPopup('warning', 'Load failed', 'Duty schedule load kora gelo na. Internet check korun.');
+            if (dutyState.month !== month) dutyState = { month, data: {}, custom: {}, hidden: {} };
+        }
+        dutyRender();
+    }
+
+    function dutyShiftMonth(delta) {
+        const mi = document.getElementById('dutyMonth');
+        const [y, m] = (mi.value || dutyDefaultMonth()).split('-').map(Number);
+        const d = new Date(y, m - 1 + delta, 1);
+        mi.value = d.getFullYear() + '-' + dutyPad(d.getMonth() + 1);
+        dutyLoad();
+    }
+
+    function dutyHolidaysFor(month) {
+        const [y, m] = month.split('-').map(Number);
+        const last = new Date(y, m, 0).getDate();
+        const map = {};
+        for (let d = 1; d <= last; d++) {
+            const key = `${y}-${dutyPad(m)}-${dutyPad(d)}`;
+            const name = DUTY_GOVT_DATED[key] || DUTY_GOVT_FIXED[`${dutyPad(m)}-${dutyPad(d)}`];
+            if (name && !dutyState.hidden[key]) map[key] = [{ name, type: 'govt', date: key }];
+        }
+        Object.keys(dutyState.custom || {}).forEach(id => {
+            const c = dutyState.custom[id];
+            if (c && c.date && c.date.startsWith(month)) {
+                (map[c.date] = map[c.date] || []).push({ name: c.name, type: 'custom', id, date: c.date });
+            }
+        });
+        return map;
+    }
+
+    function dutyHiddenInMonth(month) {
+        const [y, m] = month.split('-').map(Number);
+        const last = new Date(y, m, 0).getDate();
+        let n = 0;
+        for (let d = 1; d <= last; d++) {
+            const key = `${y}-${dutyPad(m)}-${dutyPad(d)}`;
+            if (dutyState.hidden[key] && (DUTY_GOVT_DATED[key] || DUTY_GOVT_FIXED[`${dutyPad(m)}-${dutyPad(d)}`])) n++;
+        }
+        return n;
+    }
+
+    function dutyRender() {
+        const body = document.getElementById('dutyBody');
+        if (!body) return;
+        const month = dutyState.month || document.getElementById('dutyMonth').value;
+        const [y, m] = month.split('-').map(Number);
+        const last = new Date(y, m, 0).getDate();
+        const hols = dutyHolidaysFor(month);
+        const techs = activeUsersByRole('technician');
+
+        // restore button
+        const hn = dutyHiddenInMonth(month);
+        const rw = document.getElementById('dutyRestoreWrap');
+        if (rw) { rw.style.display = hn ? 'block' : 'none'; document.getElementById('dutyRestoreTxt').textContent = `Restore ${hn} removed holiday${hn > 1 ? 's' : ''}`; }
+
+        // rows = every Fri/Sat + every holiday
+        const rows = [];
+        for (let d = 1; d <= last; d++) {
+            const key = `${y}-${dutyPad(m)}-${dutyPad(d)}`;
+            const dow = new Date(y, m - 1, d).getDay();
+            if (DUTY_WEEKLY_OFF_DAYS.includes(dow) || hols[key]) rows.push({ d, key, dow, hol: hols[key] || [] });
+        }
+        if (!rows.length) { body.innerHTML = '<tr><td colspan="4" class="duty-empty">No days to show.</td></tr>'; return; }
+
+        // group consecutive days (weekend / long holiday block)
+        const groups = [];
+        rows.forEach(r => {
+            const g = groups[groups.length - 1];
+            if (g && r.d - g[g.length - 1].d === 1) g.push(r); else groups.push([r]);
+        });
+
+        let html = '';
+        groups.forEach(g => {
+            const assigned = new Set();
+            g.forEach(r => { const v = dutyState.data[r.key] || {}; if (v.t1) assigned.add(v.t1); if (v.t2) assigned.add(v.t2); });
+            let offHtml = '<span style="color:var(--soft);">—</span>';
+            if (assigned.size) {
+                const offs = techs.filter(t => !assigned.has(t.username));
+                offHtml = offs.length ? offs.map(t => `<span class="duty-off-chip">${escapeHtml(dutyNameOf(t.username))}</span>`).join('') : '<span style="color:var(--soft);">—</span>';
+            }
+            g.forEach((r, i) => {
+                const v = dutyState.data[r.key] || { t1: '', t2: '' };
+                const badges = r.hol.map(hh => `<span class="duty-badge ${hh.type}">${escapeHtml(hh.name)}<button title="Remove holiday" onclick="dutyRemoveHoliday('${hh.type}','${hh.date}','${hh.id || ''}')">&times;</button></span>`).join('');
+                const mkSel = (col, other) => {
+                    const cur = v[col] || '', oth = v[other] || '';
+                    let opts = '<option value="">— Select —</option>';
+                    const names = techs.map(t => t.username);
+                    if (cur && !names.includes(cur)) names.push(cur); // keep a since-removed technician visible
+                    names.forEach(u => { opts += `<option value="${escapeHtml(u)}" ${u === cur ? 'selected' : ''} ${u === oth ? 'disabled' : ''}>${escapeHtml(dutyNameOf(u))}</option>`; });
+                    return `<select class="duty-sel ${cur ? 'filled' : ''}" data-date="${r.key}" data-col="${col}" onchange="dutySetCell(this)">${opts}</select>`;
+                };
+                html += `<tr class="${i === g.length - 1 ? 'duty-grp-end' : ''}">
+                    <td class="duty-date ${r.hol.length ? 'is-holiday' : ''}">${r.d}/${m}/${y}
+                        <div class="duty-sub"><span>${DUTY_DAY_NAMES[r.dow]}</span>${badges}</div></td>
+                    <td>${mkSel('t1', 't2')}</td>
+                    <td>${mkSel('t2', 't1')}</td>
+                    ${i === 0 ? `<td class="duty-off-cell" rowspan="${g.length}">${offHtml}</td>` : ''}
+                </tr>`;
+            });
+        });
+        body.innerHTML = html;
+    }
+
+
+    // Download the whole month's duty schedule as one PNG image
+    async function dutyDownloadImage() {
+        const month = dutyState.month || document.getElementById('dutyMonth').value;
+        if (!month) return;
+        const [y, m] = month.split('-').map(Number);
+        const last = new Date(y, m, 0).getDate();
+        const hols = dutyHolidaysFor(month);
+        const techs = activeUsersByRole('technician');
+
+        const rows = [];
+        for (let d = 1; d <= last; d++) {
+            const key = `${y}-${dutyPad(m)}-${dutyPad(d)}`;
+            const dow = new Date(y, m - 1, d).getDay();
+            if (DUTY_WEEKLY_OFF_DAYS.includes(dow) || hols[key]) rows.push({ d, key, dow, hol: hols[key] || [] });
+        }
+        if (!rows.length) { showPopup('warning', 'No data', 'Ei month e dekhanor moto kono din nai.'); return; }
+        const groups = [];
+        rows.forEach(r => {
+            const g = groups[groups.length - 1];
+            if (g && r.d - g[g.length - 1].d === 1) g.push(r); else groups.push([r]);
+        });
+        try { await document.fonts.ready; } catch (e) {}
+
+        const S = 2, PAD = 20, HEAD = 62, TH = 32, RH = 34, FOOT = 26;
+        const cols = [
+            { t: 'Date', w: 280 }, { t: 'Technician-1', w: 190 },
+            { t: 'Technician-2', w: 190 }, { t: 'Weekly Off', w: 240 }
+        ];
+        const TW = cols.reduce((a, c) => a + c.w, 0);
+        const W = TW + PAD * 2;
+        const H = PAD + HEAD + TH + rows.length * RH + FOOT + PAD;
+        const cv = document.createElement('canvas');
+        cv.width = W * S; cv.height = H * S;
+        const c = cv.getContext('2d');
+        c.scale(S, S);
+        const FF = "'Outfit', 'Segoe UI', Arial, sans-serif";
+
+        const rr = (x, yy, w, h, r) => {
+            c.beginPath();
+            c.moveTo(x + r, yy); c.arcTo(x + w, yy, x + w, yy + h, r);
+            c.arcTo(x + w, yy + h, x, yy + h, r); c.arcTo(x, yy + h, x, yy, r);
+            c.arcTo(x, yy, x + w, yy, r); c.closePath();
+        };
+        const pill = (txt, x, yy, h, bg, fg, font) => {
+            c.font = font;
+            const w = c.measureText(txt).width + 16;
+            c.fillStyle = bg; rr(x, yy, w, h, h / 2); c.fill();
+            c.fillStyle = fg; c.textAlign = 'left'; c.textBaseline = 'middle';
+            c.fillText(txt, x + 8, yy + h / 2 + 0.5);
+            return w;
+        };
+
+        // background
+        c.fillStyle = '#ffffff'; c.fillRect(0, 0, W, H);
+
+        // title bar
+        const monthName = new Date(y, m - 1, 1).toLocaleString('en-GB', { month: 'long' });
+        const gr = c.createLinearGradient(PAD, 0, PAD + TW, 0);
+        gr.addColorStop(0, '#0f172a'); gr.addColorStop(0.55, '#123a52'); gr.addColorStop(1, '#0f5c52');
+        c.fillStyle = gr; rr(PAD, PAD, TW, HEAD - 8, 10); c.fill();
+        c.fillStyle = '#ffffff'; c.textAlign = 'left'; c.textBaseline = 'middle';
+        c.font = `800 20px ${FF}`; c.fillText('DUTY SCHEDULE', PAD + 16, PAD + (HEAD - 8) / 2);
+        c.textAlign = 'right'; c.font = `600 17px ${FF}`;
+        c.fillText(`${monthName} ${y}`, PAD + TW - 16, PAD + (HEAD - 8) / 2);
+
+        // table header
+        let ty = PAD + HEAD;
+        c.fillStyle = '#1e293b'; c.fillRect(PAD, ty, TW, TH);
+        let cx = PAD;
+        c.font = `700 12px ${FF}`; c.fillStyle = '#e2e8f0'; c.textBaseline = 'middle';
+        cols.forEach(col => {
+            c.textAlign = col.t === 'Date' ? 'left' : 'center';
+            c.fillText(col.t.toUpperCase(), col.t === 'Date' ? cx + 14 : cx + col.w / 2, ty + TH / 2 + 0.5);
+            cx += col.w;
+        });
+        ty += TH;
+
+        const BOLD = '#1e293b';
+        const gridTop = ty;
+        groups.forEach(g => {
+            const gh = g.length * RH;
+            const assigned = new Set();
+            g.forEach(r => { const v = dutyState.data[r.key] || {}; if (v.t1) assigned.add(v.t1); if (v.t2) assigned.add(v.t2); });
+            const offs = assigned.size ? techs.filter(t => !assigned.has(t.username)).map(t => dutyNameOf(t.username)) : [];
+
+            g.forEach((r, i) => {
+                const ry = ty + i * RH;
+                const v = dutyState.data[r.key] || {};
+                // date cell
+                c.fillStyle = r.hol.length ? '#fee2e2' : '#ffffff';
+                c.fillRect(PAD, ry, cols[0].w, RH);
+                c.fillStyle = '#334155'; c.textAlign = 'left'; c.textBaseline = 'middle';
+                c.font = `700 14px ${FF}`;
+                const dt = `${r.d}/${m}/${y}`;
+                c.fillText(dt, PAD + 14, ry + RH / 2 + 0.5);
+                let px = PAD + 14 + c.measureText(dt).width + 8;
+                c.font = `600 11px ${FF}`; c.fillStyle = '#64748b';
+                c.fillText(DUTY_DAY_NAMES[r.dow], px, ry + RH / 2 + 0.5);
+                px += c.measureText(DUTY_DAY_NAMES[r.dow]).width + 6;
+                r.hol.forEach(hh => {
+                    if (px > PAD + cols[0].w - 40) return;
+                    px += pill(hh.name, px, ry + RH / 2 - 9, 18, hh.type === 'govt' ? '#be123c' : '#b45309', '#fff', `700 10px ${FF}`) + 4;
+                });
+                // technician cells
+                let x = PAD + cols[0].w;
+                ['t1', 't2'].forEach((k, ci) => {
+                    const w = cols[ci + 1].w;
+                    const nm = v[k] ? dutyNameOf(v[k]) : '';
+                    if (nm) { c.fillStyle = 'rgba(13,148,136,0.08)'; c.fillRect(x, ry, w, RH); }
+                    c.textAlign = 'center'; c.textBaseline = 'middle';
+                    c.font = nm ? `700 14px ${FF}` : `400 14px ${FF}`;
+                    c.fillStyle = nm ? '#0f766e' : '#94a3b8';
+                    c.fillText(nm || '—', x + w / 2, ry + RH / 2 + 0.5);
+                    x += w;
+                });
+                // row line (thin inside group, bold at group end)
+                const end = i === g.length - 1;
+                c.fillStyle = end ? BOLD : 'rgba(148,163,184,0.35)';
+                const lh = end ? 3 : 1;
+                const lw = end ? TW : cols[0].w + cols[1].w + cols[2].w;
+                c.fillRect(PAD, ry + RH - (end ? 2 : 1), lw, lh);
+            });
+
+            // weekly off cell (spans the whole group)
+            const ox = PAD + cols[0].w + cols[1].w + cols[2].w, ow = cols[3].w;
+            c.font = `700 11px ${FF}`;
+            if (offs.length) {
+                const lines = []; let line = [], lw = 0;
+                offs.forEach(n => {
+                    const w = c.measureText(n).width + 16 + 4;
+                    if (line.length && lw + w > ow - 16) { lines.push(line); line = []; lw = 0; }
+                    line.push({ n, w }); lw += w;
+                });
+                lines.push(line);
+                const LH = 22;
+                let yy = ty + gh / 2 - (lines.length * LH) / 2 + 2;
+                lines.forEach(ln => {
+                    const tot = ln.reduce((a, o) => a + o.w, 0) - 4;
+                    let xx = ox + (ow - tot) / 2;
+                    ln.forEach(o => { pill(o.n, xx, yy, 18, '#475569', '#fff', `700 11px ${FF}`); xx += o.w; });
+                    yy += LH;
+                });
+            } else {
+                c.fillStyle = '#94a3b8'; c.textAlign = 'center'; c.textBaseline = 'middle';
+                c.font = `400 14px ${FF}`; c.fillText('—', ox + ow / 2, ty + gh / 2);
+            }
+            ty += gh;
+        });
+
+        // vertical column lines + outer border
+        c.fillStyle = 'rgba(148,163,184,0.45)';
+        let vx = PAD;
+        cols.forEach((col, i) => { if (i > 0) c.fillRect(vx - 0.5, gridTop, 1, ty - gridTop); vx += col.w; });
+        c.strokeStyle = BOLD; c.lineWidth = 1.5;
+        c.strokeRect(PAD, gridTop - TH, TW, ty - gridTop + TH);
+
+        // footer
+        c.fillStyle = '#94a3b8'; c.font = `500 10px ${FF}`; c.textAlign = 'right'; c.textBaseline = 'middle';
+        c.fillText('Generated ' + new Date().toLocaleDateString('en-GB'), PAD + TW, ty + FOOT / 2 + 2);
+
+        cv.toBlob(blob => {
+            if (!blob) { showPopup('warning', 'Failed', 'Image banano gelo na.'); return; }
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `duty-schedule-${y}-${dutyPad(m)}.png`;
+            document.body.appendChild(a); a.click(); a.remove();
+            setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+        }, 'image/png');
+    }
+
+    async function dutySetCell(sel) {
+        if (!canManageDuty(currentUser)) { showPopup('warning', 'Access Denied', 'Only Admin, Sumon & Alamin can edit the duty schedule.'); return; }
+        const date = sel.dataset.date, col = sel.dataset.col;
+        const month = dutyState.month;
+        const cur = dutyState.data[date] || { t1: '', t2: '' };
+        const next = { t1: cur.t1 || '', t2: cur.t2 || '' };
+        next[col] = sel.value;
+        if (next.t1 && next.t1 === next.t2) { showPopup('warning', 'Duplicate', 'Ekoi technician duita column e deya jabe na.'); dutyRender(); return; }
+        if (next.t1 || next.t2) dutyState.data[date] = next; else delete dutyState.data[date];
+        dutyRender();
+        try { await fbSet(`dutySchedule/${month}/${date}`, (next.t1 || next.t2) ? next : null); }
+        catch (e) { showPopup('warning', 'Save failed', 'Save hoyni — internet check kore abar try korun.'); dutyLoad(true); }
+    }
+
+    async function dutyAddHoliday() {
+        if (!canManageDuty(currentUser)) return;
+        const dEl = document.getElementById('dutyHolDate'), nEl = document.getElementById('dutyHolName');
+        const date = dEl.value, name = nEl.value.trim();
+        if (!date || !name) { showPopup('warning', 'Missing info', 'Date ar holiday er naam dite hobe.'); return; }
+        const id = String(Date.now());
+        try {
+            await fbSet('dutyHolidays/custom/' + id, { date, name });
+            dutyState.custom[id] = { date, name };
+            dEl.value = ''; nEl.value = '';
+            const mi = document.getElementById('dutyMonth');
+            if (mi.value !== date.slice(0, 7)) { mi.value = date.slice(0, 7); await dutyLoad(); } else dutyRender();
+            showPopup('success', 'Holiday added', `${name} (${date}) add hoyeche.`);
+        } catch (e) { showPopup('warning', 'Save failed', 'Holiday save hoyni. Abar try korun.'); }
+    }
+
+    async function dutyRemoveHoliday(type, date, id) {
+        if (!canManageDuty(currentUser)) return;
+        if (!confirm('Ei holiday ta remove korben?')) return;
+        try {
+            if (type === 'custom') { await fbSet('dutyHolidays/custom/' + id, null); delete dutyState.custom[id]; }
+            else { await fbSet('dutyHolidays/hidden/' + date, true); dutyState.hidden[date] = true; }
+            dutyRender();
+        } catch (e) { showPopup('warning', 'Failed', 'Remove kora gelo na.'); }
+    }
+
+    async function dutyRestoreHidden() {
+        if (!canManageDuty(currentUser)) return;
+        const month = dutyState.month;
+        const keys = Object.keys(dutyState.hidden || {}).filter(k => k.startsWith(month));
+        try {
+            await Promise.all(keys.map(k => fbSet('dutyHolidays/hidden/' + k, null)));
+            keys.forEach(k => delete dutyState.hidden[k]);
+            dutyRender();
+        } catch (e) { showPopup('warning', 'Failed', 'Restore kora gelo na.'); }
+    }
+
     // ── TAB NAVIGATION ──
     function showSection(name) {
         if (name === 'manage' && !isAdminUser(currentUser)) return;
+        if (name === 'duty' && !canManageDuty(currentUser)) return;
         document.querySelectorAll('.dashboard-section').forEach(s => s.classList.remove('active'));
         document.querySelectorAll('.tab-item').forEach(n => n.classList.remove('active'));
 
@@ -2417,6 +2943,8 @@ loadLeaveEntries();
         const tabItem = document.getElementById('tab-' + name);
         if (section) section.classList.add('active');
         if (tabItem) tabItem.classList.add('active');
+
+        if (name === 'duty') dutyInit();
 
         if (name === 'summary') {
             const now2 = new Date();
