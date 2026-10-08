@@ -2191,7 +2191,6 @@ if (leaveNoticeEl) leaveNoticeEl.style.display = isLeaveAdmin ? 'none' : 'flex';
         startFirebaseSync();
         startReminderChecks();
         requestNotificationPermission();
-        unlockReminderAudio();
 loadAtmEntries();
 loadLeaveEntries();
     }
@@ -2319,17 +2318,6 @@ loadLeaveEntries();
         }
     }
 
-    // ── Reminder sound (two-tone beep, no external audio file needed) ──
-    let reminderAudioCtx = null;
-    function unlockReminderAudio() {
-        // Created inside the login click (a user gesture) so browsers don't block autoplay later.
-        try {
-            if (!reminderAudioCtx) {
-                reminderAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            }
-            if (reminderAudioCtx.state === 'suspended') { reminderAudioCtx.resume(); }
-        } catch(e) {}
-    }
     function notifyNewAssignments() {
         if (!currentUser) return;
         const currentIds = new Set(ongoing.filter(t => t).map(t => t.id));
@@ -2347,37 +2335,12 @@ loadLeaveEntries();
                     ? `Ticket ${task.ticket} আপনাকে assign করা হয়েছে।`
                     : `Ticket ${task.ticket} assigned to ${task.person}.`;
                 showPopup('success', 'New Ticket Assigned', msg);
-                playReminderTone();
                 if ('Notification' in window && Notification.permission === 'granted') {
                     try { new Notification('New Ticket Assigned', { body: msg, tag: 'assign-' + task.id }); } catch(e) {}
                 }
             }
         }
         knownOngoingIds = currentIds;
-    }
-
-    function playReminderTone() {
-        try {
-            if (!reminderAudioCtx) {
-                reminderAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            }
-            if (reminderAudioCtx.state === 'suspended') { reminderAudioCtx.resume(); }
-            const beep = (freq, startAt) => {
-                const ctx = reminderAudioCtx;
-                const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
-                osc.type = 'sine';
-                osc.frequency.value = freq;
-                const t0 = ctx.currentTime + startAt;
-                gain.gain.setValueAtTime(0.0001, t0);
-                gain.gain.exponentialRampToValueAtTime(0.35, t0 + 0.02);
-                gain.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.45);
-                osc.connect(gain); gain.connect(ctx.destination);
-                osc.start(t0); osc.stop(t0 + 0.5);
-            };
-            beep(880, 0);
-            beep(660, 0.3);
-        } catch(e) {}
     }
 
     function startReminderChecks() {
