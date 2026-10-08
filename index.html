@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Technician Work Dashboard</title>
+    <script>try{ if(localStorage.getItem('dash_session_v3')) document.documentElement.classList.add('has-session'); }catch(e){}</script>
     <link rel="shortcut icon" href="technician_favicon.ico" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Outfit:wght@500;600;700;800&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -96,6 +97,7 @@ button {
 }
 .delete-checkbox { width: 16px; height: 16px; cursor: pointer; accent-color: #be123c; }
 
+        html.has-session #loginScreen { display: none; }
         /* ── LOGIN SCREEN ── */
         #loginScreen {
             position: fixed; inset: 0; z-index: 9999;
@@ -319,6 +321,22 @@ button {
             line-height: 1.2;
         }
         .company-name { font-family:'Outfit',sans-serif; font-size:0.92rem; font-weight:600; color:#a5b4fc; display:block; letter-spacing:0.3px; line-height:1.2; }
+        .done-today-badge {
+            width: 44px; height: 44px; border-radius: 50%; flex-shrink: 0;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            background: #fff7ed; color: #c2410c;
+            border: 2px solid #fdba74;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.25);
+            line-height: 1; cursor: default;
+        }
+        .done-today-badge .dt-num { font-family:'Outfit',sans-serif; font-weight:800; font-size:1.15rem; }
+        .done-today-badge .dt-lbl { font-family:'Outfit',sans-serif; font-weight:900; font-size:0.44rem; letter-spacing:0.6px; text-transform:uppercase; margin-top:2px; color:#7c2d12; }
+        @media (max-width: 480px) {
+            header { padding: 10px 12px; }
+            .done-today-badge { width: 38px; height: 38px; }
+            .done-today-badge .dt-num { font-size: 1rem; }
+            .done-today-badge .dt-lbl { font-size: 0.40rem; }
+        }
         .header-right { text-align:right; position:relative; z-index:2; display:flex; align-items:center; gap:8px; flex-shrink:0; }
         .datetime-container { display:flex; flex-direction:column; align-items:flex-end; gap:2px; }
         #liveDate { font-family:'Outfit',sans-serif; font-size:0.65rem; font-weight:500; color:rgba(255,255,255,0.70); letter-spacing:0.3px; }
@@ -1311,15 +1329,18 @@ button {
     </div>
 </div>
 <div class="header-right" style="flex-direction:column;align-items:flex-end;gap:4px;">
+    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
     <div style="display:flex;align-items:center;gap:5px;">
         <div class="role-dot" id="roleDot"></div>
         <span class="uname" id="headerUserName" style="font-family:'Outfit',sans-serif;font-size:0.62rem;font-weight:800;color:#fff;text-transform:uppercase;"></span>
         <i class="fas fa-sign-out-alt" id="userBadge" title="Click to logout" style="font-size:0.70rem;color:rgba(255,255,255,0.65);cursor:pointer;padding:4px;"></i>
     </div>
     
-    <div class="sync-status">
-        <div class="live-dot"></div>
-        <span id="syncText">Live</span>
+    <div class="done-today-badge" id="doneTodayBadge" title="Today's completed tasks">
+        <span class="dt-num" id="doneTodayCount">0</span>
+        <span class="dt-lbl">Done</span>
+    </div>
+    <span id="syncText" style="display:none;">Live</span>
     </div>
 </div>
     </header>
@@ -1329,6 +1350,20 @@ button {
 
         <!-- SECTION: New Task Assign -->
         <div class="dashboard-section active" id="section-assign">
+            <!-- Quick Paste Box -->
+            <div class="card" id="quickPasteCard" style="margin-bottom:12px;">
+                <div class="card-title" style="color:var(--teal);"><i class="fas fa-paste"></i> QUICK PASTE</div>
+                <textarea id="quickPasteInput" rows="2" spellcheck="false"
+                    placeholder="Ticket info ekhane paste korun — Ticket ID, Area, Address & Phone auto boshe jabe..."
+                    style="width:100%;resize:vertical;height:42px;min-height:42px;padding:8px 12px;border:1.5px solid #cfe0f7;border-radius:10px;background:#eef4fc;color:#1e293b;font-family:'Outfit',sans-serif;font-size:0.78rem;outline:none;"></textarea>
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:8px;flex-wrap:wrap;">
+                    <span id="quickPasteStatus" style="font-size:0.68rem;font-weight:600;color:var(--muted);"></span>
+                    <button type="button" onclick="clearQuickPaste()" style="background:#e2e8f0;color:#334155;border:none;cursor:pointer;font-weight:700;">
+                        <i class="fas fa-eraser"></i> Clear
+                    </button>
+                </div>
+            </div>
+
             <div class="card card-new" id="assignCard">
                 <div class="card-title" style="color:var(--sky-light);"><i class="fas fa-plus-circle"></i> CREATE NEW ASSIGNMENT</div>
                 <div class="engineer-only-notice" id="engineerOnlyNotice" style="display:none;">
@@ -2146,6 +2181,7 @@ const leaveNoticeEl = document.getElementById('leaveAdminOnlyNotice');
 if (leaveFormEl) leaveFormEl.style.display = isLeaveAdmin ? 'flex' : 'none';
 if (leaveNoticeEl) leaveNoticeEl.style.display = isLeaveAdmin ? 'none' : 'flex';
         populateTechnicianDropdowns();
+        if (currentUser.role === 'technician') document.getElementById('personInput').value = currentUser.name;
         if (isAdmin) renderManageUsers();
         startFirebaseSync();
         startReminderChecks();
@@ -2158,6 +2194,7 @@ loadLeaveEntries();
     function logout() {
         currentUser = null;
         clearSession();
+        try { localStorage.removeItem('dash_last_section'); } catch(e) {}
         enforceManageTabVisibility(); // currentUser is now null -> always hides immediately on logout
         if (fbPollInterval) { clearInterval(fbPollInterval); fbPollInterval = null; }
         stopReminderChecks();
@@ -2362,7 +2399,6 @@ loadLeaveEntries();
                 const minutes = Math.round((now - task.id) / 60000);
                 const msg = `Ticket ${task.ticket} is still running (${minutes} min). Please follow up.`;
                 showPopup('warning', 'Follow-up Reminder', msg);
-                playReminderTone();
                 if ('Notification' in window && Notification.permission === 'granted') {
                     try { new Notification('Follow-up Reminder', { body: msg, tag: 'reminder-' + task.id }); } catch(e) {}
                 }
@@ -2389,8 +2425,24 @@ loadLeaveEntries();
     }).catch(() => {});  // error হলেও কিছু না
 }
 
+    // ── Today's done count (header badge) ──
+    function updateDoneToday() {
+        const el = document.getElementById('doneTodayCount');
+        if (!el || !currentUser) return;
+        const n = new Date();
+        const today = new Date(n.getTime() - n.getTimezoneOffset()*60000).toISOString().split('T')[0];
+        const isTech = currentUser.role === 'technician';
+        const count = completed.filter(t => t && t.date === today && t.person &&
+            (isTech ? t.person.toLowerCase() === currentUser.name.toLowerCase() : true)).length;
+        el.textContent = count;
+        const badge = document.getElementById('doneTodayBadge');
+        if (badge) badge.title = isTech ? `Aj apni ${count} ti kaj done koreche` : `Aj total ${count} ti kaj done hoyeche`;
+    }
+    setInterval(updateDoneToday, 60000);
+
     function renderAll() {
         if (!currentUser) return;
+        updateDoneToday();
         updateNavBadges();
 
         const sv   = document.getElementById('searchDateFrom')?.value || '';
@@ -2936,6 +2988,7 @@ loadLeaveEntries();
     function showSection(name) {
         if (name === 'manage' && !isAdminUser(currentUser)) return;
         if (name === 'duty' && !canManageDuty(currentUser)) return;
+        try { localStorage.setItem('dash_last_section', name); } catch(e) {}
         document.querySelectorAll('.dashboard-section').forEach(s => s.classList.remove('active'));
         document.querySelectorAll('.tab-item').forEach(n => n.classList.remove('active'));
 
@@ -2961,6 +3014,80 @@ loadLeaveEntries();
         if (ob) { ob.textContent = ongoing.length; ob.style.display = ongoing.length > 0 ? 'block' : 'none'; }
         if (cb) { cb.textContent = completed.length; cb.style.display = completed.length > 0 ? 'block' : 'none'; }
     }
+
+    // ── QUICK PASTE: parse ticket text -> Ticket ID, Area, Address, Phone ──
+    function parseTicketText(raw) {
+        const lines = raw.split(/\r?\n/).map(l => l.replace(/\t+/g,' ').trim()).filter(Boolean);
+        const out = { ticket:'', area:'', address:'', phone:'' };
+        if (!lines.length) return out;
+
+        // Ticket ID
+        const tm = raw.match(/\b(?:L3|TKI|CR|SVR)[-A-Za-z0-9_]*/i);
+        if (tm) out.ticket = tm[0];
+
+        // Phone number(s)
+        const phones = [...new Set((raw.match(/(?:\+?88)?01[3-9]\d{8}/g) || []).map(x => x.replace(/^\+?88/,'')))];
+        out.phone = phones.join(', ');
+
+        // Address line: skip ticket line, customer line (123:1:NAME:NAME) and phone-only line
+        const addrLines = lines.filter(l =>
+            !(out.ticket && l.toUpperCase().startsWith(out.ticket.toUpperCase())) &&
+            !/^\d+:\d+:/.test(l) &&
+            !/^[+\d\s,\-]+$/.test(l));
+        let addr = addrLines.sort((a,b) => b.length - a.length)[0] || '';
+        addr = addr.replace(/\s*,(\s*,)+/g, ',').replace(/\s+/g,' ').replace(/^[,\s]+|[,\s]+$/g,'');
+        // keep address in original word order
+        out.address = addr;
+
+        // Area: last comma part first, else any area name found inside address
+        const sel = document.getElementById('areaInput');
+        const opts = [...sel.options].filter(o => o.value || o.text !== 'Select Area').map(o => ({ value: o.value || o.text, text: o.text }));
+        const norm = x => x.toLowerCase().replace(/[^a-z]/g,'');
+        const parts = addr.split(',').map(x => x.trim()).filter(Boolean).reverse();
+        for (const p of parts) {
+            const hit = opts.find(o => norm(o.value) === norm(p) || norm(o.text) === norm(p));
+            if (hit) { out.area = hit.value; break; }
+        }
+        if (!out.area) {
+            const na = norm(addr);
+            const hit = opts.filter(o => o.value && na.includes(norm(o.value))).sort((a,b) => b.value.length - a.value.length)[0];
+            if (hit) out.area = hit.value;
+        }
+        return out;
+    }
+
+    function applyQuickPaste() {
+        const raw = document.getElementById('quickPasteInput').value;
+        const status = document.getElementById('quickPasteStatus');
+        if (!raw.trim()) { status.textContent = ''; return; }
+        const d = parseTicketText(raw);
+        if (d.ticket)  document.getElementById('ticketInput').value = d.ticket;
+        if (d.area)    document.getElementById('areaInput').value = d.area;
+        const addrFull = [d.address, d.phone].filter(Boolean).join(' | ');
+        if (addrFull)  document.getElementById('addressInput').value = addrFull;
+        const miss = [];
+        if (!d.ticket) miss.push('Ticket ID');
+        if (!d.area) miss.push('Area');
+        if (!d.address) miss.push('Address');
+        if (!d.phone) miss.push('Phone');
+        status.style.color = miss.length ? '#b45309' : '#0d9488';
+        status.innerHTML = miss.length
+            ? '<i class="fas fa-exclamation-triangle"></i> Pawa jayni: ' + miss.join(', ')
+            : '<i class="fas fa-check-circle"></i> Ticket ID, Area, Address & Phone boshe geche';
+    }
+
+    function clearQuickPaste() {
+        document.getElementById('quickPasteInput').value = '';
+        document.getElementById('quickPasteStatus').textContent = '';
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const qp = document.getElementById('quickPasteInput');
+        if (qp) {
+            qp.addEventListener('input', applyQuickPaste);
+            qp.addEventListener('paste', () => setTimeout(applyQuickPaste, 0));
+        }
+    });
 
     async function addTask() {
         if (!currentUser) return;
@@ -2996,7 +3123,7 @@ loadLeaveEntries();
             await pushTaskToFirebase(task);
             ongoing.unshift(task);
             renderAll();
-            ti.value=''; document.getElementById('areaInput').value=''; document.getElementById('addressInput').value='';
+            ti.value=''; document.getElementById('areaInput').value=''; document.getElementById('addressInput').value=''; clearQuickPaste();
             if (currentUser.role === 'engineer') document.getElementById('personInput').value='';
             showPopup('success','Task Assigned',`${task.ticket} → ${task.person}`);
         } catch(e) {
@@ -3718,34 +3845,51 @@ function toggleDeleteModeAtm() {
     initUsersAndSession();
 });
 
+    function restoreLastSection() {
+        let last = null;
+        try { last = localStorage.getItem('dash_last_section'); } catch(e) {}
+        if (last && document.getElementById('section-' + last) && document.getElementById('tab-' + last)) showSection(last);
+    }
+
     async function initUsersAndSession() {
+        // 1) Instant restore from the saved session + locally cached users (no login flash, works even if Firebase is slow)
+        let restored = false;
+        const local = loadLocalUsers();
+        if (local) USER_ACCOUNTS = local;
+        const savedSession = loadSession();
+        if (savedSession) {
+            const account = USER_ACCOUNTS.find(u => u.username === savedSession.username && u.active !== false);
+            if (account) {
+                const freshUser = { name: account.name, role: account.role, username: account.username };
+                saveSession(freshUser);
+                loginAs(freshUser);
+                restoreLastSection();
+                restored = true;
+            }
+        }
+
+        // 2) Sync the live user list from Firebase
         try {
             const remote = await fbGet('users');
             if (remote && typeof remote === 'object' && Object.keys(remote).length) {
                 USER_ACCOUNTS = Object.values(remote);
                 saveLocalUsers(USER_ACCOUNTS);
             } else {
-                // First run ever — seed Firebase with the default accounts so the list persists from now on.
                 await pushUserList();
             }
-        } catch(e) {
-            const local = loadLocalUsers();
-            if (local) USER_ACCOUNTS = local;
+        } catch(e) {}
+
+        if (restored) {
+            const acc = USER_ACCOUNTS.find(u => currentUser && u.username === currentUser.username && u.active !== false);
+            if (!acc) { logout(); return; }          // account was removed by admin
+            populateTechnicianDropdowns();
+            if (currentUser.role === 'technician') document.getElementById('personInput').value = currentUser.name;
+            return;
         }
 
-        const savedSession = loadSession();
-        if (savedSession) {
-            const account = USER_ACCOUNTS.find(u => u.username === savedSession.username && u.active !== false);
-            if (account) {
-                // savedSession না, বরং USER_ACCOUNTS থেকে fresh, সঠিক role নিয়ে login করানো হচ্ছে
-                const freshUser = { name: account.name, role: account.role, username: account.username };
-                saveSession(freshUser); // localStorage-ও update করে দিচ্ছি, পুরনো ভুল data যেন আর না থাকে
-                loginAs(freshUser);
-                return;
-            } else {
-                clearSession();
-            }
-        }
+        // Not logged in (or account gone)
+        if (savedSession) clearSession();
+        document.documentElement.classList.remove('has-session');
         document.getElementById('loginScreen').style.display = 'flex';
     }
 </script>
